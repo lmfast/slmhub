@@ -1,0 +1,29 @@
+---
+description: Prompting patterns that work better for small models.
+---
+
+# Prompting for small models
+
+## Defaults that usually help
+
+- Be **explicit** about output format.
+- Use **short, concrete instructions**.
+- Provide **one worked example** for structured outputs (JSON, YAML).
+- Keep “system prompts” minimal; don’t stack rules unless you must.
+
+## Prefer constraints over prose
+
+Bad:
+- “Be detailed and thoughtful…”
+
+Better:
+- “Return JSON with keys: `summary`, `risks`, `next_steps`. Max 80 tokens per value.”
+
+## If outputs drift
+
+- Lower temperature first.
+- Add a schema or strict format.
+- Add “stop sequences” or delimiters.
+- If still unstable, consider a small fine-tune for format adherence.
+
+

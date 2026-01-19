@@ -1,0 +1,14 @@
+---
+description: Minimal “get it running” guides.
+---
+
+# Quick starts
+
+Pick one runtime and get to a working prompt in minutes:
+
+- **Ollama**: easiest local developer experience
+- **vLLM**: best throughput for GPU serving
+- **llama.cpp**: portable CPU/edge inference
+- **Transformers.js**: in-browser experiments
+
+
