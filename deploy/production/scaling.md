@@ -1,6 +1,6 @@
 ---
 title: Scaling & Batching
-description: Throughput and latency controls: batching, caching, timeouts, and capacity planning.
+description: "Throughput and latency controls: batching, caching, timeouts, and capacity planning."
 ---
 
 # Scaling & batching

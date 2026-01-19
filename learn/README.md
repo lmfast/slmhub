@@ -1,6 +1,6 @@
 ---
 title: Learn
-description: Learn small language models like a developer: practical, runnable, and incremental.
+description: "Learn small language models like a developer: practical, runnable, and incremental."
 ---
 
 # Learn

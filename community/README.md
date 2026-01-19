@@ -1,6 +1,6 @@
 ---
 title: Community
-description: How the docs stay healthy: contributions, style, updates, and governance.
+description: "How the docs stay healthy: contributions, style, updates, and governance."
 ---
 
 # Community

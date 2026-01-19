@@ -1,6 +1,6 @@
 ---
 title: Fundamentals
-description: Core concepts you'll use repeatedly: tokenization, quantization, fine-tuning, prompting.
+description: "Core concepts you'll use repeatedly: tokenization, quantization, fine-tuning, prompting."
 ---
 
 # Fundamentals

@@ -1,6 +1,6 @@
 ---
 title: Deploy
-description: Deployment playbooks for SLMs: from laptop to production.
+description: "Deployment playbooks for SLMs: from laptop to production."
 ---
 
 # Deploy
