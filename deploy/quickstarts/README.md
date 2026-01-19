@@ -1,5 +1,6 @@
 ---
-description: Minimal “get it running” guides.
+title: Quick Starts
+description: Minimal "get it running" guides.
 ---
 
 # Quick starts

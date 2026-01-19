@@ -1,4 +1,5 @@
 ---
+title: Transformers.js
 description: In-browser experiments with WebGPU (when supported).
 ---
 

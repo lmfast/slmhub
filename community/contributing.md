@@ -1,4 +1,5 @@
 ---
+title: Contributing
 description: Contribute docs like a developer: clear scope, reproducible claims, and tight reviews.
 ---
 

@@ -1,4 +1,5 @@
 ---
+title: Prompt & Eval Harness
 description: A tiny evaluation harness to keep you honest about regressions.
 ---
 

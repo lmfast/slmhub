@@ -1,4 +1,5 @@
 ---
+title: Hardware Picker
 description: Pick hardware based on workload shape rather than model hype.
 ---
 

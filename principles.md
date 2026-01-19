@@ -1,4 +1,5 @@
 ---
+title: Principles
 description: The editorial and technical principles that keep this docs useful to developers.
 ---
 

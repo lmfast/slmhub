@@ -1,4 +1,5 @@
 ---
+title: Run Locally with Ollama
 description: The fastest local path: install Ollama and run an SLM.
 ---
 

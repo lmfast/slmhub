@@ -1,4 +1,5 @@
 ---
+title: Multi-Expert System
 description: Compose multiple small specialist models rather than one monolith.
 ---
 

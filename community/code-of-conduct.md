@@ -1,4 +1,5 @@
 ---
+title: Code of Conduct
 description: Community standards for a healthy, developer-first space.
 ---
 

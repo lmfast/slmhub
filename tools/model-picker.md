@@ -1,4 +1,5 @@
 ---
+title: Model Picker
 description: A simple decision framework to pick a model without chasing leaderboards.
 ---
 

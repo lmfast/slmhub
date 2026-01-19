@@ -1,4 +1,5 @@
 ---
+title: Qwen
 description: Qwen models are a common default for multilingual + long-context workflows (validate on your tasks).
 ---
 

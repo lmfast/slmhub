@@ -1,4 +1,5 @@
 ---
+title: RAG-Enhanced SLM
 description: Retrieval + SLM is the default production architecture for many teams.
 ---
 

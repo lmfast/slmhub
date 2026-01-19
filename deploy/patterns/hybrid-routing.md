@@ -1,4 +1,5 @@
 ---
+title: Hybrid Routing (SLM + LLM)
 description: Use an SLM as default and route to a larger model only when needed.
 ---
 

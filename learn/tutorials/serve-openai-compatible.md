@@ -1,4 +1,5 @@
 ---
+title: Deploy OpenAI-Compatible Endpoint
 description: Serve an OpenAI-compatible API locally so your apps can swap providers.
 ---
 

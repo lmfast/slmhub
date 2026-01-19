@@ -1,4 +1,5 @@
 ---
+title: Observability
 description: What to measure so you can debug cost, latency, and quality.
 ---
 

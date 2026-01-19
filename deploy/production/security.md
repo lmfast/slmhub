@@ -1,4 +1,5 @@
 ---
+title: Security
 description: Minimal security controls for SLM deployments.
 ---
 

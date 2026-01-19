@@ -1,4 +1,5 @@
 ---
+title: Model Page Standard
 description: A consistent, developer-centric template for model pages.
 ---
 

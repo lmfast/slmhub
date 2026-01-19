@@ -1,4 +1,5 @@
 ---
+title: Update Policy
 description: How we keep documentation current (and what we automate).
 ---
 

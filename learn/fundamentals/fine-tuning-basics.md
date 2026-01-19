@@ -1,4 +1,5 @@
 ---
+title: Fine-Tuning Basics
 description: Fine-tune small models with PEFT without turning your repo into a research project.
 ---
 

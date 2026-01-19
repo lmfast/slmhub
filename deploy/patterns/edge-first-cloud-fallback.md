@@ -1,4 +1,5 @@
 ---
+title: Edge-First, Cloud Fallback
 description: Run locally/edge first; fallback to cloud only when needed.
 ---
 

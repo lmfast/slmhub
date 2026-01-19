@@ -1,5 +1,6 @@
 ---
-description: Retrieval-augmented generation with an SLM: the most common “production wins” pattern.
+title: RAG with SLM
+description: Retrieval-augmented generation with an SLM: the most common "production wins" pattern.
 ---
 
 # RAG with an SLM

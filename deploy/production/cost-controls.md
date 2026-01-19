@@ -1,4 +1,5 @@
 ---
+title: Cost Controls
 description: How to keep unit economics predictable.
 ---
 

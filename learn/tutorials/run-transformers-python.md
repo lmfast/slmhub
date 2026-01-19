@@ -1,4 +1,5 @@
 ---
+title: Run with Transformers (Python)
 description: Run an SLM via Hugging Face Transformers in Python.
 ---
 

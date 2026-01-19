@@ -1,4 +1,5 @@
 ---
+title: Prompting for SLMs
 description: Prompting patterns that work better for small models.
 ---
 

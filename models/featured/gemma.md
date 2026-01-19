@@ -1,4 +1,5 @@
 ---
+title: Gemma
 description: Gemma-family models with practical deployment notes.
 ---
 

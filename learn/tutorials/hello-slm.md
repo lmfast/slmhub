@@ -1,5 +1,6 @@
 ---
-description: A “no setup” first run using browser runtimes and minimal tooling.
+title: Hello SLM
+description: A "no setup" first run using browser runtimes and minimal tooling.
 ---
 
 # Hello SLM (no setup)

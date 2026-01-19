@@ -1,4 +1,5 @@
 ---
+title: Patterns
 description: Architectural patterns that make SLM systems robust and cheap.
 ---
 

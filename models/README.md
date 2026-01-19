@@ -1,4 +1,5 @@
 ---
+title: Models
 description: Discovery-focused model docs: what a model is good for and how to run it.
 ---
 

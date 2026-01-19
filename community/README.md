@@ -1,4 +1,5 @@
 ---
+title: Community
 description: How the docs stay healthy: contributions, style, updates, and governance.
 ---
 

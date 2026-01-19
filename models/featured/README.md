@@ -1,4 +1,5 @@
 ---
+title: Featured Models
 description: Curated, stable model pages for common developer workflows.
 ---
 

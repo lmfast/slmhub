@@ -1,4 +1,5 @@
 ---
+title: SmolLM
 description: SmolLM models are great for edge and browser-adjacent demos; prioritize constraints and RAG.
 ---
 

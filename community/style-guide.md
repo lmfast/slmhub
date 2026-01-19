@@ -1,4 +1,5 @@
 ---
+title: Style Guide
 description: Consistency rules for readability.
 ---
 

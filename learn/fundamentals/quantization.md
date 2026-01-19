@@ -1,4 +1,5 @@
 ---
+title: Quantization
 description: How to make models fit and run fast without getting surprised.
 ---
 

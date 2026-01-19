@@ -1,5 +1,6 @@
 ---
-description: A developer’s mental model for when small models win.
+title: SLMs vs LLMs
+description: A developer's mental model for when small models win.
 ---
 
 # SLMs vs LLMs

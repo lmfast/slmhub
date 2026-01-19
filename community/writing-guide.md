@@ -1,4 +1,5 @@
 ---
+title: Writing Guide
 description: How to write pages that developers actually use.
 ---
 

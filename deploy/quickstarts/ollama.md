@@ -1,4 +1,5 @@
 ---
+title: Ollama
 description: The simplest local runtime for SLMs.
 ---
 

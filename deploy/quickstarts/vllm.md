@@ -1,4 +1,5 @@
 ---
+title: vLLM
 description: High-throughput GPU serving with an OpenAI-compatible API.
 ---
 
