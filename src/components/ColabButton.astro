@@ -2,26 +2,34 @@
 interface Props {
   path?: string;
   githubRepo?: string;
+  code?: string;
 }
 
-const { path, githubRepo = 'lmfast/slmhub' } = Astro.props;
-
-// Determine the colab URL.
-// If path is provided, use it. Otherwise, this component might need context injection (advanced).
-// For now, let's assume usage is <ColabButton path="notebooks/my-notebook.ipynb" />
+const { path, githubRepo = 'lmfast/slmhub', code } = Astro.props;
 
 const colabBase = 'https://colab.research.google.com/github';
 const repoParts = githubRepo.split('/');
 const owner = repoParts[0];
 const repo = repoParts[1];
-const branch = 'main'; // Default to main
+const branch = 'main';
 
 const fileUrl = path ? `${colabBase}/${owner}/${repo}/blob/${branch}/${path}` : '#';
 
 ---
 
-<a href={fileUrl} target="_blank" rel="noopener noreferrer" class="colab-button group">
-  <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab" class="h-6 w-auto transition-transform group-hover:scale-105" />
+<a 
+  href={fileUrl} 
+  target="_blank" 
+  rel="noopener noreferrer" 
+  class="colab-button group"
+  title="Open in Google Colab"
+  aria-label="Open this code in Google Colab"
+>
+  <img 
+    src="https://colab.research.google.com/assets/colab-badge.svg" 
+    alt="Open In Colab" 
+    class="colab-badge" 
+  />
 </a>
 
 <style>
@@ -29,6 +37,29 @@ const fileUrl = path ? `${colabBase}/${owner}/${repo}/blob/${branch}/${path}` : 
     display: inline-flex;
     align-items: center;
     margin: 0.5rem 0;
+    padding: 0.25rem 0.5rem;
     text-decoration: none;
+    border-radius: 0.375rem;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .colab-button:hover {
+    transform: scale(1.05);
+    background: rgba(0, 0, 0, 0.05);
+  }
+  
+  .colab-badge {
+    height: 1.5rem;
+    width: auto;
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .colab-button:hover .colab-badge {
+    transform: scale(1.05);
+  }
+  
+  [data-theme="dark"] .colab-button:hover {
+    background: rgba(255, 255, 255, 0.1);
   }
 </style>
+

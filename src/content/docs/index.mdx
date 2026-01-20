@@ -9,7 +9,7 @@ hero:
     alt: SLM Hub
     file: ../../assets/logo.svg
   actions:
-    - text: Get Started
+    - text: Get Started →
       link: /slmhub/start-here/
       icon: right-arrow
       variant: primary
@@ -21,31 +21,35 @@ hero:
 
 import { Card, CardGrid } from '@astrojs/starlight/components';
 
-## Features
+<div class="features-section">
+
+## Master SLMs in 2026
 
 <CardGrid>
-  <Card title="📚 Master the Fundamentals" icon="open-book">
-    Deep dive into quantization, fine-tuning techniques (PEFT/LoRA), and efficient prompting strategies specifically for models under 10B parameters.
+  <Card title="📚 Master the Fundamentals" icon="open-book" class="feature-card card-teal">
+    Deep dive into **quantization**, **fine-tuning techniques** (PEFT/LoRA), and efficient prompting strategies specifically for models under 10B parameters.
     
     [Start Learning →](/slmhub/learn/)
   </Card>
 
-  <Card title="🚀 Local Deployment" icon="rocket">
-    Run SLMs on your laptop with Ollama, vLLM, or directly in the browser with WebGPU.
+  <Card title="🚀 Local Deployment" icon="rocket" class="feature-card card-orange">
+    Run SLMs on your laptop with **Ollama**, **vLLM**, or directly in the browser with **WebGPU**. No cloud required.
     
     [Deploy Now →](/slmhub/deploy/)
   </Card>
 
-  <Card title="🗄️ Model Directory" icon="list-format">
-    An auto-updated directory of high-quality SLMs. No leaderboards, just capabilities.
+  <Card title="🗄️ Model Directory" icon="list-format" class="feature-card card-purple">
+    An **auto-updated directory** of high-quality SLMs. No leaderboards, just capabilities and practical use cases.
     
     [Find Models →](/slmhub/models/generated/directory/)
   </Card>
 
-  <Card title="🔧 Developer Tools" icon="setting">
-    Interactive Model Pickers, Hardware Calculators (VRAM usage), and lightweight Prompt Evaluation Harnesses.
+  <Card title="🔧 Developer Tools" icon="setting" class="feature-card card-blue">
+    Interactive **Model Pickers**, **Hardware Calculators** (VRAM usage), and lightweight Prompt Evaluation Harnesses.
     
     [View Tools →](/slmhub/tools/)
   </Card>
 </CardGrid>
+
+</div>
 

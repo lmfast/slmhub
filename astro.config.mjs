@@ -6,6 +6,9 @@ import tailwind from '@astrojs/tailwind';
 export default defineConfig({
   site: 'https://lmfast.github.io',
   base: '/slmhub',
+  image: {
+    service: { entrypoint: 'astro/assets/services/noop' }
+  },
   integrations: [
     starlight({
       title: 'SLM Hub',
@@ -71,7 +74,7 @@ export default defineConfig({
           tag: 'meta',
           attrs: {
             name: 'theme-color',
-            content: '#6366f1',
+            content: '#FF6B35',
           },
         },
         {
