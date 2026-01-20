@@ -173,3 +173,10 @@ html {
   border: 1px solid var(--glass-border);
   box-shadow: var(--glass-shadow);
 }
+/* Homepage gradient text */
+.gradient-text {
+  background: linear-gradient(135deg, var(--sl-color-accent) 0%, #8b5cf6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
