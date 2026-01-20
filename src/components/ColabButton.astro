@@ -1,0 +1,34 @@
+---
+interface Props {
+  path?: string;
+  githubRepo?: string;
+}
+
+const { path, githubRepo = 'lmfast/slmhub' } = Astro.props;
+
+// Determine the colab URL.
+// If path is provided, use it. Otherwise, this component might need context injection (advanced).
+// For now, let's assume usage is <ColabButton path="notebooks/my-notebook.ipynb" />
+
+const colabBase = 'https://colab.research.google.com/github';
+const repoParts = githubRepo.split('/');
+const owner = repoParts[0];
+const repo = repoParts[1];
+const branch = 'main'; // Default to main
+
+const fileUrl = path ? `${colabBase}/${owner}/${repo}/blob/${branch}/${path}` : '#';
+
+---
+
+<a href={fileUrl} target="_blank" rel="noopener noreferrer" class="colab-button group">
+  <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab" class="h-6 w-auto transition-transform group-hover:scale-105" />
+</a>
+
+<style>
+  .colab-button {
+    display: inline-flex;
+    align-items: center;
+    margin: 0.5rem 0;
+    text-decoration: none;
+  }
+</style>
