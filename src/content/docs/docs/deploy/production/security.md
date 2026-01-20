@@ -4,8 +4,6 @@ description: "Minimal security controls for SLM deployments."
 ---
 
 
-# Security
-
 ## Default controls
 
 - Input validation (size limits, schema checks)

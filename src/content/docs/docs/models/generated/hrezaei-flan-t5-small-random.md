@@ -4,8 +4,6 @@ description: "Discovery-focused notes and runnable examples for `hrezaei/flan-t5
 ---
 
 
-# flan-t5-small-random
-
 Discovery-focused notes and runnable examples for `hrezaei/flan-t5-small-random`.
 
 ## Quickstart

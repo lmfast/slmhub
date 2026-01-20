@@ -4,8 +4,6 @@ description: "Discovery-focused notes and runnable examples for `flaitenberger/O
 ---
 
 
-# Olmo-3-1025-7B-natural-3e-5-100s-16ep-final-adapter
-
 Discovery-focused notes and runnable examples for `flaitenberger/Olmo-3-1025-7B-natural-3e-5-100s-16ep-final-adapter`.
 
 ## Quickstart

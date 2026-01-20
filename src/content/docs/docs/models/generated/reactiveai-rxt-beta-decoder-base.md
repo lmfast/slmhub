@@ -4,8 +4,6 @@ description: "Discovery-focused notes and runnable examples for `ReactiveAI/RxT-
 ---
 
 
-# RxT-Beta-Decoder-Base
-
 Discovery-focused notes and runnable examples for `ReactiveAI/RxT-Beta-Decoder-Base`.
 
 ## Quickstart

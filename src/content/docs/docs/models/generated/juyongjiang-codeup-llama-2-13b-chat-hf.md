@@ -4,8 +4,6 @@ description: "Discovery-focused notes and runnable examples for `juyongjiang/Cod
 ---
 
 
-# CodeUp-Llama-2-13b-chat-hf
-
 Discovery-focused notes and runnable examples for `juyongjiang/CodeUp-Llama-2-13b-chat-hf`.
 
 ## Quickstart

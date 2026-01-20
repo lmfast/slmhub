@@ -4,8 +4,6 @@ description: "A consistent, developer-centric template for model pages."
 ---
 
 
-# Model page standard
-
 ## Required sections (in this order)
 
 1. **Quickstart**: 1–2 runnable examples (Transformers + one local runtime).

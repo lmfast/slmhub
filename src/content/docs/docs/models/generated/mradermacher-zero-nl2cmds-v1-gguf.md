@@ -4,8 +4,6 @@ description: "Discovery-focused notes and runnable examples for `mradermacher/ze
 ---
 
 
-# zero-nl2cmds-v1-GGUF
-
 Discovery-focused notes and runnable examples for `mradermacher/zero-nl2cmds-v1-GGUF`.
 
 ## Quickstart

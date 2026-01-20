@@ -4,8 +4,6 @@ description: "Discovery-focused notes and runnable examples for `megalaa/english
 ---
 
 
-# english-coptic-translator
-
 Discovery-focused notes and runnable examples for `megalaa/english-coptic-translator`.
 
 ## Quickstart

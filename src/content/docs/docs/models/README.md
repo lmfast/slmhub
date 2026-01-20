@@ -4,8 +4,6 @@ description: "Discovery-focused model docs: what a model is good for and how to 
 ---
 
 
-# Models
-
 ## What you’ll find here
 
 - **Featured**: stable, curated pages for a small set of widely used models.

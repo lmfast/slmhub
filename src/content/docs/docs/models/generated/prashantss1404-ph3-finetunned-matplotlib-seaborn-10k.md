@@ -4,8 +4,6 @@ description: "Discovery-focused notes and runnable examples for `prashantss1404/
 ---
 
 
-# ph3-FineTunned-matplotlib-seaborn-10k
-
 Discovery-focused notes and runnable examples for `prashantss1404/ph3-FineTunned-matplotlib-seaborn-10k`.
 
 ## Quickstart

@@ -4,8 +4,6 @@ description: "Throughput and latency controls: batching, caching, timeouts, and 
 ---
 
 
-# Scaling & batching
-
 ## Throughput levers
 
 - **Continuous batching** (runtime-dependent)

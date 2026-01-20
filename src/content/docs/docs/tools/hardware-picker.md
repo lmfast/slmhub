@@ -4,8 +4,6 @@ description: "Pick hardware based on workload shape rather than model hype."
 ---
 
 
-# Hardware picker
-
 ## Inputs you need
 
 - average tokens in/out

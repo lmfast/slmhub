@@ -4,8 +4,6 @@ description: "Portable inference for CPU/edge using llama.cpp."
 ---
 
 
-# llama.cpp
-
 ## Why use it
 
 - Runs on many environments (CPU, edge, constrained devices).

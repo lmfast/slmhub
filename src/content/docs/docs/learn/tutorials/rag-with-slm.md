@@ -4,8 +4,6 @@ description: "Retrieval-augmented generation with an SLM: the most common 'produ
 ---
 
 
-# RAG with an SLM
-
 ## The core idea
 
 - Retrieval provides **fresh, verifiable context**

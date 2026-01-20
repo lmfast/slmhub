@@ -4,8 +4,6 @@ description: "Discovery-focused notes and runnable examples for `LLM-course/ches
 ---
 
 
-# chess-gpt-char-level-v7
-
 Discovery-focused notes and runnable examples for `LLM-course/chess-gpt-char-level-v7`.
 
 ## Quickstart

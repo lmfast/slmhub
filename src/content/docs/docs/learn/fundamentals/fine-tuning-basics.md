@@ -4,8 +4,6 @@ description: "Fine-tune small models with PEFT without turning your repo into a 
 ---
 
 
-# Fine-tuning basics (PEFT)
-
 ## When fine-tuning is worth it
 
 Fine-tune when:

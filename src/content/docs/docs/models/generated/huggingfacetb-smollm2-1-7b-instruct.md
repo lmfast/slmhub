@@ -4,8 +4,6 @@ description: "Discovery-focused notes and runnable examples for `HuggingFaceTB/S
 ---
 
 
-# SmolLM2-1.7B-Instruct
-
 Discovery-focused notes and runnable examples for `HuggingFaceTB/SmolLM2-1.7B-Instruct`.
 
 ## Quickstart

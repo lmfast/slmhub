@@ -4,8 +4,6 @@ description: "A simple decision framework to pick a model without chasing leader
 ---
 
 
-# Model picker
-
 ## Step 1: constraints
 
 - **Where will it run?** (browser / edge / single GPU / multi GPU)

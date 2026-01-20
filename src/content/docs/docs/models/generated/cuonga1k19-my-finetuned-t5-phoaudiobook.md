@@ -4,8 +4,6 @@ description: "Discovery-focused notes and runnable examples for `CuongA1K19/my-f
 ---
 
 
-# my-finetuned-t5-phoaudiobook
-
 Discovery-focused notes and runnable examples for `CuongA1K19/my-finetuned-t5-phoaudiobook`.
 
 ## Quickstart

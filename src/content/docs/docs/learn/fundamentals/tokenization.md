@@ -4,8 +4,6 @@ description: "Tokenization, only what you need to debug costs and context."
 ---
 
 
-# Tokenization (just enough)
-
 ## Why developers should care
 
 - **Cost & latency scale with tokens**, not characters.

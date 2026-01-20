@@ -4,8 +4,6 @@ description: "High-throughput GPU serving with an OpenAI-compatible API."
 ---
 
 
-# vLLM
-
 ## Why use it
 
 - Designed for concurrency and throughput.

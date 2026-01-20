@@ -4,8 +4,6 @@ description: "A tiny evaluation harness to keep you honest about regressions."
 ---
 
 
-# Prompt & eval harness (lightweight)
-
 ## Why this exists
 
 Benchmarks don’t represent your workload. You need a tiny suite that does.

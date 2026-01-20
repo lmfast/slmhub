@@ -1,0 +1,216 @@
+---
+title: "Embeddings"
+description: "How models represent meaning as numbers - the foundation of semantic search and RAG"
+---
+
+import ColabButton from '../../../../../components/ColabButton.astro';
+
+<ColabButton path="docs/learn/fundamentals/embeddings.ipynb" />
+
+# Embeddings
+
+Embeddings convert text into vectors that capture meaning. Similar texts have similar embeddings.
+
+## What Are Embeddings?
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│  TEXT → EMBEDDING → VECTOR                                     │
+│  ─────────────────────────                                      │
+│                                                                 │
+│  "The cat sat on the mat"                                       │
+│           │                                                     │
+│           ▼                                                     │
+│  ┌─────────────────┐                                            │
+│  │ EMBEDDING MODEL │                                            │
+│  └────────┬────────┘                                            │
+│           │                                                     │
+│           ▼                                                     │
+│  [0.23, -0.45, 0.12, 0.87, ..., 0.34]                          │
+│   ↑                                                             │
+│   384-1536 numbers that represent MEANING                       │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+## Why Embeddings Matter
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│  SEMANTIC SPACE                                                 │
+│  ──────────────                                                 │
+│                                                                 │
+│  Similar meanings = Close vectors                               │
+│                                                                 │
+│        "cat" ●───── 0.95 ─────● "kitten"                       │
+│              \                                                  │
+│               \               ● "feline"                        │
+│                \             /                                  │
+│                 ●───────────●                                   │
+│                                                                 │
+│                                                                 │
+│                                        ● "car"                  │
+│                                        │                        │
+│                               0.92 ────┤                        │
+│                                        │                        │
+│                                        ● "vehicle"              │
+│                                                                 │
+│  Distance "cat" ↔ "kitten": 0.05 (very similar)               │
+│  Distance "cat" ↔ "car": 0.85 (very different)                │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+## Using Embeddings
+
+### Sentence Transformers (Easiest)
+
+```python
+from sentence_transformers import SentenceTransformer
+
+# Load embedding model
+model = SentenceTransformer("all-MiniLM-L6-v2")
+
+# Create embeddings
+texts = [
+    "Small language models are efficient",
+    "SLMs use less compute than LLMs",
+    "The weather is nice today"
+]
+
+embeddings = model.encode(texts)
+print(embeddings.shape)  # (3, 384)
+```
+
+### Find Similar Texts
+
+```python
+from sklearn.metrics.pairwise import cosine_similarity
+
+# Compare embeddings
+similarities = cosine_similarity(embeddings)
+print(similarities)
+
+# Output:
+# [[1.0,  0.82, 0.12],   ← Texts 1&2 very similar (0.82)
+#  [0.82, 1.0,  0.08],   ← Text 3 different (0.08, 0.12)
+#  [0.12, 0.08, 1.0 ]]
+```
+
+## Embedding Models (2026)
+
+| Model | Dimensions | Speed | Quality |
+|-------|-----------|-------|---------|
+| all-MiniLM-L6-v2 | 384 | ⚡⚡⚡ | ⭐⭐⭐ |
+| bge-base-en-v1.5 | 768 | ⚡⚡ | ⭐⭐⭐⭐ |
+| bge-large-en-v1.5 | 1024 | ⚡ | ⭐⭐⭐⭐⭐ |
+| nomic-embed-text | 768 | ⚡⚡ | ⭐⭐⭐⭐ |
+
+```
+CHOOSING A MODEL:
+┌─────────────────────────────────────────────────────────────────┐
+│                                                                 │
+│  Speed priority?     → all-MiniLM-L6-v2                        │
+│  Quality priority?   → bge-large-en-v1.5                       │
+│  Balanced?           → bge-base-en-v1.5  ← Start here         │
+│  Long documents?     → nomic-embed-text (8K context)           │
+│  Multilingual?       → bge-m3 (100+ languages)                 │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+## Embeddings for RAG
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│  DOCUMENT EMBEDDING                                             │
+│  ──────────────────                                             │
+│                                                                 │
+│  Documents:                      Vectors:                       │
+│  ┌──────────────────┐           ┌────────────────┐             │
+│  │ "Chapter 1:      │           │                │             │
+│  │  Introduction    │  ─────▶   │ [0.2, 0.4, ...]│             │
+│  │  to SLMs..."     │           │                │             │
+│  └──────────────────┘           └────────────────┘             │
+│                                         │                       │
+│  ┌──────────────────┐           ┌───────┴────────┐             │
+│  │ "Chapter 2:      │           │                │             │
+│  │  Training        │  ─────▶   │ [0.5, 0.1, ...]│──▶ Store   │
+│  │  methods..."     │           │                │   in DB    │
+│  └──────────────────┘           └────────────────┘             │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────┐
+│  QUERY TIME                                                     │
+│  ──────────                                                     │
+│                                                                 │
+│  User: "How do I train an SLM?"                                │
+│              │                                                  │
+│              ▼                                                  │
+│         [0.48, 0.15, ...]  ← Query embedding                   │
+│              │                                                  │
+│              ▼                                                  │
+│  ┌─────────────────────────────────────┐                       │
+│  │  Compare with all document vectors  │                       │
+│  │  Find closest matches               │                       │
+│  └─────────────────────────────────────┘                       │
+│              │                                                  │
+│              ▼                                                  │
+│  "Chapter 2: Training methods..."  ← Most relevant!           │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+## Complete Example
+
+```python
+from sentence_transformers import SentenceTransformer
+import chromadb
+
+# 1. Initialize
+model = SentenceTransformer("BAAI/bge-base-en-v1.5")
+client = chromadb.Client()
+collection = client.create_collection("docs")
+
+# 2. Add documents
+documents = [
+    "SLMs are models with fewer parameters",
+    "Fine-tuning adapts models to specific tasks",
+    "Quantization reduces model size"
+]
+
+embeddings = model.encode(documents)
+
+collection.add(
+    embeddings=embeddings.tolist(),
+    documents=documents,
+    ids=["doc1", "doc2", "doc3"]
+)
+
+# 3. Search
+query = "How do I make a model smaller?"
+query_embedding = model.encode(query)
+
+results = collection.query(
+    query_embeddings=[query_embedding.tolist()],
+    n_results=2
+)
+
+print(results["documents"])
+# [['Quantization reduces model size', 
+#   'SLMs are models with fewer parameters']]
+```
+
+## Key Takeaways
+
+1. **Embeddings capture meaning** - Similar texts → Similar vectors
+2. **Choose model by need** - Speed vs quality trade-off
+3. **Essential for RAG** - Power semantic search
+4. **Normalize embeddings** - For cosine similarity
+
+## Next Steps
+
+- [RAG](/slmhub/docs/learn/concepts/rag/) - Use embeddings for retrieval
+- [Resources](/slmhub/docs/tools/resources/) - Embedding model comparison
+- [Model Directory](/slmhub/docs/models/) - Embedding-capable models

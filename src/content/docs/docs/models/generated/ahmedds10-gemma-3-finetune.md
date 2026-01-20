@@ -4,8 +4,6 @@ description: "Discovery-focused notes and runnable examples for `ahmedds10/gemma
 ---
 
 
-# gemma-3-finetune
-
 Discovery-focused notes and runnable examples for `ahmedds10/gemma-3-finetune`.
 
 ## Quickstart

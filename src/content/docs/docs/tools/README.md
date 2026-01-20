@@ -4,8 +4,6 @@ description: "Small tools and frameworks to help you choose and validate models.
 ---
 
 
-# Tools
-
 This section is intentionally lightweight: templates and checklists that you can copy into your own repo.
 
 

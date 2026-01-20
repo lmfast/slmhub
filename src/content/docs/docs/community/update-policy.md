@@ -4,8 +4,6 @@ description: "How we keep documentation current (and what we automate)."
 ---
 
 
-# Update policy (staying current)
-
 ## What updates automatically
 
 - Hugging Face model metadata and generated pages:

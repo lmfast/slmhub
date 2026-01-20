@@ -4,8 +4,6 @@ description: "Discovery-focused notes and runnable examples for `TheBloke/CodeUp
 ---
 
 
-# CodeUp-Llama-2-13B-Chat-HF-GGUF
-
 Discovery-focused notes and runnable examples for `TheBloke/CodeUp-Llama-2-13B-Chat-HF-GGUF`.
 
 ## Quickstart

@@ -4,8 +4,6 @@ description: "Discovery-focused notes and runnable examples for `jimfhahn/bibfra
 ---
 
 
-# bibframe-olmo-1b-onnx
-
 Discovery-focused notes and runnable examples for `jimfhahn/bibframe-olmo-1b-onnx`.
 
 ## Quickstart

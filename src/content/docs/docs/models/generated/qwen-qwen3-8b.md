@@ -4,8 +4,6 @@ description: "Discovery-focused notes and runnable examples for `Qwen/Qwen3-8B`.
 ---
 
 
-# Qwen3-8B
-
 Discovery-focused notes and runnable examples for `Qwen/Qwen3-8B`.
 
 ## Quickstart

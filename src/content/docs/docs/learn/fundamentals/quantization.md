@@ -4,8 +4,6 @@ description: "How to make models fit and run fast without getting surprised."
 ---
 
 
-# Quantization (practical)
-
 ## What you’re trading
 
 Quantization reduces memory and can improve throughput, but may change behavior:

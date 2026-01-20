@@ -4,8 +4,6 @@ description: "Discovery-focused notes and runnable examples for `Mathieu-Thomas-
 ---
 
 
-# qwen2.5-3b-instruct-text-merged-16bit-20260119_140239
-
 Discovery-focused notes and runnable examples for `Mathieu-Thomas-JOSSET/qwen2.5-3b-instruct-text-merged-16bit-20260119_140239`.
 
 ## Quickstart

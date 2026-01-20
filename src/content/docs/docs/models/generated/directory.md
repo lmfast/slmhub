@@ -4,8 +4,6 @@ description: "Auto-updated model directory from Hugging Face Hub (discovery-focu
 ---
 
 
-# Model Directory
-
 This directory is **auto-updated**. It’s meant for **discovery** and fast decisions, not competitive rankings.
 
 ## Featured

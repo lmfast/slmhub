@@ -4,8 +4,6 @@ description: "Discovery-focused notes and runnable examples for `microsoft/phi-4
 ---
 
 
-# phi-4
-
 Discovery-focused notes and runnable examples for `microsoft/phi-4`.
 
 ## Quickstart

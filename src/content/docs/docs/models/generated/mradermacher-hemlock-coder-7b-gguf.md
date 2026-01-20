@@ -4,8 +4,6 @@ description: "Discovery-focused notes and runnable examples for `mradermacher/He
 ---
 
 
-# Hemlock-Coder-7B-GGUF
-
 Discovery-focused notes and runnable examples for `mradermacher/Hemlock-Coder-7B-GGUF`.
 
 ## Quickstart

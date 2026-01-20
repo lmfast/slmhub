@@ -4,8 +4,6 @@ description: "Discovery-focused notes and runnable examples for `remiai3/text-to
 ---
 
 
-# text-to-code-using-codegen-project_guide
-
 Discovery-focused notes and runnable examples for `remiai3/text-to-code-using-codegen-project_guide`.
 
 ## Quickstart

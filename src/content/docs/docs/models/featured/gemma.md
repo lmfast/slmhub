@@ -4,8 +4,6 @@ description: "Gemma-family models with practical deployment notes."
 ---
 
 
-# Gemma (featured)
-
 ## When Gemma tends to be a good fit
 
 - Production assistants where you value predictable instruction following.

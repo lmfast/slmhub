@@ -4,8 +4,6 @@ description: "Deployment playbooks for SLMs: from laptop to production."
 ---
 
 
-# Deploy
-
 ## Quickstart first
 
 If you want the fastest path:

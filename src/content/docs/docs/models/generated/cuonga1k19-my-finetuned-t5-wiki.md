@@ -4,8 +4,6 @@ description: "Discovery-focused notes and runnable examples for `CuongA1K19/my-f
 ---
 
 
-# my-finetuned-t5-wiki
-
 Discovery-focused notes and runnable examples for `CuongA1K19/my-finetuned-t5-wiki`.
 
 ## Quickstart

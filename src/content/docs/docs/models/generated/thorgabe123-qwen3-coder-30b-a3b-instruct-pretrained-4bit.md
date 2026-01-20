@@ -4,8 +4,6 @@ description: "Discovery-focused notes and runnable examples for `thorGabe123/Qwe
 ---
 
 
-# Qwen3-Coder-30B-A3B-Instruct-pretrained-4bit
-
 Discovery-focused notes and runnable examples for `thorGabe123/Qwen3-Coder-30B-A3B-Instruct-pretrained-4bit`.
 
 ## Quickstart

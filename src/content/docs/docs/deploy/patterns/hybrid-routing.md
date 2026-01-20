@@ -4,8 +4,6 @@ description: "Use an SLM as default and route to a larger model only when needed
 ---
 
 
-# Hybrid routing (SLM + LLM)
-
 ## The objective
 
 Maximize:

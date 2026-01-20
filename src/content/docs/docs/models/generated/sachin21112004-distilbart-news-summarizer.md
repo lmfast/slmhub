@@ -4,8 +4,6 @@ description: "Discovery-focused notes and runnable examples for `Sachin21112004/
 ---
 
 
-# distilbart-news-summarizer
-
 Discovery-focused notes and runnable examples for `Sachin21112004/distilbart-news-summarizer`.
 
 ## Quickstart

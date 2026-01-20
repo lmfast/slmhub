@@ -4,8 +4,6 @@ description: "A developer's mental model for when small models win."
 ---
 
 
-# SLMs vs LLMs
-
 ## The decision in one minute
 
 Choose an SLM first if:

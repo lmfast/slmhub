@@ -4,8 +4,6 @@ description: "Discovery-focused notes and runnable examples for `DocPereira/PEAL
 ---
 
 
-# PEAL_V4_LHP_Zero_Entropy_Controlled
-
 Discovery-focused notes and runnable examples for `DocPereira/PEAL_V4_LHP_Zero_Entropy_Controlled`.
 
 ## Quickstart

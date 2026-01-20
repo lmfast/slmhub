@@ -4,8 +4,6 @@ description: "The fastest local path: install Ollama and run an SLM."
 ---
 
 
-# Run locally with Ollama
-
 ## Install
 
 Follow Ollama’s official install instructions for your OS.

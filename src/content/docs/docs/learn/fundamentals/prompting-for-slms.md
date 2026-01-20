@@ -4,8 +4,6 @@ description: "Prompting patterns that work better for small models."
 ---
 
 
-# Prompting for small models
-
 ## Defaults that usually help
 
 - Be **explicit** about output format.

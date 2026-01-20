@@ -1,0 +1,312 @@
+---
+title: "RAG (Retrieval Augmented Generation)"
+description: "Enhance SLM responses with external knowledge through intelligent retrieval"
+---
+
+<a href="https://colab.research.google.com/github/lmfast/slmhub/blob/main/notebooks/rag.ipynb" target="_blank" rel="noopener noreferrer" class="colab-button">
+  <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab" />
+</a>
+
+# RAG (Retrieval Augmented Generation)
+
+RAG combines SLMs with your data. Instead of relying only on training knowledge, retrieve relevant context first.
+
+## The Problem RAG Solves
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│  WITHOUT RAG                                                    │
+│  ───────────                                                    │
+│                                                                 │
+│  User: "What's our company's refund policy?"                   │
+│                                                                 │
+│  Model: "I don't have information about your company..."       │
+│         ↑                                                       │
+│         Model only knows its training data!                     │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────┐
+│  WITH RAG                                                       │
+│  ────────                                                       │
+│                                                                 │
+│  User: "What's our company's refund policy?"                   │
+│              │                                                  │
+│              ▼                                                  │
+│  ┌──────────────────────────────────┐                          │
+│  │ RETRIEVE from company docs:      │                          │
+│  │ "Policy: Full refunds within     │                          │
+│  │  30 days of purchase..."         │                          │
+│  └──────────────────────────────────┘                          │
+│              │                                                  │
+│              ▼                                                  │
+│  Model: "Based on your policy, full refunds are available      │
+│          within 30 days of purchase..."                        │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+## How RAG Works
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                                                                 │
+│   ┌─────────────────────────────────────────────────────────┐  │
+│   │                    INDEXING (Offline)                    │  │
+│   └─────────────────────────────────────────────────────────┘  │
+│                                                                 │
+│   Documents          Chunks              Embeddings   Vector DB │
+│   ┌────────┐        ┌──────┐           ┌──────┐     ┌───────┐ │
+│   │ Doc 1  │ ──▶    │Chunk1│  ──▶      │[0.2.]│ ──▶ │       │ │
+│   │ Doc 2  │        │Chunk2│           │[0.5.]│     │  DB   │ │
+│   │ Doc 3  │        │Chunk3│           │[0.3.]│     │       │ │
+│   └────────┘        │ ...  │           │ ...  │     └───────┘ │
+│                     └──────┘           └──────┘               │
+│                                                                 │
+│   ┌─────────────────────────────────────────────────────────┐  │
+│   │                    RETRIEVAL (Online)                    │  │
+│   └─────────────────────────────────────────────────────────┘  │
+│                                                                 │
+│   Query              Embedding          Search       Top-K     │
+│   ┌────────┐        ┌──────┐          ┌───────┐    ┌──────┐  │
+│   │"How do │ ──▶    │[0.4.]│  ──▶     │  DB   │──▶ │Chunk2│  │
+│   │ I..."  │        └──────┘          │ Search│    │Chunk5│  │
+│   └────────┘                          └───────┘    └──────┘  │
+│                                                                 │
+│   ┌─────────────────────────────────────────────────────────┐  │
+│   │                    GENERATION                            │  │
+│   └─────────────────────────────────────────────────────────┘  │
+│                                                                 │
+│   Prompt = Query + Retrieved Context  ──▶  SLM  ──▶  Answer   │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+## Basic RAG Implementation
+
+### Step 1: Index Documents
+
+```python
+from sentence_transformers import SentenceTransformer
+import chromadb
+
+# Initialize
+embedder = SentenceTransformer("BAAI/bge-base-en-v1.5")
+client = chromadb.Client()
+collection = client.create_collection("knowledge")
+
+# Your documents
+documents = [
+    "Refunds are available within 30 days.",
+    "Shipping is free for orders over $50.",
+    "Support is available 24/7 via chat."
+]
+
+# Embed and store
+embeddings = embedder.encode(documents)
+collection.add(
+    embeddings=embeddings.tolist(),
+    documents=documents,
+    ids=[f"doc_{i}" for i in range(len(documents))]
+)
+```
+
+### Step 2: Retrieve Relevant Context
+
+```python
+def retrieve(query, k=3):
+    query_embedding = embedder.encode(query)
+    
+    results = collection.query(
+        query_embeddings=[query_embedding.tolist()],
+        n_results=k
+    )
+    
+    return results["documents"][0]
+
+# Test
+context = retrieve("How can I get my money back?")
+print(context)
+# ['Refunds are available within 30 days.']
+```
+
+### Step 3: Generate with Context
+
+```python
+import ollama
+
+def rag_query(question):
+    # Retrieve
+    context = retrieve(question)
+    context_text = "\n".join(context)
+    
+    # Generate
+    prompt = f"""Answer based on this context:
+
+Context:
+{context_text}
+
+Question: {question}
+
+Answer:"""
+    
+    response = ollama.chat(
+        model="phi3.5",
+        messages=[{"role": "user", "content": prompt}]
+    )
+    
+    return response["message"]["content"]
+
+# Use
+answer = rag_query("What's the refund policy?")
+print(answer)
+```
+
+## Chunking Strategies
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│  CHUNK SIZE MATTERS                                             │
+│  ─────────────────                                              │
+│                                                                 │
+│  Too small (100 tokens):                                        │
+│  ├── Missing context                                            │
+│  └── "30 days" without knowing it's about refunds              │
+│                                                                 │
+│  Too large (2000 tokens):                                       │
+│  ├── Diluted relevance                                          │
+│  └── Irrelevant info mixed in                                  │
+│                                                                 │
+│  Sweet spot: 200-500 tokens with ~50 token overlap             │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+```python
+def chunk_text(text, chunk_size=500, overlap=50):
+    words = text.split()
+    chunks = []
+    
+    for i in range(0, len(words), chunk_size - overlap):
+        chunk = " ".join(words[i:i + chunk_size])
+        chunks.append(chunk)
+    
+    return chunks
+```
+
+## Advanced: Hybrid Search
+
+Combine semantic search (embeddings) with keyword search (BM25):
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│  HYBRID SEARCH                                                  │
+│  ─────────────                                                  │
+│                                                                 │
+│  Query: "Python DataFrame tutorial"                             │
+│                                                                 │
+│  Semantic Search:                                               │
+│  ├── "pandas data manipulation guide"  ← Meaning match        │
+│  └── "working with tabular data"                               │
+│                                                                 │
+│  Keyword Search (BM25):                                         │
+│  ├── "Python DataFrame examples"  ← Exact words               │
+│  └── "DataFrame tutorial for beginners"                        │
+│                                                                 │
+│  Combined: Best of both!                                        │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+## Advanced: Reranking
+
+Retrieve more, rerank with a cross-encoder:
+
+```python
+from sentence_transformers import CrossEncoder
+
+reranker = CrossEncoder("cross-encoder/ms-marco-MiniLM-L-6-v2")
+
+def search_with_rerank(query, k=10, final_k=3):
+    # Get more results than needed
+    initial = retrieve(query, k=k)
+    
+    # Rerank with cross-encoder
+    pairs = [[query, doc] for doc in initial]
+    scores = reranker.predict(pairs)
+    
+    # Sort by reranker scores
+    ranked = sorted(zip(initial, scores), 
+                   key=lambda x: x[1], reverse=True)
+    
+    return [doc for doc, _ in ranked[:final_k]]
+```
+
+## Complete RAG Pipeline
+
+```python
+from sentence_transformers import SentenceTransformer, CrossEncoder
+import chromadb
+import ollama
+
+class RAGPipeline:
+    def __init__(self):
+        self.embedder = SentenceTransformer("BAAI/bge-base-en-v1.5")
+        self.reranker = CrossEncoder("cross-encoder/ms-marco-MiniLM-L-6-v2")
+        self.client = chromadb.PersistentClient("./db")
+        self.collection = self.client.get_or_create_collection("docs")
+    
+    def add_documents(self, documents):
+        embeddings = self.embedder.encode(documents)
+        self.collection.add(
+            embeddings=embeddings.tolist(),
+            documents=documents,
+            ids=[f"doc_{i}" for i in range(len(documents))]
+        )
+    
+    def query(self, question, k=3):
+        # Retrieve
+        query_emb = self.embedder.encode(question)
+        results = self.collection.query(
+            query_embeddings=[query_emb.tolist()],
+            n_results=k * 2
+        )
+        docs = results["documents"][0]
+        
+        # Rerank
+        pairs = [[question, doc] for doc in docs]
+        scores = self.reranker.predict(pairs)
+        ranked = sorted(zip(docs, scores), key=lambda x: x[1], reverse=True)
+        top_docs = [doc for doc, _ in ranked[:k]]
+        
+        # Generate
+        context = "\n\n".join(top_docs)
+        response = ollama.chat(
+            model="phi3.5",
+            messages=[{
+                "role": "user",
+                "content": f"Context:\n{context}\n\nQuestion: {question}"
+            }]
+        )
+        
+        return response["message"]["content"]
+
+# Usage
+rag = RAGPipeline()
+rag.add_documents(my_documents)
+answer = rag.query("What is the refund policy?")
+```
+
+## Key Takeaways
+
+1. **RAG = Retrieval + Generation** - Give the model context
+2. **Chunk wisely** - 200-500 tokens with overlap
+3. **Hybrid search** - Combine semantic + keyword
+4. **Rerank for quality** - Cross-encoders improve precision
+5. **Test retrieval first** - Bad retrieval = bad answers
+
+## Next Steps
+
+- [Embeddings](/slmhub/docs/learn/fundamentals/embeddings/) - Deeper understanding
+- [Deployment](/slmhub/docs/deploy/patterns/) - Production RAG patterns
+- [Resources](/slmhub/docs/tools/resources/) - Vector database options

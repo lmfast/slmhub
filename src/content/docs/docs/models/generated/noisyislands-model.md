@@ -4,8 +4,6 @@ description: "Discovery-focused notes and runnable examples for `noisyislands/mo
 ---
 
 
-# model
-
 Discovery-focused notes and runnable examples for `noisyislands/model`.
 
 ## Quickstart

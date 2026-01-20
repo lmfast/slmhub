@@ -4,8 +4,6 @@ description: "Serve an OpenAI-compatible API locally so your apps can swap provi
 ---
 
 
-# Deploy an OpenAI-compatible endpoint
-
 ## Why this matters
 
 Most tooling expects an OpenAI-style API surface. If you serve locally with that interface, you can:

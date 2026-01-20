@@ -4,8 +4,6 @@ description: "Discovery-focused notes and runnable examples for `Synaptom/leo3ni
 ---
 
 
-# leo3nit-0.6B
-
 Discovery-focused notes and runnable examples for `Synaptom/leo3nit-0.6B`.
 
 ## Quickstart

@@ -4,8 +4,6 @@ description: "Discovery-focused notes and runnable examples for `sagunrai/mbart-
 ---
 
 
-# mbart-large-50-nepali-finetuned
-
 Discovery-focused notes and runnable examples for `sagunrai/mbart-large-50-nepali-finetuned`.
 
 ## Quickstart

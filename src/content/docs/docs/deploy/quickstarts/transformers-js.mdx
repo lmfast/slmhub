@@ -1,0 +1,203 @@
+---
+title: Transformers.js
+description: Run SLMs directly in the browser with WebGPU acceleration
+---
+
+import ColabButton from '../../../../../components/ColabButton.astro';
+
+<ColabButton path="docs/deploy/quickstarts/transformers_js.ipynb" />
+
+# Transformers.js
+
+Run SLMs in the browser with no server required. Uses WebGPU for hardware acceleration.
+
+## Quick Start
+
+### HTML Setup
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Browser SLM</title>
+</head>
+<body>
+  <textarea id="input" placeholder="Enter your prompt..."></textarea>
+  <button id="generate">Generate</button>
+  <div id="output"></div>
+  
+  <script type="module">
+    import { pipeline } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers';
+    
+    const generator = await pipeline(
+      'text-generation',
+      'Xenova/SmolLM2-360M-Instruct'
+    );
+    
+    document.getElementById('generate').onclick = async () => {
+      const input = document.getElementById('input').value;
+      const result = await generator(input, {max_new_tokens: 100});
+      document.getElementById('output').textContent = result[0].generated_text;
+    };
+  </script>
+</body>
+</html>
+```
+
+### NPM Installation
+
+```bash
+npm install @xenova/transformers
+```
+
+```javascript
+import { pipeline } from '@xenova/transformers';
+
+const generator = await pipeline('text-generation', 'Xenova/SmolLM2-360M-Instruct');
+const result = await generator('Hello, how are you?', {max_new_tokens: 50});
+console.log(result[0].generated_text);
+```
+
+## Available Models
+
+### Text Generation
+
+| Model | Size | Performance | Use Case |
+|-------|------|-------------|----------|
+| SmolLM2-135M | 135M | ⚡⚡⚡⚡⚡ | Fast, simple tasks |
+| SmolLM2-360M | 360M | ⚡⚡⚡⚡ | Balanced |
+| SmolLM2-1.7B | 1.7B | ⚡⚡ | Best quality |
+| Phi-3-mini-4k | 3.8B | ⚡ | Complex tasks |
+
+### Other Tasks
+
+```javascript
+// Embeddings
+const embedder = await pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2');
+const embedding = await embedder('Text to embed');
+
+// Summarization
+const summarizer = await pipeline('summarization', 'Xenova/distilbart-cnn-12-6');
+const summary = await summarizer('Long text...');
+
+// Translation
+const translator = await pipeline('translation', 'Xenova/opus-mt-en-de');
+const german = await translator('Hello world');
+```
+
+## WebGPU Acceleration
+
+### Check Support
+
+```javascript
+if (!navigator.gpu) {
+  console.log('WebGPU not supported, falling back to WASM');
+}
+```
+
+### Enable WebGPU
+
+```javascript
+import { pipeline, env } from '@xenova/transformers';
+
+// Force WebGPU
+env.backends.onnx.wasm.numThreads = 1;
+
+const generator = await pipeline('text-generation', 'model', {
+  device: 'webgpu'  // Use WebGPU if available
+});
+```
+
+## Streaming Output
+
+```javascript
+const generator = await pipeline('text-generation', 'Xenova/SmolLM2-360M-Instruct');
+
+// Streaming callback
+const result = await generator(prompt, {
+  max_new_tokens: 100,
+  callback_function: (output) => {
+    // Called for each token
+    console.log(output[0].generated_text);
+  }
+});
+```
+
+## React Integration
+
+```jsx
+import { useState, useEffect } from 'react';
+import { pipeline } from '@xenova/transformers';
+
+function TextGenerator() {
+  const [generator, setGenerator] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [input, setInput] = useState('');
+  const [output, setOutput] = useState('');
+
+  useEffect(() => {
+    pipeline('text-generation', 'Xenova/SmolLM2-360M-Instruct')
+      .then(gen => {
+        setGenerator(gen);
+        setLoading(false);
+      });
+  }, []);
+
+  const generate = async () => {
+    if (!generator) return;
+    const result = await generator(input, {max_new_tokens: 100});
+    setOutput(result[0].generated_text);
+  };
+
+  if (loading) return <div>Loading model...</div>;
+
+  return (
+    <div>
+      <textarea value={input} onChange={e => setInput(e.target.value)} />
+      <button onClick={generate}>Generate</button>
+      <div>{output}</div>
+    </div>
+  );
+}
+```
+
+## Best Practices
+
+### 1. Cache Models
+
+```javascript
+import { env } from '@xenova/transformers';
+
+// Use browser cache
+env.cacheDir = './.cache';
+```
+
+### 2. Show Progress
+
+```javascript
+const generator = await pipeline('text-generation', 'model', {
+  progress_callback: (progress) => {
+    console.log(`Loading: ${progress.progress}%`);
+  }
+});
+```
+
+### 3. Handle Memory
+
+```javascript
+// Dispose when done
+await generator.dispose();
+```
+
+## Limitations
+
+- **Model size**: Keep under ~2GB for most browsers
+- **Memory**: Browser tabs have limited memory
+- **First load**: Models download on first use
+- **Mobile**: Limited support, prefer smaller models
+
+## Next Steps
+
+- Learn [Embeddings](/slmhub/docs/learn/fundamentals/embeddings/) for browser-based RAG
+- Explore [Ollama](/slmhub/docs/deploy/quickstarts/ollama/) for local development
+- Check [Model Directory](/slmhub/docs/models/) for compatible models

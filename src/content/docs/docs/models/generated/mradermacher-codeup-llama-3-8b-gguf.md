@@ -4,8 +4,6 @@ description: "Discovery-focused notes and runnable examples for `mradermacher/Co
 ---
 
 
-# CodeUp-Llama-3-8B-GGUF
-
 Discovery-focused notes and runnable examples for `mradermacher/CodeUp-Llama-3-8B-GGUF`.
 
 ## Quickstart

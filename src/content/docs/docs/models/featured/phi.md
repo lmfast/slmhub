@@ -4,8 +4,6 @@ description: "How to think about Phi-family models and ship them in real apps."
 ---
 
 
-# Phi (featured)
-
 ## When Phi tends to be a good fit
 
 - General assistant-style tasks where you want good quality at lower cost.

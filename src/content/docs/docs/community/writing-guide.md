@@ -4,8 +4,6 @@ description: "How to write pages that developers actually use."
 ---
 
 
-# Writing guide
-
 ## Page structure (default)
 
 1. **Goal** (one paragraph)

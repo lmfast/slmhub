@@ -4,8 +4,6 @@ description: "A \"no setup\" first run using browser runtimes and minimal toolin
 ---
 
 
-# Hello SLM (no setup)
-
 ## Goal
 
 Get a first successful generation with minimal friction. If you want local inference, jump to `learn/tutorials/run-locally-ollama.md`.

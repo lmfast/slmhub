@@ -4,8 +4,6 @@ description: "Discovery-focused notes and runnable examples for `TheBloke/CodeUp
 ---
 
 
-# CodeUp-Alpha-13B-HF-GPTQ
-
 Discovery-focused notes and runnable examples for `TheBloke/CodeUp-Alpha-13B-HF-GPTQ`.
 
 ## Quickstart

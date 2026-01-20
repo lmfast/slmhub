@@ -4,8 +4,6 @@ description: "Discovery-focused notes and runnable examples for `oza75/bm-byt5-b
 ---
 
 
-# bm-byt5-base-gec-3
-
 Discovery-focused notes and runnable examples for `oza75/bm-byt5-base-gec-3`.
 
 ## Quickstart

@@ -1,0 +1,240 @@
+---
+title: "AI Agents"
+description: "Build autonomous agents using SLMs, ReAct loops, and memory"
+---
+
+import ColabButton from '../../../../../components/ColabButton.astro';
+
+<ColabButton path="docs/learn/concepts/agents.ipynb" />
+
+# AI Agents
+
+**What is an AI Agent?** An agent is an SLM that can think, take actions, see the results, and think again. Unlike a simple chatbot that just responds, an agent can actually do things - search the web, run code, call APIs, and solve complex problems step by step.
+
+**Simple analogy:** A chatbot is like a helpful person who answers questions. An agent is like a helpful person who can also use tools, check information, and work through problems until they're solved.
+
+## Agent vs Chatbot: The Key Difference
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│  CHATBOT                                                        │
+│  User: "Calculate 23 * 45"                                      │
+│  Bot: "It is 1035." (Direct answer, might be hallucinated)      │
+└─────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────┐
+│  AGENT                                                          │
+│  User: "Calculate 23 * 45"                                      │
+│  Bot Thought: "I need to do math. I should use the calc tool."  │
+│  Bot Action: Calculator(23, 45)                                 │
+│  Observation: 1035                                              │
+│  Bot Thought: "I have the answer."                              │
+│  Bot Answer: "The result is 1035."                              │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+## The ReAct Loop: How Agents Think
+
+**ReAct** = **Re**asoning + **Act**ing. This is the core pattern that makes agents work:
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│  THE REACT LOOP                                                 │
+│  ───────────────                                                │
+│                                                                 │
+│  ┌──────────────────────────────────────────────────────────┐  │
+│  │  STEP 1: THOUGHT                                          │  │
+│  │  ─────────────                                            │  │
+│  │  Agent analyzes: "What do I need to do?                  │  │
+│  │                What information do I have?                │  │
+│  │                What's the next step?"                     │  │
+│  └──────────────────────────────────────────────────────────┘  │
+│           │                                                     │
+│           ▼                                                     │
+│  ┌──────────────────────────────────────────────────────────┐  │
+│  │  STEP 2: ACTION                                           │  │
+│  │  ────────────                                             │  │
+│  │  Agent decides: "I should use the calculator tool"        │  │
+│  │  Agent calls: calculator("23 * 45")                       │  │
+│  └──────────────────────────────────────────────────────────┘  │
+│           │                                                     │
+│           ▼                                                     │
+│  ┌──────────────────────────────────────────────────────────┐  │
+│  │  STEP 3: OBSERVATION                                      │  │
+│  │  ────────────────                                         │  │
+│  │  Tool returns: "1035"                                     │  │
+│  │  Agent sees: "The calculation result is 1035"             │  │
+│  └──────────────────────────────────────────────────────────┘  │
+│           │                                                     │
+│           ▼                                                     │
+│  ┌──────────────────────────────────────────────────────────┐  │
+│  │  STEP 4: REPEAT?                                          │  │
+│  │  ─────────────                                            │  │
+│  │  Agent thinks: "Do I have the answer?                    │  │
+│  │                Do I need to do more steps?"               │  │
+│  │                                                           │  │
+│  │  If not done → Go back to STEP 1                         │  │
+│  │  If done → Provide final answer                          │  │
+│  └──────────────────────────────────────────────────────────┘  │
+│                                                                 │
+│  This loop continues until the problem is solved!              │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+**Real Example:**
+```
+User: "What's 23 * 45, and then add 100 to that result?"
+
+Agent Thought 1: "I need to calculate 23 * 45 first"
+Agent Action 1: calculator("23 * 45")
+Agent Observation 1: "1035"
+
+Agent Thought 2: "Now I need to add 100 to 1035"
+Agent Action 2: calculator("1035 + 100")
+Agent Observation 2: "1135"
+
+Agent Thought 3: "I have the complete answer now"
+Agent Final Answer: "23 * 45 = 1035, and adding 100 gives 1135."
+```
+
+## Building a Simple Agent
+
+We can build a ReAct agent from scratch with Python and Ollama.
+
+### 1. The Prompt
+
+The prompt must teach the model how to think Steps.
+
+```python
+REACT_PROMPT = """
+Answer the following questions as best you can. You have access to the following tools:
+
+{tools}
+
+Use the following format:
+
+Question: the input question you must answer
+Thought: you should always think about what to do
+Action: the action to take, should be one of [{tool_names}]
+Action Input: the input to the action
+Observation: the result of the action
+... (this Thought/Action/Action Input/Observation can repeat N times)
+Thought: I now know the final answer
+Final Answer: the final answer to the original input question
+
+Begin!
+
+Question: {question}
+"""
+```
+
+### 2. The Agent Loop
+
+```python
+import ollama
+import re
+
+def search(query):
+    return f"Search result for {query}: 'Paris is the capital of France'"
+
+def calculator(expression):
+    return str(eval(expression))
+
+tools = {
+    "search": search,
+    "calculator": calculator
+}
+
+def run_agent(question):
+    # 1. Initialize conversation
+    prompt = REACT_PROMPT.format(
+        tools="search, calculator",
+        tool_names="search, calculator",
+        question=question
+    )
+    history = prompt
+    
+    print(f"Question: {question}")
+
+    # 2. ReAct Loop
+    for i in range(5): # Max 5 steps
+        # Get model response
+        response = ollama.generate(model="phi3.5", prompt=history)
+        output = response['response']
+        print(f"\nModel Output:\n{output}")
+        
+        # Parse for Action
+        if "Final Answer:" in output:
+            return output.split("Final Answer:")[1].strip()
+        
+        action_match = re.search(r"Action: (\w+)", output)
+        input_match = re.search(r"Action Input: (.*)", output)
+        
+        if action_match and input_match:
+            tool = action_match.group(1)
+            arg = input_match.group(1)
+            
+            # Execute Tool
+            if tool in tools:
+                result = tools[tool](arg)
+                observation = f"\nObservation: {result}\n"
+                print(f"--- Executing {tool}({arg}) -> {result}")
+                
+                # Append to history
+                history += output + observation
+            else:
+                history += output + f"\nObservation: Tool {tool} not found.\n"
+        else:
+            # Model didn't output action correctly, add to history and continue
+            history += output
+
+    return "Agent timed out"
+
+# Run it
+run_agent("What is 15 * 4?")
+```
+
+## Agent Frameworks
+
+Don't build from scratch unless learning. Use these libraries:
+
+| Library | Best For | Complexity |
+|---------|----------|------------|
+| **LangGraph** | Production, control flow | High |
+| **CrewAI** | Multi-agent teams | Medium |
+| **LlamaIndex** | Data-centric agents | Medium |
+| **Smolagents** | Simple, code-based agents | Low |
+
+### Example: Smolagents (HuggingFace)
+
+A new simple library for SLMs:
+
+```python
+from smolagents import CodeAgent, HfApiModel
+
+# Use a model
+model = HfApiModel(model_id="Qwen/Qwen2.5-Coder-32B-Instruct")
+
+# Create agent
+agent = CodeAgent(tools=[], model=model)
+
+# Run
+agent.run("What is the n-th fibonacci number where n is 10?")
+```
+
+## Key Challenges with SLMs
+
+Small models struggle with complex agents compared to GPT-4.
+- **Following instructions**: They might forget the "Action:" format.
+- **Loops**: They might get stuck repeating the same thought.
+- **Context limit**: History grows fast.
+
+**Solutions for 2026**:
+1.  **Use capable SLMs**: Phi-4, Qwen2.5, Mistral v0.3 are best.
+2.  **Structured outputs**: Force the model to output JSON (like in Function Calling) instead of free text.
+3.  **Keep it simple**: One job per agent.
+
+## Next Steps
+
+- [Function Calling](/slmhub/docs/learn/concepts/function-calling/) - The primitive for agents
+- [Resources](/slmhub/docs/tools/resources/) - Find agent libraries

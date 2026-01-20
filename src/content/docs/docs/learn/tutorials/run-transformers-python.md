@@ -4,8 +4,6 @@ description: "Run an SLM via Hugging Face Transformers in Python."
 ---
 
 
-# Run with Transformers (Python)
-
 ## Install
 
 ```bash

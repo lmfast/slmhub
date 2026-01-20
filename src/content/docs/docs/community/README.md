@@ -4,8 +4,6 @@ description: "How the docs stay healthy: contributions, style, updates, and gove
 ---
 
 
-# Community
-
 Start here if you want to contribute:
 
 - `community/contributing.md`

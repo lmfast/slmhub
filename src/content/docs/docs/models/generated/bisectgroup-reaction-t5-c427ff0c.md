@@ -4,8 +4,6 @@ description: "Discovery-focused notes and runnable examples for `bisectgroup/Rea
 ---
 
 
-# Reaction_T5_c427ff0c
-
 Discovery-focused notes and runnable examples for `bisectgroup/Reaction_T5_c427ff0c`.
 
 ## Quickstart

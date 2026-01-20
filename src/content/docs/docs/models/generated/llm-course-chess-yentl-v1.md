@@ -4,8 +4,6 @@ description: "Discovery-focused notes and runnable examples for `LLM-course/ches
 ---
 
 
-# chess-yentl-v1
-
 Discovery-focused notes and runnable examples for `LLM-course/chess-yentl-v1`.
 
 ## Quickstart

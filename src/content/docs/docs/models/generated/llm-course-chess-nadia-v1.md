@@ -4,8 +4,6 @@ description: "Discovery-focused notes and runnable examples for `LLM-course/ches
 ---
 
 
-# chess-nadia-v1
-
 Discovery-focused notes and runnable examples for `LLM-course/chess-nadia-v1`.
 
 ## Quickstart

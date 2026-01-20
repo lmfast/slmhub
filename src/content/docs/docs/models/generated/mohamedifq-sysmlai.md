@@ -4,8 +4,6 @@ description: "Discovery-focused notes and runnable examples for `MohamedIFQ/sysm
 ---
 
 
-# sysmlAI
-
 Discovery-focused notes and runnable examples for `MohamedIFQ/sysmlAI`.
 
 ## Quickstart

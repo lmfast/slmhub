@@ -4,8 +4,6 @@ description: "Discovery-focused notes and runnable examples for `google/gemma-2-
 ---
 
 
-# gemma-2-2b-it
-
 Discovery-focused notes and runnable examples for `google/gemma-2-2b-it`.
 
 ## Quickstart

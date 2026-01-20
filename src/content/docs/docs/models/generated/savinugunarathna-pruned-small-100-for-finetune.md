@@ -4,8 +4,6 @@ description: "Discovery-focused notes and runnable examples for `savinugunarathn
 ---
 
 
-# pruned-Small-100-for-fineTune
-
 Discovery-focused notes and runnable examples for `savinugunarathna/pruned-Small-100-for-fineTune`.
 
 ## Quickstart

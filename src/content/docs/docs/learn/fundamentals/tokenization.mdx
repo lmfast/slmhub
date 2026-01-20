@@ -1,0 +1,209 @@
+---
+title: "Tokenization"
+description: "How language models convert text into numbers - the foundation of all SLM processing"
+---
+
+<a href="https://colab.research.google.com/github/lmfast/slmhub/blob/main/notebooks/tokenization.ipynb" target="_blank" rel="noopener noreferrer" class="colab-button">
+  <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab" />
+</a>
+
+# Tokenization
+
+Tokenization is how language models understand text. Before any model can process your input, text must be converted into numbers called tokens.
+
+## What is Tokenization?
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│  INPUT TEXT                                                     │
+│  "Hello, how are you?"                                          │
+└───────────────────────────────┬─────────────────────────────────┘
+                                │
+                                ▼
+┌─────────────────────────────────────────────────────────────────┐
+│  TOKENIZER                                                      │
+│  ┌────────┐ ┌───┐ ┌─────┐ ┌─────┐ ┌─────┐ ┌───┐                │
+│  │ Hello  │ │ , │ │ how │ │ are │ │ you │ │ ? │                │
+│  └────────┘ └───┘ └─────┘ └─────┘ └─────┘ └───┘                │
+└───────────────────────────────┬─────────────────────────────────┘
+                                │
+                                ▼
+┌─────────────────────────────────────────────────────────────────┐
+│  TOKEN IDs                                                      │
+│  [15496, 11, 703, 527, 499, 30]                                 │
+│                                                                 │
+│  These numbers are what the model actually sees!                │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+**Why this matters:**
+- Models process numbers, not words
+- Fewer tokens = faster inference = lower cost
+- Token vocabulary affects model capabilities and languages
+
+## Subword Tokenization
+
+Modern models don't split by words - they use **subword tokenization**:
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│  WORD TOKENIZATION (Old)         SUBWORD TOKENIZATION (Modern) │
+│  ─────────────────────────       ───────────────────────────── │
+│                                                                 │
+│  "unhappiness"                   "unhappiness"                  │
+│       ↓                               ↓                         │
+│  ["unhappiness"]  ← UNKNOWN!     ["un", "happiness"]            │
+│                                                                 │
+│  "ChatGPT"                       "ChatGPT"                      │
+│       ↓                               ↓                         │
+│  ["ChatGPT"]  ← UNKNOWN!         ["Chat", "GPT"]                │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+Benefits:
+- Handle words never seen during training
+- Understand prefixes (un-, re-, pre-)
+- Keep vocabulary size manageable (32K-256K tokens)
+
+## Tokenization Algorithms
+
+### 1. Byte-Pair Encoding (BPE)
+
+**Used by:** GPT models, LLaMA, Mistral, Phi
+
+```
+HOW BPE BUILDS VOCABULARY:
+
+Training Text: "low lower lowest"
+
+Step 1: Start with characters
+        ['l', 'o', 'w', ' ', 'l', 'o', 'w', 'e', 'r', ...]
+
+Step 2: Find most frequent pair → ('l', 'o') = 3 times
+        Merge → 'lo'
+        ['lo', 'w', ' ', 'lo', 'w', 'e', 'r', ...]
+
+Step 3: Next frequent pair → ('lo', 'w') = 3 times
+        Merge → 'low'
+        ['low', ' ', 'low', 'e', 'r', ...]
+
+Step 4: Continue until vocabulary size reached...
+        Final: ['low', 'er', 'est', ...]
+```
+
+### 2. WordPiece
+
+**Used by:** BERT, DistilBERT
+
+```python
+# WordPiece marks continuation with ##
+"tokenization" → ["token", "##ization"]
+# The ## means "this continues the previous token"
+```
+
+### 3. SentencePiece (Unigram)
+
+**Used by:** T5, Qwen, Gemma
+
+```python
+# SentencePiece treats spaces as tokens with ▁
+"Hello world" → ["▁Hello", "▁world"]
+```
+
+**Advantage:** Works with any language/script
+
+## Working with Tokenizers
+
+### Using HuggingFace
+
+```python
+from transformers import AutoTokenizer
+
+# Load any model's tokenizer
+tokenizer = AutoTokenizer.from_pretrained("microsoft/Phi-4")
+
+# Tokenize
+text = "Small language models are powerful!"
+tokens = tokenizer.tokenize(text)
+print(tokens)  # ['Small', ' language', ' models', '!']
+
+# Get token IDs
+ids = tokenizer.encode(text)
+print(ids)  # [16532, 3303, 4211, 527, 8147, 0]
+
+# Decode back
+decoded = tokenizer.decode(ids)
+print(decoded)  # "Small language models are powerful!"
+```
+
+### Counting Tokens
+
+```python
+# Essential for API limits and context windows
+def count_tokens(text, tokenizer):
+    return len(tokenizer.encode(text))
+
+text = "Your input text..."
+count = count_tokens(text, tokenizer)
+print(f"Token count: {count}")
+```
+
+### Batch Processing
+
+```python
+texts = ["First sentence.", "Second sentence.", "Third."]
+
+batch = tokenizer(
+    texts,
+    padding=True,       # Pad shorter sequences
+    truncation=True,    # Truncate long sequences
+    return_tensors="pt" # PyTorch tensors
+)
+
+print(batch['input_ids'].shape)  # [3, max_length]
+```
+
+## Vocabulary Size Trade-offs
+
+| Model | Vocabulary | Notes |
+|-------|-----------|-------|
+| GPT-2 | 50,257 | English-focused |
+| LLaMA 2 | 32,000 | Balanced |
+| Qwen 3 | 151,665 | Large, multilingual |
+| Gemma 3 | 256,128 | 140+ languages |
+
+```
+LARGER VOCABULARY          SMALLER VOCABULARY
+──────────────────         ──────────────────
+✅ Fewer tokens/text       ✅ Less memory
+✅ Better multilingual     ✅ Simpler model
+✅ Faster inference        ❌ More tokens/text
+❌ More memory             ❌ Slower rare words
+```
+
+## Special Tokens
+
+Models use special tokens for structure:
+
+```python
+tokenizer.bos_token  # Beginning: <s>
+tokenizer.eos_token  # End: </s>
+tokenizer.pad_token  # Padding: <pad>
+
+# Chat templates
+messages = [{"role": "user", "content": "Hello!"}]
+formatted = tokenizer.apply_chat_template(messages)
+```
+
+## Key Takeaways
+
+1. **Tokens ≠ Words** - Subword units
+2. **Vocabulary matters** - Affects speed and languages
+3. **Match tokenizer to model** - Always use right tokenizer
+4. **Count tokens** - Important for context limits
+
+## Next Steps
+
+- [Model Architecture](/slmhub/docs/learn/fundamentals/architecture/) - How tokens are processed
+- [Embeddings](/slmhub/docs/learn/fundamentals/embeddings/) - How tokens become meaning

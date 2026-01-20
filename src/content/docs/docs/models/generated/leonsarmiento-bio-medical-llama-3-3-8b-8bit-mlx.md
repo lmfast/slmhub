@@ -4,8 +4,6 @@ description: "Discovery-focused notes and runnable examples for `leonsarmiento/B
 ---
 
 
-# Bio-Medical-Llama-3-3-8B-8bit-mlx
-
 Discovery-focused notes and runnable examples for `leonsarmiento/Bio-Medical-Llama-3-3-8B-8bit-mlx`.
 
 ## Quickstart

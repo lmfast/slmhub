@@ -4,8 +4,6 @@ description: "Discovery-focused notes and runnable examples for `juyongjiang/Cod
 ---
 
 
-# CodeUp-Llama-3-8B
-
 Discovery-focused notes and runnable examples for `juyongjiang/CodeUp-Llama-3-8B`.
 
 ## Quickstart

@@ -4,8 +4,6 @@ description: "Discovery-focused notes and runnable examples for `Sanjayyy06/zero
 ---
 
 
-# zero-nl2cmds-v1
-
 Discovery-focused notes and runnable examples for `Sanjayyy06/zero-nl2cmds-v1`.
 
 ## Quickstart

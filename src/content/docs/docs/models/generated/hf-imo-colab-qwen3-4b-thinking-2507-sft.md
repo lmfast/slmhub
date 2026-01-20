@@ -4,8 +4,6 @@ description: "Discovery-focused notes and runnable examples for `hf-imo-colab/Qw
 ---
 
 
-# Qwen3-4B-Thinking-2507-SFT
-
 Discovery-focused notes and runnable examples for `hf-imo-colab/Qwen3-4B-Thinking-2507-SFT`.
 
 ## Quickstart

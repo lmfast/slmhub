@@ -4,8 +4,6 @@ description: "SmolLM models are great for edge and browser-adjacent demos; prior
 ---
 
 
-# SmolLM (featured)
-
 ## When SmolLM tends to be a good fit
 
 - Edge/CPU-constrained environments.

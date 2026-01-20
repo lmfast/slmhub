@@ -4,8 +4,6 @@ description: "Community standards for a healthy, developer-first space."
 ---
 
 
-# Code of Conduct
-
 We are committed to a harassment-free experience for everyone.
 
 ## Be respectful

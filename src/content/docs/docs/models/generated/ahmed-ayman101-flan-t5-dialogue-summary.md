@@ -4,8 +4,6 @@ description: "Discovery-focused notes and runnable examples for `ahmed-ayman101/
 ---
 
 
-# flan-t5-dialogue-summary
-
 Discovery-focused notes and runnable examples for `ahmed-ayman101/flan-t5-dialogue-summary`.
 
 ## Quickstart

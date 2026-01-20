@@ -4,8 +4,6 @@ description: "Qwen models are a common default for multilingual + long-context w
 ---
 
 
-# Qwen (featured)
-
 ## When Qwen tends to be a good fit
 
 - Multilingual applications (verify target languages).

@@ -4,8 +4,6 @@ description: "Retrieval + SLM is the default production architecture for many te
 ---
 
 
-# RAG-enhanced SLM
-
 ## What this buys you
 
 - Freshness (docs can change without re-training).

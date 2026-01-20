@@ -4,8 +4,6 @@ description: "Compose multiple small specialist models rather than one monolith.
 ---
 
 
-# Multi-expert system
-
 ## The idea
 
 Use a small orchestrator (or rules) to route to specialists:

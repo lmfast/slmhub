@@ -4,8 +4,6 @@ description: "Discovery-focused notes and runnable examples for `MarZaf/fine_tun
 ---
 
 
-# fine_tuned_student_kd_rag_
-
 Discovery-focused notes and runnable examples for `MarZaf/fine_tuned_student_kd_rag_`.
 
 ## Quickstart

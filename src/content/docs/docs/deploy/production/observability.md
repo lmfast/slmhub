@@ -4,8 +4,6 @@ description: "What to measure so you can debug cost, latency, and quality."
 ---
 
 
-# Observability
-
 ## Metrics to track
 
 - Latency (P50/P95/P99)

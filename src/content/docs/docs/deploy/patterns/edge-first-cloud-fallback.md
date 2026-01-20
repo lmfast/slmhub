@@ -4,8 +4,6 @@ description: "Run locally/edge first; fallback to cloud only when needed."
 ---
 
 
-# Edge-first, cloud fallback
-
 ## Why it works
 
 - Most requests are “easy enough” for an SLM.

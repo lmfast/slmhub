@@ -4,8 +4,6 @@ description: "Discovery-focused notes and runnable examples for `101rakibulhasan
 ---
 
 
-# extBanglaT5
-
 Discovery-focused notes and runnable examples for `101rakibulhasan/extBanglaT5`.
 
 ## Quickstart

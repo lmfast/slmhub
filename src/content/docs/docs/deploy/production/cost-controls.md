@@ -4,8 +4,6 @@ description: "How to keep unit economics predictable."
 ---
 
 
-# Cost controls
-
 ## The big cost drivers
 
 - tokens (input + output),

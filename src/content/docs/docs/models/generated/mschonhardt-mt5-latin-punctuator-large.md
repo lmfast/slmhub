@@ -4,8 +4,6 @@ description: "Discovery-focused notes and runnable examples for `mschonhardt/mt5
 ---
 
 
-# mt5-latin-punctuator-large
-
 Discovery-focused notes and runnable examples for `mschonhardt/mt5-latin-punctuator-large`.
 
 ## Quickstart

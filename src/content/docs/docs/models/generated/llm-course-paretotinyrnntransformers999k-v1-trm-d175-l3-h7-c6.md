@@ -4,8 +4,6 @@ description: "Discovery-focused notes and runnable examples for `LLM-course/Pare
 ---
 
 
-# ParetoTinyRNNTransformers999k_v1_TRM_d175_L3_H7_C6
-
 Discovery-focused notes and runnable examples for `LLM-course/ParetoTinyRNNTransformers999k_v1_TRM_d175_L3_H7_C6`.
 
 ## Quickstart

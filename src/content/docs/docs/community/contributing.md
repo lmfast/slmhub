@@ -4,8 +4,6 @@ description: "Contribute docs like a developer: clear scope, reproducible claims
 ---
 
 
-# Contributing
-
 ## Ways to contribute
 
 - Fix typos, broken links, unclear steps.

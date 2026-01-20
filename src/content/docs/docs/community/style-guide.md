@@ -4,8 +4,6 @@ description: "Consistency rules for readability."
 ---
 
 
-# Style guide
-
 ## Headings
 
 - Use descriptive H2/H3s.

@@ -4,8 +4,6 @@ description: "Discovery-focused notes and runnable examples for `JohnRoger/CodeU
 ---
 
 
-# CodeUp-Llama-3-8B-Q8_0-GGUF
-
 Discovery-focused notes and runnable examples for `JohnRoger/CodeUp-Llama-3-8B-Q8_0-GGUF`.
 
 ## Quickstart

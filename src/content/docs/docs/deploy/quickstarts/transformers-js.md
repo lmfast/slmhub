@@ -4,8 +4,6 @@ description: "In-browser experiments with WebGPU (when supported)."
 ---
 
 
-# Transformers.js (WebGPU)
-
 ## Why use it
 
 - Great for demos and “try it now” experiences.

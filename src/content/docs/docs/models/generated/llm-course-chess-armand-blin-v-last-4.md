@@ -4,8 +4,6 @@ description: "Discovery-focused notes and runnable examples for `LLM-course/ches
 ---
 
 
-# chess-armand-blin-v-last-4
-
 Discovery-focused notes and runnable examples for `LLM-course/chess-armand-blin-v-last-4`.
 
 ## Quickstart

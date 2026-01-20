@@ -4,8 +4,6 @@ description: "The simplest local runtime for SLMs."
 ---
 
 
-# Ollama
-
 ## Why use it
 
 - Lowest friction local dev loop.

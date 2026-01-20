@@ -4,8 +4,6 @@ description: "Learn small language models like a developer: practical, runnable,
 ---
 
 
-# Learn
-
 ## How to use this section
 
 - If you’re new: start with `learn/fundamentals/slm-vs-llm.md`.

@@ -4,8 +4,6 @@ description: "Discovery-focused notes and runnable examples for `Kshitijk20/flan
 ---
 
 
-# flan-t5-base-samsum
-
 Discovery-focused notes and runnable examples for `Kshitijk20/flan-t5-base-samsum`.
 
 ## Quickstart

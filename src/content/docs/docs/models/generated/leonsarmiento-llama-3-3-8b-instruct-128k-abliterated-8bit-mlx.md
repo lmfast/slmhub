@@ -4,8 +4,6 @@ description: "Discovery-focused notes and runnable examples for `leonsarmiento/L
 ---
 
 
-# Llama-3.3-8B-Instruct-128K_Abliterated-8bit-mlx
-
 Discovery-focused notes and runnable examples for `leonsarmiento/Llama-3.3-8B-Instruct-128K_Abliterated-8bit-mlx`.
 
 ## Quickstart

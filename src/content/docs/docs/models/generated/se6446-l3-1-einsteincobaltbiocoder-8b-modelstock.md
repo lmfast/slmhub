@@ -4,8 +4,6 @@ description: "Discovery-focused notes and runnable examples for `SE6446/L3.1-Ein
 ---
 
 
-# L3.1-EinsteinCobaltBioCoder-8B-ModelStock
-
 Discovery-focused notes and runnable examples for `SE6446/L3.1-EinsteinCobaltBioCoder-8B-ModelStock`.
 
 ## Quickstart

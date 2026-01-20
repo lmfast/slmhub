@@ -4,8 +4,6 @@ description: "Discovery-focused notes and runnable examples for `ParkJuYeong/peg
 ---
 
 
-# pegasus-samsum
-
 Discovery-focused notes and runnable examples for `ParkJuYeong/pegasus-samsum`.
 
 ## Quickstart

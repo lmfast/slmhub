@@ -4,8 +4,6 @@ description: "Discovery-focused notes and runnable examples for `LLM-course/ches
 ---
 
 
-# chess_gasp
-
 Discovery-focused notes and runnable examples for `LLM-course/chess_gasp`.
 
 ## Quickstart

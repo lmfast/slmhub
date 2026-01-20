@@ -4,8 +4,6 @@ description: "Discovery-focused notes and runnable examples for `mariamffatima/P
 ---
 
 
-# Pakistan-Legal-ChatBot
-
 Discovery-focused notes and runnable examples for `mariamffatima/Pakistan-Legal-ChatBot`.
 
 ## Quickstart
