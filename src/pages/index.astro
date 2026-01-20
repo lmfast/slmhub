@@ -1,6 +1,8 @@
 ---
 // Custom homepage for SLM Hub
 // 2026 Modern Design with Glassmorphism and "Bento" Grid
+import '../styles/custom.css';
+
 ---
 
 <html lang="en">
@@ -10,7 +12,7 @@
     <title>SLM Hub - Small Models, Big Impact</title>
     <meta name="description" content="The definitive guide for Small Language Models (SLMs). Learn, deploy, and optimize smaller, faster, cheaper AI." />
     <!-- Use the CSS we've already defined globally + some page specific overrides -->
-    <link rel="stylesheet" href="/slmhub/_astro/index.css" />
+    <!-- Note: In Astro, we import CSS in the frontmatter script, but for raw HTML head we need to let Astro inject it -->
   </head>
   <body class="bg-slate-50 dark:bg-slate-950 font-sans text-slate-900 dark:text-slate-50 antialiased selection:bg-accent selection:text-white overflow-x-hidden">
     
