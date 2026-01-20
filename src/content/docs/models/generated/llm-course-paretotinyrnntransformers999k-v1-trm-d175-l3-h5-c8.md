@@ -1,0 +1,78 @@
+---
+title: ParetoTinyRNNTransformers999k_v1_TRM_d175_L3_H5_C8
+description: "Discovery-focused notes and runnable examples for `LLM-course/ParetoTinyRNNTransformers999k_v1_TRM_d175_L3_H5_C8`."
+---
+
+
+# ParetoTinyRNNTransformers999k_v1_TRM_d175_L3_H5_C8
+
+Discovery-focused notes and runnable examples for `LLM-course/ParetoTinyRNNTransformers999k_v1_TRM_d175_L3_H5_C8`.
+
+## Quickstart
+
+### Python (Transformers)
+
+```python
+from transformers import AutoModelForCausalLM, AutoTokenizer
+
+model_id = "LLM-course/ParetoTinyRNNTransformers999k_v1_TRM_d175_L3_H5_C8"
+tokenizer = AutoTokenizer.from_pretrained(model_id)
+model = AutoModelForCausalLM.from_pretrained(model_id, device_map="auto", torch_dtype="auto")
+
+prompt = "Explain small language models in 3 bullets."
+inputs = tokenizer(prompt, return_tensors="pt")
+outputs = model.generate(**inputs, max_new_tokens=128)
+print(tokenizer.decode(outputs[0], skip_special_tokens=True))
+```
+
+### Local dev (Ollama)
+
+If there’s an Ollama-friendly name for this model in your environment, you can run:
+
+```bash
+ollama run paretotinyrnntransformers999k_v1_trm_d175_l3_h5_c8
+```
+
+> If that doesn’t work, use the Transformers path above or see `deploy/quickstarts/ollama.md` for the general workflow.
+
+## When to use this model
+
+
+- Code generation and code assistance workloads.
+
+- You need lower latency and lower cost than a large model.
+
+
+## What to watch out for
+
+
+- License is unknown in metadata; verify the model card before production use.
+
+- Treat upstream metadata as hints; validate behavior on your own prompts and data.
+
+- If you see quality regressions, pin a model revision instead of tracking `main`.
+
+- Quantization can change behavior; re-run acceptance tests after changing dtype/bit-width.
+
+
+## Metadata (from Hugging Face)
+
+| Field | Value |
+|---|---|
+| **Model ID** | `LLM-course/ParetoTinyRNNTransformers999k_v1_TRM_d175_L3_H5_C8` |
+| **Author** | LLM-course |
+| **Pipeline tag** | text-generation |
+| **Library** | transformers |
+| **License** | unknown |
+| **Last modified** | 2026-01-19T13:40:56+00:00 |
+| **Downloads** | 0 |
+| **Likes** | 0 |
+
+## Links
+
+- [🤗 Hugging Face model page](https://huggingface.co/LLM-course/ParetoTinyRNNTransformers999k_v1_TRM_d175_L3_H5_C8)
+- [Model card](https://huggingface.co/LLM-course/ParetoTinyRNNTransformers999k_v1_TRM_d175_L3_H5_C8#model-card)
+
+---
+
+*This page is auto-generated from Hugging Face Hub metadata. If something looks wrong, please open a PR or issue.*

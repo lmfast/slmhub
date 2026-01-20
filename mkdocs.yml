@@ -1,0 +1,129 @@
+site_name: SLM Hub
+site_description: Developer-centric documentation for Small Language Models (SLMs)
+site_author: SLM Hub Contributors
+site_url: https://YOUR_USERNAME.github.io/slmhub  # Update with your GitHub username
+
+repo_name: slmhub
+repo_url: https://github.com/YOUR_USERNAME/slmhub  # Update with your GitHub username
+
+# Use docs directory (created by build script)
+docs_dir: docs
+site_dir: site
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.code.annotate
+    - content.code.copy
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - attr_list
+  - md_in_html
+  - toc:
+      permalink: true
+
+nav:
+  - Home: README.md
+  - Start here: start-here.md
+  - Principles: principles.md
+  - Learn:
+    - Learn overview: learn/README.md
+    - Fundamentals:
+      - Fundamentals overview: learn/fundamentals/README.md
+      - SLMs vs LLMs: learn/fundamentals/slm-vs-llm.md
+      - Tokenization (just enough): learn/fundamentals/tokenization.md
+      - Quantization (practical): learn/fundamentals/quantization.md
+      - Fine-tuning basics (PEFT): learn/fundamentals/fine-tuning-basics.md
+      - Prompting for small models: learn/fundamentals/prompting-for-slms.md
+    - Tutorials:
+      - Tutorials overview: learn/tutorials/README.md
+      - Hello SLM (no setup): learn/tutorials/hello-slm.md
+      - Run locally with Ollama: learn/tutorials/run-locally-ollama.md
+      - Run with Transformers (Python): learn/tutorials/run-transformers-python.md
+      - Deploy an OpenAI-compatible endpoint: learn/tutorials/serve-openai-compatible.md
+      - RAG with an SLM: learn/tutorials/rag-with-slm.md
+  - Models:
+    - Models overview: models/README.md
+    - How we describe models (no leaderboards): models/model-page-standard.md
+    - Directory (auto-generated): models/generated/directory.md
+    - Featured models:
+      - Featured models overview: models/featured/README.md
+      - Phi: models/featured/phi.md
+      - Qwen: models/featured/qwen.md
+      - Gemma: models/featured/gemma.md
+      - SmolLM: models/featured/smollm.md
+  - Deploy:
+    - Deploy overview: deploy/README.md
+    - Quick starts:
+      - Quick starts overview: deploy/quickstarts/README.md
+      - Ollama: deploy/quickstarts/ollama.md
+      - vLLM: deploy/quickstarts/vllm.md
+      - llama.cpp: deploy/quickstarts/llama-cpp.md
+      - Transformers.js (WebGPU): deploy/quickstarts/transformers-js.md
+    - Patterns:
+      - Patterns overview: deploy/patterns/README.md
+      - Edge-first, cloud fallback: deploy/patterns/edge-first-cloud-fallback.md
+      - Hybrid routing (SLM + LLM): deploy/patterns/hybrid-routing.md
+      - RAG-enhanced SLM: deploy/patterns/rag-enhanced.md
+      - Multi-expert system: deploy/patterns/multi-expert.md
+    - Production:
+      - Production overview: deploy/production/README.md
+      - Observability: deploy/production/observability.md
+      - Scaling & batching: deploy/production/scaling.md
+      - Security: deploy/production/security.md
+      - Cost controls: deploy/production/cost-controls.md
+  - Tools:
+    - Tools overview: tools/README.md
+    - Model picker: tools/model-picker.md
+    - Hardware picker: tools/hardware-picker.md
+    - Prompt & eval harness (lightweight): tools/prompt-eval-harness.md
+  - Community:
+    - Community overview: community/README.md
+    - Contributing: community/contributing.md
+    - Writing guide: community/writing-guide.md
+    - Style guide: community/style-guide.md
+    - Update policy (staying current): community/update-policy.md
+    - Code of Conduct: community/code-of-conduct.md
+
+plugins:
+  - search
+  - git-revision-date-localized:
+      enable_creation_date: true
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/YOUR_USERNAME/slmhub  # Update with your GitHub username

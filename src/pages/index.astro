@@ -1,0 +1,238 @@
+---
+// Custom homepage for SLM Hub
+---
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SLM Hub - Developer Documentation for Small Language Models</title>
+    <meta name="description" content="Developer-centric documentation for Small Language Models (SLMs): learn, choose a model, deploy, and optimize." />
+    <link rel="stylesheet" href="/slmhub/_astro/index.css" />
+  </head>
+  <body>
+    <div class="homepage">
+      <header class="hero">
+        <h1>SLM Hub</h1>
+        <p class="tagline">Developer-centric documentation for Small Language Models (SLMs)</p>
+        <div class="actions">
+          <a href="/slmhub/start-here/" class="button primary">Get Started</a>
+          <a href="/slmhub/learn/" class="button secondary">Learn More</a>
+        </div>
+      </header>
+
+      <section class="features">
+        <div class="feature-grid">
+          <div class="feature-card">
+            <div class="feature-icon">📚</div>
+            <h3>Learn</h3>
+            <p>Understand SLMs, quantization, fine-tuning, and prompting strategies.</p>
+            <a href="/slmhub/learn/">Explore →</a>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🗄️</div>
+            <h3>Models</h3>
+            <p>Discover and choose the right model for your use case.</p>
+            <a href="/slmhub/models/">Browse →</a>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🚀</div>
+            <h3>Deploy</h3>
+            <p>Quick starts, patterns, and production best practices.</p>
+            <a href="/slmhub/deploy/">Deploy →</a>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🔧</div>
+            <h3>Tools</h3>
+            <p>Model picker, hardware picker, and evaluation tools.</p>
+            <a href="/slmhub/tools/">Tools →</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="content">
+        <h2>What this documentation is (and isn't)</h2>
+        <p>
+          <strong>Is:</strong> practical guides, minimal explanations, copy/paste code that runs, and "how to choose" decision frameworks.
+        </p>
+        <p>
+          <strong>Isn't:</strong> a benchmark leaderboard. We focus on <strong>capability discovery</strong> and <strong>fit-for-purpose guidance</strong>, not competitive scoreboards.
+        </p>
+
+        <h2>Quick Links</h2>
+        <ul>
+          <li><a href="/slmhub/start-here/">Start Here</a> - The fastest path to using SLM Hub</li>
+          <li><a href="/slmhub/learn/tutorials/hello-slm/">Hello SLM</a> - Run your first model in minutes</li>
+          <li><a href="/slmhub/tools/model-picker/">Model Picker</a> - Find the right model for your use case</li>
+          <li><a href="/slmhub/deploy/quickstarts/ollama/">Ollama Quick Start</a> - Deploy locally in seconds</li>
+        </ul>
+      </section>
+    </div>
+  </body>
+</html>
+
+<style>
+  :global(html) {
+    font-family: system-ui, -apple-system, sans-serif;
+  }
+  
+  .homepage {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+  }
+
+  .hero {
+    text-align: center;
+    padding: 4rem 0;
+    border-bottom: 1px solid #e2e8f0;
+    margin-bottom: 4rem;
+  }
+
+  .hero h1 {
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin: 0 0 1rem 0;
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .tagline {
+    font-size: 1.5rem;
+    color: #64748b;
+    margin: 0 0 2rem 0;
+  }
+
+  .actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .button {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s;
+  }
+
+  .button.primary {
+    background: #6366f1;
+    color: white;
+  }
+
+  .button.primary:hover {
+    background: #4f46e5;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+  }
+
+  .button.secondary {
+    background: white;
+    color: #6366f1;
+    border: 2px solid #6366f1;
+  }
+
+  .button.secondary:hover {
+    background: #f8fafc;
+    border-color: #4f46e5;
+  }
+
+  .features {
+    margin: 4rem 0;
+  }
+
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin: 2rem 0;
+  }
+
+  .feature-card {
+    padding: 2rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.75rem;
+    transition: all 0.2s;
+  }
+
+  .feature-card:hover {
+    border-color: #6366f1;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transform: translateY(-4px);
+  }
+
+  .feature-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .feature-card h3 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.5rem;
+  }
+
+  .feature-card p {
+    color: #64748b;
+    margin: 0 0 1rem 0;
+  }
+
+  .feature-card a {
+    color: #6366f1;
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .feature-card a:hover {
+    text-decoration: underline;
+  }
+
+  .content {
+    max-width: 48rem;
+    margin: 4rem auto;
+    line-height: 1.7;
+  }
+
+  .content h2 {
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+    font-size: 2rem;
+  }
+
+  .content ul {
+    list-style: disc;
+    padding-left: 2rem;
+  }
+
+  .content li {
+    margin: 0.5rem 0;
+  }
+
+  .content a {
+    color: #6366f1;
+    text-decoration: none;
+  }
+
+  .content a:hover {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 768px) {
+    .hero h1 {
+      font-size: 2.5rem;
+    }
+    
+    .tagline {
+      font-size: 1.25rem;
+    }
+    
+    .feature-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

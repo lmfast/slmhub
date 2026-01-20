@@ -1,6 +1,48 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build outputs
+dist/
+.astro/
+site/
+
+# Environment variables
+.env
+.env.production
+
+# Python
 .venv/
 __pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
 data/models.json
 data/models.yaml
 
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Temporary files
+*.tmp
+.cache/
+
+# Docs symlink (from old MkDocs setup)
+/docs
 
