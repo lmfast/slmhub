@@ -13,7 +13,7 @@
   --sl-color-gray-5: #94a3b8;
   --sl-color-gray-6: #64748b;
   --sl-color-black: #0f172a;
-  
+
   /* Glassmorphism variables */
   --glass-bg: rgba(255, 255, 255, 0.7);
   --glass-border: rgba(255, 255, 255, 0.5);
@@ -32,8 +32,11 @@
 
 /* Enhanced Background */
 body {
-  background: radial-gradient(circle at top right, rgba(99, 102, 241, 0.05), transparent 40%),
-              radial-gradient(circle at bottom left, rgba(168, 85, 247, 0.05), transparent 40%);
+  /* Cleaner "Luminous" Light Mode */
+  background: radial-gradient(circle at top right, rgba(99, 102, 241, 0.03), transparent 30%),
+    radial-gradient(circle at bottom left, rgba(168, 85, 247, 0.03), transparent 30%),
+    #ffffff;
+  /* Solid white base */
   background-attachment: fixed;
 }
 
@@ -133,25 +136,28 @@ html {
   --sl-color-accent-low: #312e81;
   --sl-color-accent: #818cf8;
   --sl-color-accent-high: #c7d2fe;
-  
+
   --glass-bg: rgba(23, 23, 23, 0.7);
   --glass-border: rgba(255, 255, 255, 0.1);
 }
 
 [data-theme="dark"] .card {
-  background: rgba(30, 41, 59, 0.5); /* Semi-transparent dark card */
+  background: rgba(30, 41, 59, 0.5);
+  /* Semi-transparent dark card */
   backdrop-filter: blur(12px);
   border-color: rgba(255, 255, 255, 0.1);
 }
 
 [data-theme="dark"] body {
   background: radial-gradient(circle at top right, rgba(99, 102, 241, 0.15), transparent 40%),
-              radial-gradient(circle at bottom left, rgba(168, 85, 247, 0.15), transparent 40%),
-              #0f172a; /* Fallback/Base dark color */
+    radial-gradient(circle at bottom left, rgba(168, 85, 247, 0.15), transparent 40%),
+    #0f172a;
+  /* Fallback/Base dark color */
 }
 
 /* Print styles */
 @media print {
+
   .sidebar,
   .header,
   .footer {

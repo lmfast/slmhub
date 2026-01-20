@@ -10,6 +10,7 @@ export default defineConfig({
     starlight({
       title: 'SLM Hub',
       description: 'Developer-centric documentation for Small Language Models (SLMs)',
+      favicon: '/favicon.svg',
       logo: {
         src: './src/assets/logo.svg',
         alt: 'SLM Hub',
