@@ -22,44 +22,50 @@ export default defineConfig({
       social: {
         github: 'https://github.com/lmfast/slmhub',
       },
+      // Disable default index page to allow custom homepage
+      disable404Route: false,
       sidebar: [
         {
+          label: 'Home',
+          link: '/',
+        },
+        {
           label: 'Start Here',
-          link: '/start-here/',
+          link: '/docs/start-here/',
         },
         {
           label: 'Principles',
-          link: '/principles/',
+          link: '/docs/principles/',
         },
         {
           label: 'Learn',
           autogenerate: {
-            directory: 'learn',
+            directory: 'docs/learn',
           },
         },
         {
           label: 'Models',
           autogenerate: {
-            directory: 'models',
+            directory: 'docs/models',
             collapsed: true,
           },
         },
         {
           label: 'Deploy',
           autogenerate: {
-            directory: 'deploy',
+            directory: 'docs/deploy',
           },
         },
         {
           label: 'Tools',
           autogenerate: {
-            directory: 'tools',
+            directory: 'docs/tools',
           },
         },
         {
           label: 'Community',
           autogenerate: {
-            directory: 'community',
+            directory: 'docs/community',
           },
         },
       ],

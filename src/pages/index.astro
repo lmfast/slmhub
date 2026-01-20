@@ -1,0 +1,147 @@
+---
+import { Card, CardGrid } from '@astrojs/starlight/components';
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+
+const frontmatter = {
+  title: 'SLM Hub',
+  description: 'Developer-centric documentation for Small Language Models (SLMs). Learn, choose, and deploy locally or at the edge.',
+  template: 'splash',
+};
+---
+
+<StarlightPage frontmatter={frontmatter} headings={[]}>
+  <div class="sl-container">
+    <div class="hero">
+      <div class="hero-content">
+        <h1 class="hero-title">
+          Small Models. <span class="gradient-text">Big Impact.</span>
+        </h1>
+        <p class="hero-tagline">
+          Developer-centric documentation for Small Language Models (SLMs). Learn, Choose, and Deploy locally or at the edge.
+        </p>
+        <div class="hero-actions">
+          <a href="/slmhub/docs/start-here/" class="sl-link-button" data-variant="primary">
+            <span>Get Started →</span>
+          </a>
+          <a href="/slmhub/docs/models/generated/directory/" class="sl-link-button" data-variant="minimal">
+            <span>Browse Models</span>
+          </a>
+        </div>
+      </div>
+      <div class="hero-image">
+        <img src="/slmhub/logo.svg" alt="SLM Hub" />
+      </div>
+    </div>
+
+    <div class="features-section">
+      <h2>Master SLMs in 2026</h2>
+      
+      <CardGrid>
+        <Card title="📚 Master the Fundamentals" class="feature-card card-teal">
+          <p>Deep dive into <strong>quantization</strong>, <strong>fine-tuning techniques</strong> (PEFT/LoRA), and efficient prompting strategies specifically for models under 10B parameters.</p>
+          <p><a href="/slmhub/docs/learn/">Start Learning →</a></p>
+        </Card>
+
+        <Card title="🚀 Local Deployment" class="feature-card card-orange">
+          <p>Run SLMs on your laptop with <strong>Ollama</strong>, <strong>vLLM</strong>, or directly in the browser with <strong>WebGPU</strong>. No cloud required.</p>
+          <p><a href="/slmhub/docs/deploy/">Deploy Now →</a></p>
+        </Card>
+
+        <Card title="🗄️ Model Directory" class="feature-card card-purple">
+          <p>An <strong>auto-updated directory</strong> of high-quality SLMs. No leaderboards, just capabilities and practical use cases.</p>
+          <p><a href="/slmhub/docs/models/generated/directory/">Find Models →</a></p>
+        </Card>
+
+        <Card title="🔧 Developer Tools" class="feature-card card-blue">
+          <p>Interactive <strong>Model Pickers</strong>, <strong>Hardware Calculators</strong> (VRAM usage), and lightweight Prompt Evaluation Harnesses.</p>
+          <p><a href="/slmhub/docs/tools/">View Tools →</a></p>
+        </Card>
+      </CardGrid>
+    </div>
+  </div>
+</StarlightPage>
+
+<style>
+  .hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+    padding: 4rem 0;
+    min-height: 60vh;
+  }
+
+  .hero-content {
+    max-width: 600px;
+  }
+
+  .hero-title {
+    font-size: 3.5rem;
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+  }
+
+  .hero-tagline {
+    font-size: 1.25rem;
+    color: var(--sl-color-gray-6);
+    margin-bottom: 2rem;
+    line-height: 1.6;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .hero-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .hero-image img {
+    max-width: 400px;
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 20px 40px rgba(99, 102, 241, 0.2));
+  }
+
+  .features-section {
+    margin: 4rem 0;
+  }
+
+  .features-section h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 3rem;
+    font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+  }
+
+  @media (max-width: 768px) {
+    .hero {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      padding: 2rem 0;
+    }
+
+    .hero-title {
+      font-size: 2.5rem;
+    }
+
+    .hero-tagline {
+      font-size: 1.1rem;
+    }
+
+    .hero-image img {
+      max-width: 300px;
+    }
+
+    .features-section h2 {
+      font-size: 2rem;
+    }
+  }
+</style>
