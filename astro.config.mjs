@@ -15,22 +15,13 @@ export default defineConfig({
       description: 'Developer-centric documentation for Small Language Models (SLMs)',
       favicon: '/favicon.svg',
       logo: {
-        src: './src/assets/logo.svg',
+        dark: './src/assets/logo-dark.svg',
+        light: './src/assets/logo-light.svg',
         alt: 'SLM Hub',
         replacesTitle: false,
       },
       social: {
         github: 'https://github.com/lmfast/slmhub',
-      },
-      locales: {
-        root: {
-          label: 'English',
-          lang: 'en',
-        },
-      },
-      // Override text for search
-      translations: {
-        'search.label': 'Search Course, Foundations, Models...',
       },
       // Disable default index page to allow custom homepage
       disable404Route: false,
