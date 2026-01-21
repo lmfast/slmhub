@@ -137,6 +137,7 @@ export default defineConfig({
       // UI Translations
       components: {
         SiteTitle: './src/components/SiteTitle.astro',
+        SocialIcons: './src/components/SocialIcons.astro',
       },
       expressiveCode: {
         themes: ['github-dark', 'github-light'],
