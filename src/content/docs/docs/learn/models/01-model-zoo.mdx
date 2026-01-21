@@ -1,0 +1,59 @@
+---
+title: "Module 2.1: Model Zoo"
+description: "**Goal**: Explore and compare featured SLM models  **Time**: 60 minutes  **Concepts Covered**: - SmolLM family (135M, 360M, 1.7B) - Phi-3 family - Qwe..."
+---
+import NotebookWidget from '../../../../../components/NotebookWidget.astro';
+
+<NotebookWidget 
+  notebookPath="notebooks/models/01_model_zoo.ipynb"
+  title="Module 2.1: Model Zoo"
+  description="**Goal**: Explore and compare featured SLM models  **Time**: 60 minutes  **Concepts Covered**: - SmolLM family (135M, 360M, 1.7B) - Phi-3 family - Qwe..."
+/>
+
+
+
+**Goal**: Explore and compare featured SLM models
+
+**Time**: 60 minutes
+
+**Concepts Covered**:
+- SmolLM family (135M, 360M, 1.7B)
+- Phi-3 family
+- Qwen2.5 family
+- Gemma-2, MiniCPM, StableLM-2, TinyLlama
+- Interactive comparison tool
+- Memory requirements per model
+
+## Setup
+
+```python
+!pip install torch transformers accelerate -q
+```
+
+```python
+import torch
+from transformers import AutoModelForCausalLM, AutoTokenizer
+
+# Model zoo
+models = {
+    "SmolLM-135M": "HuggingFaceTB/SmolLM2-135M",
+    "SmolLM-360M": "HuggingFaceTB/SmolLM2-360M",
+    "SmolLM-1.7B": "HuggingFaceTB/SmolLM2-1.7B",
+    "Phi-3-mini": "microsoft/Phi-3-mini-4k-instruct",
+    "Qwen2.5-0.5B": "Qwen/Qwen2.5-0.5B",
+    "TinyLlama": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+}
+
+print("Available Models:")
+for name, path in models.items():
+    print(f"  {name}: {path}")
+```
+
+## Key Takeaways
+
+✅ **Module Complete**
+
+## Next Steps
+
+Continue to the next module in the course.
+

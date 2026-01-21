@@ -1,0 +1,85 @@
+---
+title: "Module 5.3: Optimization Algorithms"
+description: "**Goal**: Implement optimizers from scratch  **Time**: 90 minutes  **Concepts Covered**: - Adam optimizer from scratch - AdamW implementation - Lion o..."
+---
+import NotebookWidget from '../../../../../components/NotebookWidget.astro';
+
+<NotebookWidget 
+  notebookPath="notebooks/mathematics/03_optimization_algorithms.ipynb"
+  title="Module 5.3: Optimization Algorithms"
+  description="**Goal**: Implement optimizers from scratch  **Time**: 90 minutes  **Concepts Covered**: - Adam optimizer from scratch - AdamW implementation - Lion o..."
+/>
+
+
+
+**Goal**: Implement optimizers from scratch
+
+**Time**: 90 minutes
+
+**Concepts Covered**:
+- Adam optimizer from scratch
+- AdamW implementation
+- Lion optimizer comparison
+- Learning rate schedules
+- Benchmark optimizers on training task
+
+## Setup
+
+```python
+!pip install torch transformers accelerate matplotlib seaborn numpy -q
+```
+
+```python
+import torch
+import numpy as np
+
+class AdamOptimizer:
+    """Adam optimizer from scratch"""
+    def __init__(self, params, lr=1e-3, beta1=0.9, beta2=0.999, eps=1e-8):
+        self.params = list(params)
+        self.lr = lr
+        self.beta1 = beta1
+        self.beta2 = beta2
+        self.eps = eps
+        self.m = [torch.zeros_like(p) for p in self.params]  # First moment
+        self.v = [torch.zeros_like(p) for p in self.params]  # Second moment
+        self.t = 0
+    
+    def step(self):
+        self.t += 1
+        for i, param in enumerate(self.params):
+            if param.grad is None:
+                continue
+            
+            grad = param.grad
+            
+            # Update biased first moment estimate
+            self.m[i] = self.beta1 * self.m[i] + (1 - self.beta1) * grad
+            
+            # Update biased second moment estimate
+            self.v[i] = self.beta2 * self.v[i] + (1 - self.beta2) * grad ** 2
+            
+            # Bias correction
+            m_hat = self.m[i] / (1 - self.beta1 ** self.t)
+            v_hat = self.v[i] / (1 - self.beta2 ** self.t)
+            
+            # Update parameters
+            param.data -= self.lr * m_hat / (torch.sqrt(v_hat) + self.eps)
+    
+    def zero_grad(self):
+        for param in self.params:
+            if param.grad is not None:
+                param.grad.zero_()
+
+print("Adam combines momentum (m) and adaptive learning rates (v)")
+print("AdamW adds weight decay decoupling")
+```
+
+## Key Takeaways
+
+✅ **Module Complete**
+
+## Next Steps
+
+Continue to the next module in the course.
+

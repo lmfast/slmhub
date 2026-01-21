@@ -1,0 +1,163 @@
+---
+title: "Module 12.3: Function-Calling Agent"
+description: "**Goal**: Build a complete function-calling agent with tool orchestration  **Time**: 120 minutes  **Concepts Covered**: - Tool definition schema - ReA..."
+---
+import NotebookWidget from '../../../../../components/NotebookWidget.astro';
+
+<NotebookWidget 
+  notebookPath="notebooks/projects/03_function_calling_agent.ipynb"
+  title="Module 12.3: Function-Calling Agent"
+  description="**Goal**: Build a complete function-calling agent with tool orchestration  **Time**: 120 minutes  **Concepts Covered**: - Tool definition schema - ReA..."
+/>
+
+
+
+**Goal**: Build a complete function-calling agent with tool orchestration
+
+**Time**: 120 minutes
+
+**Concepts Covered**:
+- Tool definition schema
+- ReAct pattern implementation
+- Multi-tool orchestration
+- Error handling and retries
+- Agent evaluation framework
+
+## Setup
+
+```python
+!pip install torch transformers accelerate matplotlib seaborn numpy -q
+```
+
+```python
+# Function-Calling Agent
+from typing import List, Dict, Callable, Any
+import json
+
+class Tool:
+    def __init__(self, name: str, description: str, func: Callable, schema: Dict):
+        self.name = name
+        self.description = description
+        self.func = func
+        self.schema = schema
+    
+    def call(self, **kwargs):
+        return self.func(**kwargs)
+    
+    def to_json_schema(self):
+        return {
+            "name": self.name,
+            "description": self.description,
+            "parameters": self.schema
+        }
+
+class FunctionCallingAgent:
+    def __init__(self, model, tools: List[Tool]):
+        self.model = model
+        self.tools = {tool.name: tool for tool in tools}
+        self.conversation_history = []
+    
+    def add_tool(self, tool: Tool):
+        self.tools[tool.name] = tool
+    
+    def get_tools_description(self):
+        """Get tools description for prompt"""
+        descriptions = []
+        for tool in self.tools.values():
+            descriptions.append(f"- {tool.name}: {tool.description}")
+        return "\n".join(descriptions)
+    
+    def execute(self, user_query: str, max_iterations=5):
+        """Execute agent with ReAct pattern"""
+        self.conversation_history.append({"role": "user", "content": user_query})
+        
+        for iteration in range(max_iterations):
+            # Generate response (with tool calling)
+            tools_desc = self.get_tools_description()
+            prompt = f"""
+Available tools:
+{tools_desc}
+
+User query: {user_query}
+Conversation history: {self.conversation_history}
+
+Generate response. If you need to use a tool, format as:
+TOOL_CALL: tool_name(argument1=value1, argument2=value2)
+"""
+            
+            response = self.model.generate(prompt)
+            
+            # Parse tool calls
+            if "TOOL_CALL:" in response:
+                tool_call = self._parse_tool_call(response)
+                if tool_call:
+                    tool_name, args = tool_call
+                    if tool_name in self.tools:
+                        try:
+                            result = self.tools[tool_name].call(**args)
+                            self.conversation_history.append({
+                                "role": "assistant",
+                                "content": f"Tool {tool_name} returned: {result}"
+                            })
+                            continue
+                        except Exception as e:
+                            self.conversation_history.append({
+                                "role": "error",
+                                "content": f"Tool {tool_name} failed: {str(e)}"
+                            })
+            
+            # Final answer
+            self.conversation_history.append({"role": "assistant", "content": response})
+            return response
+        
+        return "Max iterations reached"
+    
+    def _parse_tool_call(self, text: str):
+        """Parse tool call from text"""
+        # Simplified parser
+        if "TOOL_CALL:" in text:
+            parts = text.split("TOOL_CALL:")[1].strip().split("(")
+            tool_name = parts[0].strip()
+            args_str = "(".join(parts[1:]).rstrip(")")
+            # Parse arguments (simplified)
+            args = {}
+            return tool_name, args
+        return None
+
+# Example tools
+def calculator(operation: str, a: float, b: float) -> float:
+    if operation == "add":
+        return a + b
+    elif operation == "multiply":
+        return a * b
+    return 0.0
+
+calc_tool = Tool(
+    name="calculator",
+    description="Perform basic math operations",
+    func=calculator,
+    schema={
+        "type": "object",
+        "properties": {
+            "operation": {"type": "string"},
+            "a": {"type": "number"},
+            "b": {"type": "number"}
+        }
+    }
+)
+
+print("Function-Calling Agent:")
+print("- Tool definition and registration")
+print("- ReAct pattern (Reasoning + Acting)")
+print("- Multi-tool orchestration")
+print("- Error handling")
+```
+
+## Key Takeaways
+
+✅ **Module Complete**
+
+## Next Steps
+
+Continue to the next module in the course.
+

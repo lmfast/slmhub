@@ -1,0 +1,146 @@
+---
+title: "Module 13.1: Resources & Quick Reference"
+description: "**Goal**: Comprehensive resource compilation and quick reference guides  **Time**: 30 minutes  **Concepts Covered**: - Official documentation links - ..."
+---
+import NotebookWidget from '../../../../../components/NotebookWidget.astro';
+
+<NotebookWidget 
+  notebookPath="notebooks/about/01_resources_reference.ipynb"
+  title="Module 13.1: Resources & Quick Reference"
+  description="**Goal**: Comprehensive resource compilation and quick reference guides  **Time**: 30 minutes  **Concepts Covered**: - Official documentation links - ..."
+/>
+
+
+
+**Goal**: Comprehensive resource compilation and quick reference guides
+
+**Time**: 30 minutes
+
+**Concepts Covered**:
+- Official documentation links
+- Must-read papers list
+- Community resources
+- Model selection flowchart
+- Optimization techniques summary
+- Quick reference tables
+
+## Setup
+
+```python
+!pip install torch transformers accelerate matplotlib seaborn numpy -q
+```
+
+```python
+# Resources & Quick Reference
+
+# Official Documentation
+documentation = {
+    "Transformers": "https://huggingface.co/docs/transformers",
+    "vLLM": "https://docs.vllm.ai",
+    "PEFT": "https://huggingface.co/docs/peft",
+    "TRL": "https://huggingface.co/docs/trl",
+    "PyTorch": "https://pytorch.org/docs",
+}
+
+# Must-Read Papers
+papers = {
+    "Attention Is All You Need": "https://arxiv.org/abs/1706.03762",
+    "LoRA: Low-Rank Adaptation": "https://arxiv.org/abs/2106.09685",
+    "Chinchilla Scaling Laws": "https://arxiv.org/abs/2203.15556",
+    "Mamba: Linear-Time Sequence Modeling": "https://arxiv.org/abs/2312.00752",
+    "BitNet: Scaling 1-bit Transformers": "https://arxiv.org/abs/2310.11453",
+    "Constitutional AI": "https://arxiv.org/abs/2212.08073",
+}
+
+# Community Resources
+community = {
+    "Discord": "https://discord.gg/slmhub",
+    "GitHub": "https://github.com/lmfast/slmhub",
+    "HuggingFace": "https://huggingface.co",
+    "Papers with Code": "https://paperswithcode.com",
+}
+
+print("Resources:")
+print("\nDocumentation:")
+for name, url in documentation.items():
+    print(f"  {name}: {url}")
+
+print("\nMust-Read Papers:")
+for name, url in papers.items():
+    print(f"  {name}: {url}")
+
+print("\nCommunity:")
+for name, url in community.items():
+    print(f"  {name}: {url}")
+```
+
+```python
+# Model Selection Flowchart
+def select_model(use_case, memory_gb, latency_ms=None, accuracy_requirement="medium"):
+    """Model selection helper"""
+    recommendations = []
+    
+    if memory_gb < 1:
+        recommendations.append("SmolLM-135M (INT4)")
+    elif memory_gb < 2:
+        recommendations.append("SmolLM-360M (INT4)")
+    elif memory_gb < 4:
+        recommendations.append("SmolLM-1.7B (INT4)")
+    elif memory_gb < 8:
+        recommendations.append("SmolLM-1.7B (FP16) or Phi-3-mini (INT4)")
+    else:
+        recommendations.append("Phi-3-mini (FP16) or larger models")
+    
+    if use_case == "code":
+        recommendations.append("Consider: StarCoder2, CodeQwen")
+    elif use_case == "math":
+        recommendations.append("Consider: DeepSeek-Math")
+    elif use_case == "multilingual":
+        recommendations.append("Consider: Qwen2.5, XGLM")
+    
+    return recommendations
+
+print("Model Selection Guide:")
+print(select_model("general", memory_gb=4, accuracy_requirement="high"))
+```
+
+```python
+# Quick Reference Tables
+
+# Quantization Comparison
+quantization_table = {
+    "FP32": {"bits": 32, "memory_reduction": "1x", "quality": "100%", "speed": "1x"},
+    "FP16": {"bits": 16, "memory_reduction": "2x", "quality": "99%", "speed": "1.5x"},
+    "INT8": {"bits": 8, "memory_reduction": "4x", "quality": "95%", "speed": "2x"},
+    "INT4": {"bits": 4, "memory_reduction": "8x", "quality": "90%", "speed": "3x"},
+    "BitNet": {"bits": 1.58, "memory_reduction": "16x", "quality": "85%", "speed": "4x"},
+}
+
+print("Quantization Comparison:")
+for method, specs in quantization_table.items():
+    print(f"  {method}: {specs['bits']} bits, {specs['memory_reduction']} memory, {specs['quality']} quality")
+
+# Optimization Techniques
+optimization_techniques = {
+    "LoRA": "Parameter-efficient fine-tuning",
+    "QLoRA": "LoRA with 4-bit quantization",
+    "Gradient Checkpointing": "Trade compute for memory",
+    "Mixed Precision": "FP16/BF16 training",
+    "FlashAttention": "Memory-efficient attention",
+    "KV Cache": "Faster generation",
+    "Speculative Decoding": "2-3x speedup",
+}
+
+print("\nOptimization Techniques:")
+for technique, description in optimization_techniques.items():
+    print(f"  {technique}: {description}")
+```
+
+## Key Takeaways
+
+✅ **Module Complete**
+
+## Next Steps
+
+Continue to the next module in the course.
+

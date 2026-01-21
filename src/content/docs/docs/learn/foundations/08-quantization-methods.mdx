@@ -1,0 +1,63 @@
+---
+title: "Quantization: Reducing Model Size"
+description: "This notebook demonstrates how to load models with 4-bit quantization to drastically reduce memory usage, corresponding to the SLM Hub [Quantization G..."
+---
+import NotebookWidget from '../../../../../components/NotebookWidget.astro';
+
+<NotebookWidget 
+  notebookPath="notebooks/foundations/08_quantization_methods.ipynb"
+  title="Quantization: Reducing Model Size"
+  description="This notebook demonstrates how to load models with 4-bit quantization to drastically reduce memory usage, corresponding to the SLM Hub [Quantization G..."
+/>
+
+
+
+This notebook demonstrates how to load models with 4-bit quantization to drastically reduce memory usage, corresponding to the SLM Hub [Quantization Guide](https://slmhub.gitbook.io/slmhub/docs/learn/fundamentals/quantization).
+
+## 1. Setup
+Install `bitsandbytes` and `accelerate`.
+
+```python
+!pip install transformers bitsandbytes accelerate
+```
+
+## 2. Load in 4-bit (NF4)
+We will load Microsoft's Phi-4 (or Phi-3 if 14B is too large for your colab instance, though 4-bit 14B fits in 16GB T4) in 4-bit precision.
+
+```python
+import torch
+from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
+
+model_id = "microsoft/Phi-4"
+
+# Config for 4-bit quantization
+bnb_config = BitsAndBytesConfig(
+    load_in_4bit=True,
+    bnb_4bit_quant_type="nf4",
+    bnb_4bit_compute_dtype=torch.float16,
+    bnb_4bit_use_double_quant=True
+)
+
+# Load model
+model = AutoModelForCausalLM.from_pretrained(
+    model_id,
+    quantization_config=bnb_config,
+    device_map="auto",
+    trust_remote_code=True
+)
+
+tokenizer = AutoTokenizer.from_pretrained(model_id, trust_remote_code=True)
+
+print("Model loaded in 4-bit!")
+print(f"Memory footprint: {model.get_memory_footprint() / 1024**3:.2f} GB")
+```
+
+## 3. Run Inference
+Even heavily compressed, the model retains its capabilities.
+
+```python
+inputs = tokenizer("Why is quantization important for SLMs?", return_tensors="pt").to("cuda")
+outputs = model.generate(**inputs, max_new_tokens=100)
+print(tokenizer.decode(outputs[0], skip_special_tokens=True))
+```
+

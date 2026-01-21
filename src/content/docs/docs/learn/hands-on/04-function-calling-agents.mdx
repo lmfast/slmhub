@@ -1,0 +1,141 @@
+---
+title: "Function Calling & Structured Output with SLMs"
+description: "This notebook demonstrates how to use function calling (tool use) and structured data extraction with Ollama, corresponding to the SLM Hub [Function C..."
+---
+import NotebookWidget from '../../../../../components/NotebookWidget.astro';
+
+<NotebookWidget 
+  notebookPath="notebooks/hands_on/04_function_calling_agents.ipynb"
+  title="Function Calling & Structured Output with SLMs"
+  description="This notebook demonstrates how to use function calling (tool use) and structured data extraction with Ollama, corresponding to the SLM Hub [Function C..."
+/>
+
+
+
+This notebook demonstrates how to use function calling (tool use) and structured data extraction with Ollama, corresponding to the SLM Hub [Function Calling Guide](https://slmhub.gitbook.io/slmhub/docs/learn/concepts/function-calling).
+
+## 1. Setup Environment
+Install Ollama, OpenAI SDK (compatible with Ollama), and Instructor for structured outputs.
+
+```python
+!pip install ollama openai instructor pydantic
+```
+
+### Install and Start Ollama
+We install the Ollama binary and run it in the background.
+
+```python
+!curl -fsSL https://ollama.com/install.sh | sh
+```
+
+```python
+import subprocess
+import time
+
+# Start Ollama server in background
+process = subprocess.Popen(["ollama", "serve"])
+time.sleep(5)
+print("Ollama started!")
+```
+
+## 2. Pull Model
+Qwen2.5 is excellent for function calling. We'll use the 7B version (finetuned for tools).
+
+```python
+!ollama pull qwen2.5:7b
+```
+
+## 3. Basic Tool Calling Loop
+We define a dummy weather tool and let the model call it.
+
+```python
+import ollama
+
+# 1. Define Tool
+weather_tool = {
+  'type': 'function',
+  'function': {
+    'name': 'get_current_weather',
+    'description': 'Get the current weather for a city',
+    'parameters': {
+      'type': 'object',
+      'properties': {
+        'city': {
+          'type': 'string',
+          'description': 'The name of the city',
+        },
+      },
+      'required': ['city'],
+    },
+  },
+}
+
+# 2. Python Function
+def get_current_weather(city):
+    print(f"Executing tool: get_current_weather({city})")
+    return f"The weather in {city} is 25 degrees Celsius and sunny."
+
+functions_map = {'get_current_weather': get_current_weather}
+
+# 3. Chat with Model
+query = "How is the weather in Paris?"
+print(f"User: {query}")
+
+messages = [{'role': 'user', 'content': query}]
+response = ollama.chat(
+    model='qwen2.5:7b',
+    messages=messages,
+    tools=[weather_tool]
+)
+
+# 4. Handle Tool Call
+if response['message'].get('tool_calls'):
+    for tool in response['message']['tool_calls']:
+        fn_name = tool['function']['name']
+        fn_args = tool['function']['arguments']
+        
+        # Call Python function
+        result = functions_map[fn_name](**fn_args)
+        
+        # Feed back to model
+        messages.append(response['message'])
+        messages.append({
+            'role': 'tool',
+            'content': result
+        })
+        
+        final_res = ollama.chat(model='qwen2.5:7b', messages=messages)
+        print(f"Model: {final_res['message']['content']}")
+```
+
+## 4. Structured Output with Instructor
+Force the model to output valid JSON matching a Pydantic schema.
+
+```python
+from pydantic import BaseModel
+from openai import OpenAI
+import instructor
+
+class UserInfo(BaseModel):
+    name: str
+    age: int
+    skills: list[str]
+
+# Patch OpenAI client to use Instructor + Ollama
+client = instructor.patch(OpenAI(
+    base_url="http://localhost:11434/v1",
+    api_key="ollama"
+))
+
+# Extract data
+text = "Gaurav is a 28 year old engineer who loves Typescript and Rust."
+user = client.chat.completions.create(
+    model="qwen2.5:7b",
+    messages=[{"role": "user", "content": f"Extract info: {text}"}],
+    response_model=UserInfo
+)
+
+print("Extracted JSON:")
+print(user.model_dump_json(indent=2))
+```
+

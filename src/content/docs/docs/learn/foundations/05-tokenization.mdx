@@ -1,0 +1,93 @@
+---
+title: "Tokenization Fundamentals"
+description: "This notebook covers the basics of tokenization using the Hugging Face `transformers` library, corresponding to the SLM Hub [Tokenization Guide](https..."
+---
+import NotebookWidget from '../../../../../components/NotebookWidget.astro';
+
+<NotebookWidget 
+  notebookPath="notebooks/foundations/05_tokenization.ipynb"
+  title="Tokenization Fundamentals"
+  description="This notebook covers the basics of tokenization using the Hugging Face `transformers` library, corresponding to the SLM Hub [Tokenization Guide](https..."
+/>
+
+
+
+This notebook covers the basics of tokenization using the Hugging Face `transformers` library, corresponding to the SLM Hub [Tokenization Guide](https://slmhub.gitbook.io/slmhub/docs/learn/fundamentals/tokenization).
+
+## 1. Setup
+We need to install the transformers library first.
+
+```python
+!pip install transformers
+```
+
+## 2. Using AutoTokenizer
+Let's load a tokenizer from a real model (Microsoft's Phi-4) and see how it splits text.
+
+```python
+from transformers import AutoTokenizer
+
+# Load the tokenizer
+tokenizer = AutoTokenizer.from_pretrained("microsoft/Phi-4")
+
+# Tokenize a simple sentence
+text = "Small language models are powerful!"
+tokens = tokenizer.tokenize(text)
+print(f"Tokens: {tokens}")
+
+# Convert to IDs (what the model sees)
+ids = tokenizer.encode(text)
+print(f"Token IDs: {ids}")
+
+# Decode back
+decoded = tokenizer.decode(ids)
+print(f"Decoded: '{decoded}'")
+```
+
+## 3. Counting Tokens
+Functions to count tokens are essential for managing context windows.
+
+```python
+def count_tokens(text, tokenizer):
+    return len(tokenizer.encode(text))
+
+sample_text = "This is a sample text to count tokens."
+count = count_tokens(sample_text, tokenizer)
+print(f"Text: '{sample_text}'")
+print(f"Token count: {count}")
+```
+
+## 4. Batch Processing
+Processing multiple sentences at once with padding and truncation.
+
+```python
+texts = ["First sentence.", "Second sentence is slightly longer.", "Third."]
+
+batch = tokenizer(
+    texts,
+    padding=True,       # Pad shorter sequences
+    truncation=True,    # Truncate if too long
+    return_tensors="pt" # Return PyTorch tensors
+)
+
+print("Batch Input IDs shape:", batch['input_ids'].shape)
+print("Batch Input IDs:\n", batch['input_ids'])
+```
+
+## 5. Special Tokens
+Inspect the special tokens used by the model.
+
+```python
+print(f"BOS Token: {tokenizer.bos_token}")
+print(f"EOS Token: {tokenizer.eos_token}")
+print(f"PAD Token: {tokenizer.pad_token")
+
+# Chat template example
+messages = [{"role": "user", "content": "Hello!"}]
+try:
+    formatted = tokenizer.apply_chat_template(messages, tokenize=False)
+    print(f"\nFormatted Chat:\n{formatted}")
+except Exception as e:
+    print("This model might not have a chat template configured automatically in this version.")
+```
+

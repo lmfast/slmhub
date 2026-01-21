@@ -1,0 +1,84 @@
+---
+title: "Module 1.4: Complete Transformer Block"
+description: "**Goal**: Build a complete SmolLM-135M transformer layer  **Time**: 60 minutes  **Concepts Covered**: - SmolLM-135M architecture (9 layers, 576 hidden..."
+---
+import NotebookWidget from '../../../../../components/NotebookWidget.astro';
+
+<NotebookWidget 
+  notebookPath="notebooks/foundations/04_complete_transformer_block.ipynb"
+  title="Module 1.4: Complete Transformer Block"
+  description="**Goal**: Build a complete SmolLM-135M transformer layer  **Time**: 60 minutes  **Concepts Covered**: - SmolLM-135M architecture (9 layers, 576 hidden..."
+/>
+
+
+
+**Goal**: Build a complete SmolLM-135M transformer layer
+
+**Time**: 60 minutes
+
+**Concepts Covered**:
+- SmolLM-135M architecture (9 layers, 576 hidden, 9 heads, 1536 FFN)
+- Complete transformer layer implementation
+- Forward pass with real tokens
+- Component profiling (time/memory)
+
+## Setup
+
+```python
+!pip install torch numpy matplotlib seaborn transformers -q
+```
+
+```python
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+import time
+
+torch.manual_seed(42)
+```
+
+## Build Complete Transformer Block
+
+```python
+# SmolLM-135M specs
+d_model = 576
+n_heads = 9
+d_ff = 1536
+n_layers = 9
+vocab_size = 32000
+
+class TransformerBlock(nn.Module):
+    def __init__(self, d_model, n_heads, d_ff):
+        super().__init__()
+        # Multi-head attention
+        self.attn = nn.MultiheadAttention(d_model, n_heads, batch_first=True)
+        # FFN with SwiGLU
+        self.ffn = nn.Sequential(
+            nn.Linear(d_model, d_ff * 2),
+            nn.SiLU(),
+            nn.Linear(d_ff, d_model)
+        )
+        # Normalization
+        self.norm1 = nn.LayerNorm(d_model)
+        self.norm2 = nn.LayerNorm(d_model)
+    
+    def forward(self, x):
+        # Pre-norm architecture
+        x = x + self.attn(self.norm1(x), self.norm1(x), self.norm1(x))[0]
+        # FFN
+        x1, x2 = self.ffn[0](x).chunk(2, dim=-1)
+        x = x + self.ffn[2](F.silu(x1) * x2)
+        return x
+
+block = TransformerBlock(d_model, n_heads, d_ff)
+print(f"Parameters: {sum(p.numel() for p in block.parameters()) / 1e6:.2f}M")
+```
+
+## Key Takeaways
+
+✅ **Module Complete**
+
+## Next Steps
+
+Continue to the next module in the course.
+

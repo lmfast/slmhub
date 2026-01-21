@@ -64,7 +64,7 @@ ollama run codeup-llama-2-13b-chat-hf
 | **Library** | transformers |
 | **License** | unknown |
 | **Last modified** | 2023-10-06T06:59:02+00:00 |
-| **Downloads** | 12 |
+| **Downloads** | 8 |
 | **Likes** | 33 |
 
 ## Links

@@ -1,0 +1,46 @@
+---
+title: "Module 3.3: DPO (Direct Preference Optimization)"
+description: "**Goal**: Align models to human preferences using DPO  **Time**: 60 minutes  **Concepts Covered**: - DPO implementation - Load Anthropic HH-RLHF datas..."
+---
+import NotebookWidget from '../../../../../components/NotebookWidget.astro';
+
+<NotebookWidget 
+  notebookPath="notebooks/hands_on/03_dpo_alignment.ipynb"
+  title="Module 3.3: DPO (Direct Preference Optimization)"
+  description="**Goal**: Align models to human preferences using DPO  **Time**: 60 minutes  **Concepts Covered**: - DPO implementation - Load Anthropic HH-RLHF datas..."
+/>
+
+
+
+**Goal**: Align models to human preferences using DPO
+
+**Time**: 60 minutes
+
+**Concepts Covered**:
+- DPO implementation
+- Load Anthropic HH-RLHF dataset
+- Align model to preferences
+- KL penalty tuning
+
+## Setup
+
+```python
+!pip install torch transformers accelerate -q
+```
+
+```python
+import torch
+from transformers import AutoModelForCausalLM, AutoTokenizer
+from trl import DPOTrainer
+
+print("DPO trains models using preference pairs (chosen vs rejected)!")
+```
+
+## Key Takeaways
+
+✅ **Module Complete**
+
+## Next Steps
+
+Continue to the next module in the course.
+

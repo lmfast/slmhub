@@ -1,0 +1,52 @@
+---
+title: "Module 3.7: Deployment Strategies"
+description: "**Goal**: Deploy SLMs in production environments  **Time**: 150 minutes  **Concepts Covered**: - vLLM serving setup - Mobile deployment (ONNX Runtime)..."
+---
+import NotebookWidget from '../../../../../components/NotebookWidget.astro';
+
+<NotebookWidget 
+  notebookPath="notebooks/hands_on/07_deployment.ipynb"
+  title="Module 3.7: Deployment Strategies"
+  description="**Goal**: Deploy SLMs in production environments  **Time**: 150 minutes  **Concepts Covered**: - vLLM serving setup - Mobile deployment (ONNX Runtime)..."
+/>
+
+
+
+**Goal**: Deploy SLMs in production environments
+
+**Time**: 150 minutes
+
+**Concepts Covered**:
+- vLLM serving setup
+- Mobile deployment (ONNX Runtime)
+- Browser deployment (WebGPU with Transformers.js)
+- Performance comparisons
+
+## Setup
+
+```python
+!pip install torch transformers accelerate -q
+```
+
+```python
+# Deployment options
+deployment_methods = {
+    "vLLM": "High-throughput serving (1000+ tokens/sec)",
+    "ONNX Runtime": "Mobile/edge deployment",
+    "Transformers.js": "Browser deployment with WebGPU",
+    "Ollama": "Local deployment",
+}
+
+print("Deployment Methods:")
+for method, desc in deployment_methods.items():
+    print(f"  {method}: {desc}")
+```
+
+## Key Takeaways
+
+✅ **Module Complete**
+
+## Next Steps
+
+Continue to the next module in the course.
+

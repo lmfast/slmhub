@@ -1,0 +1,81 @@
+---
+title: "Module 7.5: How to Contribute"
+description: "**Goal**: Step-by-step contribution guide  **Time**: 30 minutes  **Concepts Covered**: - Contribution workflow diagram - Model addition script - Tutor..."
+---
+import NotebookWidget from '../../../../../components/NotebookWidget.astro';
+
+<NotebookWidget 
+  notebookPath="notebooks/community/05_how_to_contribute.ipynb"
+  title="Module 7.5: How to Contribute"
+  description="**Goal**: Step-by-step contribution guide  **Time**: 30 minutes  **Concepts Covered**: - Contribution workflow diagram - Model addition script - Tutor..."
+/>
+
+
+
+**Goal**: Step-by-step contribution guide
+
+**Time**: 30 minutes
+
+**Concepts Covered**:
+- Contribution workflow diagram
+- Model addition script
+- Tutorial creation template
+- Benchmark submission form
+- Tool development guide
+
+## Setup
+
+```python
+!pip install torch transformers accelerate matplotlib seaborn numpy -q
+```
+
+```python
+# Contribution workflow
+
+contribution_steps = [
+    "1. Fork the repository",
+    "2. Create a feature branch",
+    "3. Make your changes",
+    "4. Test your changes",
+    "5. Submit a pull request",
+    "6. Address review feedback",
+    "7. Merge after approval",
+]
+
+def model_addition_script():
+    """Template script for adding a new model"""
+    script = """
+# 1. Create model YAML file in models/generated/
+# 2. Add model metadata
+# 3. Run validation script
+# 4. Generate model page
+# 5. Update model index
+"""
+    return script
+
+def tutorial_creation_template():
+    """Template for creating tutorials"""
+    template = {
+        "title": "Module X.Y: Title",
+        "goal": "What students will learn",
+        "time": "X minutes",
+        "concepts": ["Concept 1", "Concept 2"],
+        "setup": "Installation commands",
+        "lessons": ["Lesson 1", "Lesson 2"],
+        "exercises": ["Exercise 1"],
+    }
+    return template
+
+print("Contribution Workflow:")
+for step in contribution_steps:
+    print(f"  {step}")
+```
+
+## Key Takeaways
+
+✅ **Module Complete**
+
+## Next Steps
+
+Continue to the next module in the course.
+

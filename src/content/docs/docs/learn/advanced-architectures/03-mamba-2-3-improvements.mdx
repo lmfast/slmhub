@@ -1,0 +1,87 @@
+---
+title: "Module 9.3: Mamba-2 & Mamba-3 Improvements"
+description: "**Goal**: Understand SSD and latest Mamba improvements  **Time**: 90 minutes  **Concepts Covered**: - SSD (State Space Duality) implementation - Mamba..."
+---
+import NotebookWidget from '../../../../../components/NotebookWidget.astro';
+
+<NotebookWidget 
+  notebookPath="notebooks/advanced_architectures/03_mamba_2_3_improvements.ipynb"
+  title="Module 9.3: Mamba-2 & Mamba-3 Improvements"
+  description="**Goal**: Understand SSD and latest Mamba improvements  **Time**: 90 minutes  **Concepts Covered**: - SSD (State Space Duality) implementation - Mamba..."
+/>
+
+
+
+**Goal**: Understand SSD and latest Mamba improvements
+
+**Time**: 90 minutes
+
+**Concepts Covered**:
+- SSD (State Space Duality) implementation
+- Mamba-2 minimal code
+- Mamba-3 improvements
+- Performance comparisons
+- Evolution visualization
+
+## Setup
+
+```python
+!pip install torch transformers accelerate matplotlib seaborn numpy -q
+```
+
+```python
+# Mamba evolution
+
+mamba_versions = {
+    "Mamba-1": {
+        "key_innovation": "Selective SSM",
+        "complexity": "O(n)",
+        "hardware_efficient": True,
+    },
+    "Mamba-2": {
+        "key_innovation": "SSD (State Space Duality)",
+        "complexity": "O(n)",
+        "improvements": [
+            "Better parameterization",
+            "Improved training stability",
+            "Faster inference",
+        ],
+    },
+    "Mamba-3": {
+        "key_innovation": "Further optimizations",
+        "complexity": "O(n)",
+        "improvements": [
+            "Better long-context handling",
+            "Improved memory efficiency",
+        ],
+    },
+}
+
+def ssd_mechanism():
+    """State Space Duality (Mamba-2) concept"""
+    explanation = """
+SSD (State Space Duality) improves Mamba by:
+1. Better state space parameterization
+2. Dual representation for efficiency
+3. Improved numerical stability
+4. Faster parallel scan implementation
+"""
+    return explanation
+
+print("Mamba Evolution:")
+for version, details in mamba_versions.items():
+    print(f"\n{version}:")
+    print(f"  Innovation: {details['key_innovation']}")
+    if "improvements" in details:
+        for imp in details["improvements"]:
+            print(f"  • {imp}")
+```
+
+## Key Takeaways
+
+✅ **Module Complete**
+
+## Next Steps
+
+Continue to the next module in the course.
+

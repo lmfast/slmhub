@@ -64,7 +64,7 @@ ollama run codeup-alpha-13b-hf-gptq
 | **Library** | transformers |
 | **License** | unknown |
 | **Last modified** | 2023-09-27T12:45:47+00:00 |
-| **Downloads** | 23 |
+| **Downloads** | 8 |
 | **Likes** | 4 |
 
 ## Links

@@ -2,116 +2,275 @@
 import type { Props } from '@astrojs/starlight/props';
 import DefaultFooter from '@astrojs/starlight/components/Footer.astro';
 
+const { hasSidebar } = Astro.props;
 const year = new Date().getFullYear();
 ---
 
-<div class="custom-footer">
-  <div class="footer-grid">
-    <div class="footer-brand">
-      <div class="brand-header">
-        <img src="/slmhub/logo.svg" alt="SLM Hub" width="24" height="24" />
-        <span class="brand-text">SLM Hub</span>
+<div class="footer-bottom">
+   <!-- Keep standard Starlight footer (Edit link / Pagination) -->
+   <DefaultFooter {...Astro.props} />
+</div>
+
+<div class:list={['custom-footer', { 'has-sidebar': hasSidebar }]}>
+  <div class="footer-container">
+    <div class="footer-newsletter">
+      <div class="newsletter-content">
+        <div class="newsletter-text">
+          <span class="newsletter-icon">🚀</span>
+          <div class="newsletter-text-inner">
+            <h3>Stay Updated</h3>
+            <p>Get the latest SLM benchmarks and tutorials.</p>
+          </div>
+        </div>
+        <form class="newsletter-form" action="https://buttondown.email/api/emails/embed-subscribe/slmhub" method="post" target="_blank">
+          <input type="email" name="email" placeholder="your@email.com" required />
+          <button type="submit">Subscribe</button>
+        </form>
       </div>
-      <p class="brand-desc">
-        Democratizing AI with efficient, local, and private Small Language Models.
-      </p>
-      <div class="copyright">
-        &copy; {year} LMFast Community. <br/> Apache 2.0 Licensed.
+    </div>
+
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="brand-header">
+          <img src="/slmhub/logo.svg" alt="SLM Hub" width="24" height="24" class="brand-logo" />
+          <span class="brand-text">SLM Hub</span>
+        </div>
+        <p class="brand-desc">
+          Democratizing AI with efficient, local, and private Small Language Models.
+        </p>
+        <div class="copyright">
+          &copy; {year} LMFast Community. <br/> Apache 2.0 Licensed.
+        </div>
+      </div>
+
+      <div class="footer-links">
+        <h3>Course</h3>
+        <ul>
+          <li><a href="/slmhub/docs/start-here/">Start Here</a></li>
+          <li><a href="/slmhub/docs/learn/fundamentals/">Fundamentals</a></li>
+          <li><a href="/slmhub/docs/deploy/quickstarts/ollama/">Quickstarts</a></li>
+          <li><a href="/slmhub/docs/learn/tutorials/">Tutorials</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-links">
+        <h3>Resources</h3>
+        <ul>
+           <li><a href="/slmhub/docs/models/generated/directory/">Model Directory</a></li>
+           <li><a href="/slmhub/docs/tools/hardware-picker/">Hardware Picker</a></li>
+           <li><a href="/slmhub/docs/tools/resources/">Tools & Libs</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-links">
+        <h3>Community</h3>
+        <ul>
+          <li><a href="/slmhub/docs/about/">About Us</a></li>
+          <li><a href="/slmhub/docs/community/contributing/">Contributing</a></li>
+          <li><a href="https://github.com/lmfast/slmhub/discussions">Discussions</a></li>
+          <li><a href="/slmhub/docs/community/code-of-conduct/">Code of Conduct</a></li>
+        </ul>
       </div>
     </div>
-
-    <div class="footer-links">
-      <h3>Course</h3>
-      <ul>
-        <li><a href="/slmhub/docs/start-here/">Start Here</a></li>
-        <li><a href="/slmhub/docs/learn/fundamentals/">Fundamentals</a></li>
-        <li><a href="/slmhub/docs/deploy/quickstarts/ollama/">Quickstarts</a></li>
-        <li><a href="/slmhub/docs/learn/tutorials/">Tutorials</a></li>
-      </ul>
-    </div>
-
-    <div class="footer-links">
-      <h3>Resources</h3>
-      <ul>
-         <li><a href="/slmhub/docs/models/generated/directory/">Model Directory</a></li>
-         <li><a href="/slmhub/docs/tools/hardware-picker/">Hardware Picker</a></li>
-         <li><a href="/slmhub/docs/tools/resources/">Tools & Libs</a></li>
-      </ul>
-    </div>
-
-    <div class="footer-links">
-      <h3>Community</h3>
-      <ul>
-        <li><a href="/slmhub/docs/about/">About Us</a></li>
-        <li><a href="/slmhub/docs/community/contributing/">Contributing</a></li>
-        <li><a href="https://github.com/lmfast/slmhub/discussions">Discussions</a></li>
-        <li><a href="/slmhub/docs/community/code-of-conduct/">Code of Conduct</a></li>
-      </ul>
-    </div>
-  </div>
-  
-  <div class="footer-bottom">
-     <!-- Keep standard Starlight footer (Edit link / Pagination) -->
-     <DefaultFooter {...Astro.props} />
   </div>
 </div>
 
 <style>
+  /* Footer wrapper - full bleed with high z-index */
   .custom-footer {
-    margin-top: 6rem;
-    padding-top: 4rem;
-    border-top: 1px solid var(--sl-color-hairline);
-    
-    /* Break out of container to be full width */
-    width: 100vw;
+    margin-top: 5rem;
+    padding: 4rem 0;
     position: relative;
-    left: 50%;
-    right: 50%;
-    margin-left: -50vw;
-    margin-right: -50vw;
+    z-index: 100;
+    background-color: var(--color-footer-bg);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
     
-    background-color: var(--sl-color-bg-nav); /* Add subtle background */
+    /* Full-width breakout */
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    box-sizing: border-box;
   }
 
+  /* Ensure footer covers any sidebar overflow */
+  .custom-footer::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(to bottom, transparent, var(--color-footer-bg));
+  }
+
+  .footer-container {
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: 0 2rem;
+    position: relative;
+    z-index: 101;
+  }
+
+  /* Newsletter Section - Centered and properly sized */
+  .footer-newsletter {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 1rem;
+    padding: 1.5rem 2rem;
+    margin-bottom: 3rem;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
+    max-width: 48rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .footer-newsletter:hover {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
+    border-color: rgba(255, 107, 53, 0.25);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  }
+
+  .newsletter-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .newsletter-text {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-shrink: 0;
+  }
+
+  .newsletter-icon {
+    font-size: 1.5rem;
+    filter: drop-shadow(0 0 12px rgba(255, 107, 53, 0.5));
+  }
+
+  .newsletter-text-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .newsletter-text h3 {
+    margin: 0;
+    font-size: 1.15rem;
+    color: var(--color-footer-heading);
+    font-family: 'Space Grotesk', sans-serif;
+    letter-spacing: -0.01em;
+    font-weight: 700;
+  }
+
+  .newsletter-text p {
+    margin: 0;
+    color: var(--color-footer-text);
+    opacity: 0.65;
+    font-size: 0.85rem;
+  }
+
+  .newsletter-form {
+    display: flex;
+    gap: 0.75rem;
+    flex: 1;
+    max-width: 320px;
+    min-width: 240px;
+  }
+
+  .newsletter-form input {
+    flex: 1;
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 0.6rem;
+    padding: 0.65rem 1rem;
+    color: white;
+    font-size: 0.9rem;
+    outline: none;
+    transition: all 0.2s ease;
+    min-width: 140px;
+  }
+
+  .newsletter-form input::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  .newsletter-form input:focus {
+    border-color: var(--color-primary);
+    background: rgba(0, 0, 0, 0.35);
+    box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.15);
+  }
+
+  .newsletter-form button {
+    background: linear-gradient(135deg, var(--color-primary) 0%, #FF8C5A 100%);
+    color: white;
+    border: none;
+    border-radius: 0.6rem;
+    padding: 0.65rem 1.5rem;
+    font-weight: 600;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .newsletter-form button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(255, 107, 53, 0.35);
+  }
+
+  /* Footer Grid */
   .footer-grid {
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr;
-    gap: 3rem;
-    padding: 0 1rem 3rem;
-    max-width: var(--sl-content-width);
-    margin: 0 auto;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    gap: 2.5rem;
   }
 
   .brand-header {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
-    color: var(--sl-color-text-accent);
+    gap: 0.6rem;
+    margin-bottom: 1.25rem;
+    color: var(--color-footer-heading);
     font-weight: 700;
     font-size: 1.1rem;
+    font-family: 'Space Grotesk', sans-serif;
+  }
+
+  .brand-logo {
+    width: 26px;
+    height: 26px;
+    filter: drop-shadow(0 0 8px rgba(255, 107, 53, 0.35));
   }
 
   .brand-desc {
-    color: var(--sl-color-gray-3);
+    color: var(--color-footer-text);
     font-size: 0.9rem;
-    line-height: 1.5;
+    line-height: 1.6;
     margin-bottom: 1.5rem;
-    max-width: 300px;
+    max-width: 280px;
+    opacity: 0.85;
   }
 
   .copyright {
-    color: var(--sl-color-gray-4);
+    color: var(--color-footer-text);
     font-size: 0.8rem;
+    opacity: 0.5;
+    line-height: 1.5;
   }
 
   .footer-links h3 {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--sl-color-white);
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--color-footer-heading);
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: 1rem;
+    letter-spacing: 0.1em;
+    margin-bottom: 1.25rem;
+    opacity: 0.9;
   }
 
   .footer-links ul {
@@ -121,24 +280,97 @@ const year = new Date().getFullYear();
   }
 
   .footer-links li {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.6rem;
   }
 
   .footer-links a {
-    color: var(--sl-color-gray-3);
+    color: var(--color-footer-link);
     text-decoration: none;
-    font-size: 0.9rem;
-    transition: color 0.2s;
+    font-size: 0.875rem;
+    transition: all 0.2s ease;
+    display: inline-block;
+    opacity: 0.8;
   }
 
   .footer-links a:hover {
-    color: var(--sl-color-text-accent);
+    color: var(--color-footer-link-hover);
+    transform: translateX(3px);
+    opacity: 1;
   }
 
-  @media (max-width: 768px) {
+  /* Responsive */
+  @media (max-width: 50rem) {
+    .footer-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+    
+    .footer-brand {
+      grid-column: span 2;
+      margin-bottom: 1rem;
+    }
+    
+    .newsletter-content {
+      flex-direction: column;
+      text-align: center;
+    }
+    
+    .newsletter-form {
+      max-width: 100%;
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 30rem) {
     .footer-grid {
       grid-template-columns: 1fr;
-      gap: 2rem;
+      gap: 1.5rem;
+    }
+    
+    .footer-brand {
+      grid-column: span 1;
+    }
+    
+    .footer-newsletter {
+      padding: 1.25rem 1.5rem;
+    }
+    
+    .newsletter-form {
+      flex-direction: column;
+    }
+    
+    .newsletter-form button {
+      width: 100%;
     }
   }
 </style>
+
+<script is:inline>
+  // Dynamic Sidebar "Push-Up" Logic
+  // This ensures the sidebar ends exactly where the footer begins.
+  (function() {
+    function updateSidebarPush() {
+      const footer = document.querySelector('.custom-footer');
+      if (!footer) return;
+
+      const footerRect = footer.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      
+      // Calculate how much of the footer is currently visible at the bottom of the screen
+      const visibleHeight = Math.max(0, windowHeight - footerRect.top);
+      
+      // Set the global variable used in custom.css for .sidebar-pane { bottom: ... }
+      document.documentElement.style.setProperty('--footer-visible-height', `${visibleHeight}px`);
+    }
+
+    // Set up listeners
+    window.addEventListener('scroll', updateSidebarPush, { passive: true });
+    window.addEventListener('resize', updateSidebarPush);
+    
+    // Initial call
+    updateSidebarPush();
+    
+    // Also run on a short interval to handle dynamic content loads/hydrations
+    setInterval(updateSidebarPush, 1000);
+  })();
+</script>

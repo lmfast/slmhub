@@ -1,0 +1,85 @@
+---
+title: "Module 5.2: Backpropagation Deep Dive"
+description: "**Goal**: Understand gradient flow through transformer layers  **Time**: 75 minutes  **Concepts Covered**: - Chain rule visualization - Manual gradien..."
+---
+import NotebookWidget from '../../../../../components/NotebookWidget.astro';
+
+<NotebookWidget 
+  notebookPath="notebooks/mathematics/02_backpropagation_deep_dive.ipynb"
+  title="Module 5.2: Backpropagation Deep Dive"
+  description="**Goal**: Understand gradient flow through transformer layers  **Time**: 75 minutes  **Concepts Covered**: - Chain rule visualization - Manual gradien..."
+/>
+
+
+
+**Goal**: Understand gradient flow through transformer layers
+
+**Time**: 75 minutes
+
+**Concepts Covered**:
+- Chain rule visualization
+- Manual gradient computation for attention
+- Gradient flow analysis
+- Vanishing/exploding gradient detection
+- Residual connection gradient paths
+
+## Setup
+
+```python
+!pip install torch transformers accelerate matplotlib seaborn numpy -q
+```
+
+```python
+import torch
+import torch.nn as nn
+import matplotlib.pyplot as plt
+
+# Manual gradient computation example
+x = torch.tensor([2.0], requires_grad=True)
+y = x ** 2
+z = y * 3
+
+# Forward pass
+print(f"x = {x.item()}")
+print(f"y = x² = {y.item()}")
+print(f"z = 3y = {z.item()}")
+
+# Backward pass
+z.backward()
+print(f"\ndz/dx = {x.grad.item()}")  # Should be 6x = 12
+
+# Chain rule: dz/dx = dz/dy * dy/dx = 3 * 2x = 6x
+
+# Gradient flow in transformers
+class SimpleTransformerBlock(nn.Module):
+    def __init__(self, d_model):
+        super().__init__()
+        self.attention = nn.MultiheadAttention(d_model, num_heads=8, batch_first=True)
+        self.norm1 = nn.LayerNorm(d_model)
+        self.norm2 = nn.LayerNorm(d_model)
+        self.ffn = nn.Sequential(
+            nn.Linear(d_model, d_model * 4),
+            nn.GELU(),
+            nn.Linear(d_model * 4, d_model)
+        )
+    
+    def forward(self, x):
+        # Residual connection helps gradient flow
+        attn_out, _ = self.attention(x, x, x)
+        x = self.norm1(x + attn_out)  # Residual
+        
+        ffn_out = self.ffn(x)
+        x = self.norm2(x + ffn_out)  # Residual
+        return x
+
+print("\nResidual connections create direct gradient paths")
+```
+
+## Key Takeaways
+
+✅ **Module Complete**
+
+## Next Steps
+
+Continue to the next module in the course.
+

@@ -1,0 +1,87 @@
+---
+title: "Module 1.9: Training Optimizations"
+description: "**Goal**: Learn memory-efficient training techniques  **Time**: 45 minutes  **Concepts Covered**: - Gradient accumulation - Gradient checkpointing - M..."
+---
+import NotebookWidget from '../../../../../components/NotebookWidget.astro';
+
+<NotebookWidget 
+  notebookPath="notebooks/foundations/09_training_optimizations.ipynb"
+  title="Module 1.9: Training Optimizations"
+  description="**Goal**: Learn memory-efficient training techniques  **Time**: 45 minutes  **Concepts Covered**: - Gradient accumulation - Gradient checkpointing - M..."
+/>
+
+
+
+**Goal**: Learn memory-efficient training techniques
+
+**Time**: 45 minutes
+
+**Concepts Covered**:
+- Gradient accumulation
+- Gradient checkpointing
+- Mixed precision training (AMP)
+- Memory vs compute trade-offs
+
+## Setup
+
+```python
+!pip install torch numpy matplotlib seaborn transformers -q
+```
+
+```python
+import torch
+import torch.nn as nn
+from torch.cuda.amp import autocast, GradScaler
+
+torch.manual_seed(42)
+```
+
+## Gradient Accumulation
+
+```python
+# Simulate gradient accumulation
+def train_with_accumulation(model, data, accumulation_steps=4):
+    optimizer = torch.optim.Adam(model.parameters())
+    optimizer.zero_grad()
+    
+    for i, batch in enumerate(data):
+        loss = model(batch)
+        loss = loss / accumulation_steps  # Scale loss
+        loss.backward()
+        
+        if (i + 1) % accumulation_steps == 0:
+            optimizer.step()
+            optimizer.zero_grad()
+    
+    print(f"Effective batch size: {len(data) * accumulation_steps}")
+```
+
+## Mixed Precision Training
+
+```python
+scaler = GradScaler()
+
+def train_with_amp(model, data):
+    optimizer = torch.optim.Adam(model.parameters())
+    
+    for batch in data:
+        optimizer.zero_grad()
+        
+        with autocast():
+            loss = model(batch)
+        
+        scaler.scale(loss).backward()
+        scaler.step(optimizer)
+        scaler.update()
+    
+    print("Mixed precision training reduces memory by ~50%!")
+```
+
+## Key Takeaways
+
+✅ **Module Complete**
+
+## Next Steps
+
+Continue to the next module in the course.
+

@@ -34,15 +34,59 @@ export default defineConfig({
           items: [
             { label: 'Start Here', link: '/docs/start-here/' },
             {
-              label: 'Learn',
-              autogenerate: { directory: 'docs/learn' },
+              label: 'Section 1: Foundations',
+              autogenerate: { directory: 'docs/learn/foundations' },
+            },
+            {
+              label: 'Section 2: Models',
+              autogenerate: { directory: 'docs/learn/models' },
+            },
+            {
+              label: 'Section 3: Hands-On',
+              autogenerate: { directory: 'docs/learn/hands-on' },
+            },
+            {
+              label: 'Section 4: Advanced Topics',
+              autogenerate: { directory: 'docs/learn/advanced-topics' },
+            },
+            {
+              label: 'Section 5: Mathematics',
+              autogenerate: { directory: 'docs/learn/mathematics' },
+            },
+            {
+              label: 'Section 6: Models Hub',
+              autogenerate: { directory: 'docs/learn/models-hub' },
+            },
+            {
+              label: 'Section 7: Community',
+              autogenerate: { directory: 'docs/learn/community' },
+            },
+            {
+              label: 'Section 9: Advanced Architectures',
+              autogenerate: { directory: 'docs/learn/advanced-architectures' },
+            },
+            {
+              label: 'Section 10: Deployment',
+              autogenerate: { directory: 'docs/learn/deployment' },
+            },
+            {
+              label: 'Section 11: Cutting-Edge',
+              autogenerate: { directory: 'docs/learn/cutting-edge' },
+            },
+            {
+              label: 'Section 12: Projects',
+              autogenerate: { directory: 'docs/learn/projects' },
+            },
+            {
+              label: 'Section 13: About',
+              autogenerate: { directory: 'docs/learn/about' },
             },
             {
               label: 'Deploy',
               autogenerate: { directory: 'docs/deploy' },
             },
             {
-              label: 'Models',
+              label: 'Model Directory',
               autogenerate: { directory: 'docs/models', collapsed: true },
             },
             {
@@ -50,10 +94,6 @@ export default defineConfig({
               autogenerate: { directory: 'docs/tools' },
             },
           ],
-        },
-        {
-          label: 'Foundations',
-          autogenerate: { directory: 'docs/learn/fundamentals' },
         },
         {
           label: 'Community',

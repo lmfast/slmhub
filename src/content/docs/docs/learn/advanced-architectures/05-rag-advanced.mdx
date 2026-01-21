@@ -1,0 +1,99 @@
+---
+title: "Module 9.5: RAG Advanced"
+description: "**Goal**: Implement advanced RAG techniques  **Time**: 90 minutes  **Concepts Covered**: - Multi-hop RAG implementation - GraphRAG with NetworkX - Sel..."
+---
+import NotebookWidget from '../../../../../components/NotebookWidget.astro';
+
+<NotebookWidget 
+  notebookPath="notebooks/advanced_architectures/05_rag_advanced.ipynb"
+  title="Module 9.5: RAG Advanced"
+  description="**Goal**: Implement advanced RAG techniques  **Time**: 90 minutes  **Concepts Covered**: - Multi-hop RAG implementation - GraphRAG with NetworkX - Sel..."
+/>
+
+
+
+**Goal**: Implement advanced RAG techniques
+
+**Time**: 90 minutes
+
+**Concepts Covered**:
+- Multi-hop RAG implementation
+- GraphRAG with NetworkX
+- Self-RAG with retrieval decisions
+- Comparison of RAG variants
+- Long-context RAG
+
+## Setup
+
+```python
+!pip install torch transformers accelerate matplotlib seaborn numpy -q
+```
+
+```python
+import networkx as nx
+from typing import List, Dict
+
+class GraphRAG:
+    """Graph-based RAG using entity relationships"""
+    def __init__(self):
+        self.graph = nx.DiGraph()
+        self.embeddings = {}
+    
+    def add_document(self, doc_id, text, entities):
+        """Add document with entities to graph"""
+        self.graph.add_node(doc_id, text=text)
+        for entity in entities:
+            if entity not in self.graph:
+                self.graph.add_node(entity, type="entity")
+            self.graph.add_edge(doc_id, entity, relation="contains")
+    
+    def retrieve(self, query_entities, top_k=5):
+        """Retrieve documents connected to query entities"""
+        relevant_docs = []
+        for entity in query_entities:
+            if entity in self.graph:
+                # Find documents connected to this entity
+                for doc_id in self.graph.predecessors(entity):
+                    relevant_docs.append(doc_id)
+        return list(set(relevant_docs))[:top_k]
+
+class SelfRAG:
+    """Self-RAG: model decides when to retrieve"""
+    def __init__(self, model, retriever):
+        self.model = model
+        self.retriever = retriever
+    
+    def generate(self, query, max_steps=5):
+        """Generate with retrieval decisions"""
+        context = []
+        for step in range(max_steps):
+            # Model decides: retrieve or continue?
+            decision = self.model.decide_retrieve(query, context)
+            
+            if decision == "retrieve":
+                docs = self.retriever.retrieve(query)
+                context.extend(docs)
+            
+            # Generate next token
+            output = self.model.generate(query, context)
+            
+            if output.endswith("</s>"):
+                break
+        
+        return output
+
+print("Advanced RAG Techniques:")
+print("1. Multi-hop: Chain multiple retrievals")
+print("2. GraphRAG: Use entity relationships")
+print("3. Self-RAG: Model decides when to retrieve")
+print("4. Long-context: Use long-context models")
+```
+
+## Key Takeaways
+
+✅ **Module Complete**
+
+## Next Steps
+
+Continue to the next module in the course.
+

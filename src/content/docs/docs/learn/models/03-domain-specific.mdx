@@ -1,0 +1,61 @@
+---
+title: "Module 2.3: Domain-Specific Models"
+description: "**Goal**: Explore specialized SLMs for code, math, and multilingual tasks  **Time**: 50 minutes  **Concepts Covered**: - Code models: StarCoder2, Code..."
+---
+import NotebookWidget from '../../../../../components/NotebookWidget.astro';
+
+<NotebookWidget 
+  notebookPath="notebooks/models/03_domain_specific.ipynb"
+  title="Module 2.3: Domain-Specific Models"
+  description="**Goal**: Explore specialized SLMs for code, math, and multilingual tasks  **Time**: 50 minutes  **Concepts Covered**: - Code models: StarCoder2, Code..."
+/>
+
+
+
+**Goal**: Explore specialized SLMs for code, math, and multilingual tasks
+
+**Time**: 50 minutes
+
+**Concepts Covered**:
+- Code models: StarCoder2, CodeQwen, DeepSeek-Coder
+- Math models: DeepSeek-Math, MathGPT
+- Multilingual: XGLM, mGPT
+- Build example: code completion API
+
+## Setup
+
+```python
+!pip install torch transformers accelerate -q
+```
+
+```python
+# Domain-specific models
+code_models = {
+    "StarCoder2": "bigcode/starcoder2-3b",
+    "CodeQwen": "Qwen/CodeQwen1.5-7B",
+    "DeepSeek-Coder": "deepseek-ai/deepseek-coder-1.3b",
+}
+
+math_models = {
+    "DeepSeek-Math": "deepseek-ai/deepseek-math-7b",
+}
+
+multilingual_models = {
+    "XGLM": "facebook/xglm-564M",
+    "mGPT": "ai-forever/mGPT",
+}
+
+print("Domain-Specific Models:")
+print(f"Code: {list(code_models.keys())}")
+print(f"Math: {list(math_models.keys())}")
+print(f"Multilingual: {list(multilingual_models.keys())}")
+```
+
+## Key Takeaways
+
+✅ **Module Complete**
+
+## Next Steps
+
+Continue to the next module in the course.
+

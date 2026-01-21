@@ -1,0 +1,100 @@
+---
+title: "Module 6.2: Interactive Model Comparison"
+description: "**Goal**: Build interactive model comparison tool  **Time**: 60 minutes  **Concepts Covered**: - Load model database - Filtering interface (size, lice..."
+---
+import NotebookWidget from '../../../../../components/NotebookWidget.astro';
+
+<NotebookWidget 
+  notebookPath="notebooks/models_hub/02_interactive_model_comparison.ipynb"
+  title="Module 6.2: Interactive Model Comparison"
+  description="**Goal**: Build interactive model comparison tool  **Time**: 60 minutes  **Concepts Covered**: - Load model database - Filtering interface (size, lice..."
+/>
+
+
+
+**Goal**: Build interactive model comparison tool
+
+**Time**: 60 minutes
+
+**Concepts Covered**:
+- Load model database
+- Filtering interface (size, license, benchmarks)
+- Comparison table generation
+- Radar chart visualization
+- Export comparison results
+
+## Setup
+
+```python
+!pip install torch transformers accelerate matplotlib seaborn numpy -q
+```
+
+```python
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+
+# Example model comparison
+models = [
+    {"name": "SmolLM-135M", "params": 135, "mmlu": 25.3, "memory_fp16": 0.5},
+    {"name": "SmolLM-360M", "params": 360, "mmlu": 32.1, "memory_fp16": 1.2},
+    {"name": "SmolLM-1.7B", "params": 1700, "mmlu": 42.5, "memory_fp16": 4.5},
+    {"name": "Phi-3-mini", "params": 3800, "mmlu": 69.0, "memory_fp16": 8.0},
+]
+
+df = pd.DataFrame(models)
+
+def filter_models(df, max_params=None, min_mmlu=None, max_memory=None):
+    """Filter models by criteria"""
+    filtered = df.copy()
+    if max_params:
+        filtered = filtered[filtered["params"] <= max_params]
+    if min_mmlu:
+        filtered = filtered[filtered["mmlu"] >= min_mmlu]
+    if max_memory:
+        filtered = filtered[filtered["memory_fp16"] <= max_memory]
+    return filtered
+
+# Example filtering
+filtered = filter_models(df, max_params=2000, min_mmlu=30)
+print("Filtered Models:")
+print(filtered[["name", "params", "mmlu", "memory_fp16"]])
+
+# Radar chart for comparison
+def plot_radar_chart(models_data):
+    categories = ["MMLU", "Efficiency", "Size"]
+    N = len(categories)
+    
+    angles = [n / float(N) * 2 * np.pi for n in range(N)]
+    angles += angles[:1]  # Complete circle
+    
+    fig, ax = plt.subplots(figsize=(8, 8), subplot_kw=dict(projection='polar'))
+    
+    for model in models_data:
+        values = [
+            model["mmlu"] / 100,  # Normalize
+            1 / (model["memory_fp16"] / 10),  # Inverse for efficiency
+            model["params"] / 5000,  # Normalize
+        ]
+        values += values[:1]
+        ax.plot(angles, values, 'o-', linewidth=2, label=model["name"])
+        ax.fill(angles, values, alpha=0.25)
+    
+    ax.set_xticks(angles[:-1])
+    ax.set_xticklabels(categories)
+    ax.set_ylim(0, 1)
+    ax.legend(loc='upper right', bbox_to_anchor=(1.3, 1.1))
+    plt.title("Model Comparison Radar Chart")
+    plt.show()
+
+print("\nUse plot_radar_chart(models) to visualize comparisons")
+```
+
+## Key Takeaways
+
+✅ **Module Complete**
+
+## Next Steps
+
+Continue to the next module in the course.
+

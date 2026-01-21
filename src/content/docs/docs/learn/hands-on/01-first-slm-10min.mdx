@@ -1,0 +1,271 @@
+---
+title: "🚀 Your First SLM in 10 Minutes"
+description: "**Goal**: Get hands-on with a real Small Language Model in under 10 minutes!  **What you'll do**: - ✅ Load SmolLM-135M (smallest model, runs anywhere)..."
+---
+import NotebookWidget from '../../../../../components/NotebookWidget.astro';
+
+<NotebookWidget 
+  notebookPath="notebooks/hands_on/01_first_slm_10min.ipynb"
+  title="🚀 Your First SLM in 10 Minutes"
+  description="**Goal**: Get hands-on with a real Small Language Model in under 10 minutes!  **What you'll do**: - ✅ Load SmolLM-135M (smallest model, runs anywhere)..."
+/>
+
+
+
+**Goal**: Get hands-on with a real Small Language Model in under 10 minutes!
+
+**What you'll do**:
+- ✅ Load SmolLM-135M (smallest model, runs anywhere)
+- ✅ Generate text
+- ✅ Experiment with sampling parameters
+- ✅ Understand what's happening under the hood
+
+**Hardware**: Runs on CPU or GPU (T4 recommended for speed)
+
+## Step 1: Install Dependencies (1 min)
+
+```python
+!pip install transformers torch accelerate -q
+print("✅ Dependencies installed!")
+```
+
+## Step 2: Check Your Hardware (30 sec)
+
+```python
+import torch
+
+if torch.cuda.is_available():
+    device = "cuda"
+    gpu_name = torch.cuda.get_device_name(0)
+    vram = torch.cuda.get_device_properties(0).total_memory / 1024**3
+    print(f"✅ GPU Detected: {gpu_name}")
+    print(f"   VRAM: {vram:.2f} GB")
+elif torch.backends.mps.is_available():
+    device = "mps"
+    print("✅ Apple Silicon GPU (MPS) Detected")
+else:
+    device = "cpu"
+    print("⚠️ No GPU detected. Using CPU (slower but works!)")
+
+print(f"\nUsing device: {device}")
+```
+
+## Step 3: Load SmolLM-135M (2 min)
+
+**SmolLM-135M** is the smallest model in the SmolLM family:
+- 135 million parameters
+- Trained on 2 trillion tokens
+- Only ~270MB in memory (FP16)
+- Runs on any hardware
+
+```python
+from transformers import AutoModelForCausalLM, AutoTokenizer
+
+model_name = "HuggingFaceTB/SmolLM2-135M"
+
+print(f"Loading {model_name}...")
+
+# Load tokenizer
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+
+# Load model
+model = AutoModelForCausalLM.from_pretrained(
+    model_name,
+    torch_dtype=torch.float16 if device == "cuda" else torch.float32,
+    device_map="auto" if device == "cuda" else None
+)
+
+if device == "cpu":
+    model = model.to(device)
+
+print("✅ Model loaded successfully!")
+print(f"\nModel info:")
+print(f"  Parameters: {sum(p.numel() for p in model.parameters()) / 1e6:.1f}M")
+print(f"  Memory: ~{sum(p.numel() * p.element_size() for p in model.parameters()) / 1024**2:.0f} MB")
+```
+
+## Step 4: Generate Your First Text! (1 min)
+
+Let's generate text with a simple prompt.
+
+```python
+prompt = "The future of AI is"
+
+# Tokenize input
+inputs = tokenizer(prompt, return_tensors="pt").to(device)
+
+# Generate
+print(f"Prompt: '{prompt}'\n")
+print("Generating...")
+
+outputs = model.generate(
+    **inputs,
+    max_new_tokens=50,
+    do_sample=True,
+    temperature=0.7,
+    top_p=0.9
+)
+
+# Decode and print
+generated_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
+print(f"\n✨ Generated:\n{generated_text}")
+```
+
+## Step 5: Experiment with Sampling Parameters (5 min)
+
+Let's see how different parameters affect generation:
+
+### Temperature
+- **Low (0.1-0.5)**: More focused, deterministic
+- **Medium (0.7-0.9)**: Balanced creativity
+- **High (1.0-2.0)**: More random, creative
+
+```python
+def generate_with_params(prompt, temperature=0.7, top_k=50, top_p=0.9, max_tokens=50):
+    """Generate text with custom parameters"""
+    inputs = tokenizer(prompt, return_tensors="pt").to(device)
+    
+    outputs = model.generate(
+        **inputs,
+        max_new_tokens=max_tokens,
+        do_sample=True,
+        temperature=temperature,
+        top_k=top_k,
+        top_p=top_p
+    )
+    
+    return tokenizer.decode(outputs[0], skip_special_tokens=True)
+
+# Test different temperatures
+prompt = "Once upon a time"
+
+print("🌡️ Temperature Comparison:\n")
+
+for temp in [0.3, 0.7, 1.2]:
+    print(f"Temperature = {temp}:")
+    result = generate_with_params(prompt, temperature=temp, max_tokens=30)
+    print(f"  {result}\n")
+```
+
+### Top-k and Top-p (Nucleus Sampling)
+
+- **top_k**: Only consider top k most likely tokens
+- **top_p**: Consider smallest set of tokens with cumulative probability > p
+
+```python
+prompt = "The best way to learn programming is"
+
+print("🎯 Sampling Strategy Comparison:\n")
+
+# Greedy (deterministic)
+inputs = tokenizer(prompt, return_tensors="pt").to(device)
+outputs = model.generate(**inputs, max_new_tokens=30, do_sample=False)
+print("Greedy (deterministic):")
+print(f"  {tokenizer.decode(outputs[0], skip_special_tokens=True)}\n")
+
+# Top-k = 10
+result = generate_with_params(prompt, temperature=0.7, top_k=10, top_p=1.0, max_tokens=30)
+print("Top-k = 10:")
+print(f"  {result}\n")
+
+# Top-p = 0.9 (nucleus)
+result = generate_with_params(prompt, temperature=0.7, top_k=0, top_p=0.9, max_tokens=30)
+print("Top-p = 0.9 (nucleus):")
+print(f"  {result}\n")
+```
+
+## 🎮 Interactive Playground
+
+Try your own prompts and parameters!
+
+```python
+# Customize these!
+YOUR_PROMPT = "Write a haiku about machine learning"
+YOUR_TEMPERATURE = 0.8
+YOUR_TOP_P = 0.9
+YOUR_MAX_TOKENS = 50
+
+result = generate_with_params(
+    YOUR_PROMPT,
+    temperature=YOUR_TEMPERATURE,
+    top_p=YOUR_TOP_P,
+    max_tokens=YOUR_MAX_TOKENS
+)
+
+print(f"Prompt: {YOUR_PROMPT}")
+print(f"\nGenerated:\n{result}")
+```
+
+## 🔍 What's Happening Under the Hood?
+
+Let's peek at the tokenization and generation process.
+
+```python
+text = "Hello, world!"
+
+# Tokenize
+tokens = tokenizer.encode(text)
+print(f"Text: '{text}'")
+print(f"\nToken IDs: {tokens}")
+print(f"Number of tokens: {len(tokens)}")
+
+# Decode back
+print(f"\nToken breakdown:")
+for token_id in tokens:
+    token_text = tokenizer.decode([token_id])
+    print(f"  {token_id:5d} -> '{token_text}'")
+```
+
+```python
+# See model's next-token predictions
+prompt = "The capital of France is"
+inputs = tokenizer(prompt, return_tensors="pt").to(device)
+
+with torch.no_grad():
+    outputs = model(**inputs)
+    logits = outputs.logits[0, -1, :]  # Last token's predictions
+
+# Get top 10 predictions
+top_k = 10
+probs = torch.softmax(logits, dim=-1)
+top_probs, top_indices = torch.topk(probs, top_k)
+
+print(f"Prompt: '{prompt}'")
+print(f"\nTop {top_k} next token predictions:\n")
+for i, (prob, idx) in enumerate(zip(top_probs, top_indices)):
+    token = tokenizer.decode([idx])
+    print(f"  {i+1}. '{token}' (probability: {prob.item():.4f})")
+```
+
+## 🎯 Key Takeaways
+
+✅ **You just ran a 135M parameter language model!**
+
+✅ **Sampling parameters matter**:
+- Temperature controls randomness
+- top_k/top_p control diversity
+- Greedy = deterministic, sampling = creative
+
+✅ **Tokenization is key**:
+- Text → Token IDs → Model → Token IDs → Text
+- Each token has a probability distribution
+
+✅ **SmolLM-135M is tiny but capable**:
+- Only 270MB in memory
+- Trained on 2T tokens
+- Runs on any hardware
+
+## 🚀 Next Steps
+
+1. **Try larger models**: SmolLM-360M, SmolLM-1.7B
+2. **Learn fine-tuning**: Module 3.2 (customize for your task)
+3. **Build RAG**: Module 3.5 (add external knowledge)
+4. **Deploy**: Module 3.7 (production serving)
+
+## 💡 Challenges
+
+1. Generate a story that starts with "In a world where AI..."
+2. Find the best temperature for creative writing vs factual Q&A
+3. Compare SmolLM-135M with GPT-2 (same size, different training)
+4. Build a simple chatbot loop (hint: append user input to conversation history)
+

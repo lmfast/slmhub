@@ -1,0 +1,156 @@
+---
+title: "Module 10.2: Monitoring & Observability"
+description: "**Goal**: Set up comprehensive monitoring and observability for production deployments  **Time**: 90 minutes  **Concepts Covered**: - Prometheus metri..."
+---
+import NotebookWidget from '../../../../../components/NotebookWidget.astro';
+
+<NotebookWidget 
+  notebookPath="notebooks/deployment/02_monitoring_observability.ipynb"
+  title="Module 10.2: Monitoring & Observability"
+  description="**Goal**: Set up comprehensive monitoring and observability for production deployments  **Time**: 90 minutes  **Concepts Covered**: - Prometheus metri..."
+/>
+
+
+
+**Goal**: Set up comprehensive monitoring and observability for production deployments
+
+**Time**: 90 minutes
+
+**Concepts Covered**:
+- Prometheus metrics integration
+- Grafana dashboard setup
+- Structured logging with structlog
+- Latency tracking (p50, p90, p99)
+- Error rate monitoring
+- GPU utilization tracking
+
+## Setup
+
+```python
+!pip install torch transformers accelerate matplotlib seaborn numpy -q
+```
+
+```python
+# Prometheus Metrics Integration
+from prometheus_client import Counter, Histogram, Gauge, start_http_server
+import time
+
+# Define metrics
+request_count = Counter('inference_requests_total', 'Total inference requests')
+request_latency = Histogram('inference_latency_seconds', 'Inference latency')
+gpu_utilization = Gauge('gpu_utilization_percent', 'GPU utilization percentage')
+error_count = Counter('inference_errors_total', 'Total inference errors')
+
+def record_inference(latency_seconds, success=True):
+    """Record inference metrics"""
+    request_count.inc()
+    request_latency.observe(latency_seconds)
+    
+    if not success:
+        error_count.inc()
+    
+    # Simulate GPU utilization
+    gpu_utilization.set(85.5)
+
+# Start Prometheus metrics server
+# start_http_server(8000)
+
+print("Prometheus metrics defined:")
+print("- request_count: Total requests")
+print("- request_latency: Latency histogram")
+print("- gpu_utilization: GPU usage")
+print("- error_count: Error tracking")
+```
+
+```python
+# Structured Logging with structlog
+import structlog
+import logging
+
+# Configure structlog
+structlog.configure(
+    processors=[
+        structlog.stdlib.filter_by_level,
+        structlog.stdlib.add_logger_name,
+        structlog.stdlib.add_log_level,
+        structlog.stdlib.PositionalArgumentsFormatter(),
+        structlog.processors.TimeStamper(fmt="iso"),
+        structlog.processors.StackInfoRenderer(),
+        structlog.processors.format_exc_info,
+        structlog.processors.UnicodeDecoder(),
+        structlog.processors.JSONRenderer()
+    ],
+    context_class=dict,
+    logger_factory=structlog.stdlib.LoggerFactory(),
+    wrapper_class=structlog.stdlib.BoundLogger,
+    cache_logger_on_first_use=True,
+)
+
+logger = structlog.get_logger()
+
+# Example logging
+logger.info("inference_request", 
+            model="SmolLM-1.7B",
+            prompt_length=50,
+            max_tokens=100,
+            user_id="user123")
+
+logger.error("inference_failed",
+             error="CUDA out of memory",
+             model="SmolLM-1.7B",
+             batch_size=8)
+
+print("Structured logging provides:")
+print("- JSON-formatted logs")
+print("- Contextual information")
+print("- Easy parsing and analysis")
+print("- Better debugging")
+```
+
+```python
+# Latency Percentiles
+import numpy as np
+from collections import deque
+
+class LatencyTracker:
+    def __init__(self, window_size=1000):
+        self.latencies = deque(maxlen=window_size)
+    
+    def record(self, latency_ms):
+        self.latencies.append(latency_ms)
+    
+    def get_percentiles(self):
+        if not self.latencies:
+            return {}
+        
+        latencies_array = np.array(self.latencies)
+        return {
+            "p50": np.percentile(latencies_array, 50),
+            "p90": np.percentile(latencies_array, 90),
+            "p95": np.percentile(latencies_array, 95),
+            "p99": np.percentile(latencies_array, 99),
+            "mean": np.mean(latencies_array),
+            "max": np.max(latencies_array),
+        }
+
+# Example usage
+tracker = LatencyTracker()
+for _ in range(100):
+    # Simulate latency measurements
+    latency = np.random.lognormal(mean=3, sigma=0.5)  # ms
+    tracker.record(latency)
+
+percentiles = tracker.get_percentiles()
+print("Latency Percentiles (ms):")
+for key, value in percentiles.items():
+    print(f"  {key}: {value:.2f}")
+```
+
+## Key Takeaways
+
+✅ **Module Complete**
+
+## Next Steps
+
+Continue to the next module in the course.
+

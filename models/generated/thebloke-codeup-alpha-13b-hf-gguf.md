@@ -64,7 +64,7 @@ ollama run codeup-alpha-13b-hf-gguf
 | **Library** | transformers |
 | **License** | unknown |
 | **Last modified** | 2023-09-27T12:47:49+00:00 |
-| **Downloads** | 123 |
+| **Downloads** | 113 |
 | **Likes** | 2 |
 
 ## Links

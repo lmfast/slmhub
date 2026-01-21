@@ -128,16 +128,14 @@ ollama run {{ ollama_hint }}
 
 DIRECTORY_TEMPLATE = """---
 title: Model Directory
-description: Auto-updated model directory from Hugging Face Hub (discovery-focused).
+description: "Auto-updated model directory from Hugging Face Hub (discovery-focused)."
 ---
 
-# Model Directory
-
-This directory is **auto-updated**. It’s meant for **discovery** and fast decisions, not competitive rankings.
+This directory is **auto-updated**. It's meant for **discovery** and fast decisions, not competitive rankings.
 
 ## Featured
 
-{% for m in featured %}
+{% for m in featured -%}
 - [{{ m.display_name }}](./{{ m.slug }}.md) — {{ m.author }}
 {% endfor %}
 
@@ -145,9 +143,9 @@ This directory is **auto-updated**. It’s meant for **discovery** and fast deci
 
 | Model | Author | Task | License | Last modified |
 |---|---|---|---|---|
-{% for m in discovered %}
+{%- for m in discovered %}
 | [{{ m.display_name }}](./{{ m.slug }}.md) | {{ m.author }} | {{ m.pipeline_tag }} | {{ m.license }} | {{ m.last_modified_short }} |
-{% endfor %}
+{%- endfor %}
 
 ---
 

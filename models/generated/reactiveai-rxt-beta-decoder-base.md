@@ -63,8 +63,8 @@ ollama run rxt-beta-decoder-base
 | **Pipeline tag** | text-generation |
 | **Library** | — |
 | **License** | unknown |
-| **Last modified** | 2026-01-19T13:37:14+00:00 |
-| **Downloads** | 132 |
+| **Last modified** | 2026-01-21T12:21:04+00:00 |
+| **Downloads** | 88 |
 | **Likes** | 0 |
 
 ## Links

@@ -1,0 +1,73 @@
+---
+title: "Module 5.5: Information Theory Basics"
+description: "**Goal**: Understand entropy, KL divergence, and their role in training  **Time**: 60 minutes  **Concepts Covered**: - Entropy calculation and visuali..."
+---
+import NotebookWidget from '../../../../../components/NotebookWidget.astro';
+
+<NotebookWidget 
+  notebookPath="notebooks/mathematics/05_information_theory_basics.ipynb"
+  title="Module 5.5: Information Theory Basics"
+  description="**Goal**: Understand entropy, KL divergence, and their role in training  **Time**: 60 minutes  **Concepts Covered**: - Entropy calculation and visuali..."
+/>
+
+
+
+**Goal**: Understand entropy, KL divergence, and their role in training
+
+**Time**: 60 minutes
+
+**Concepts Covered**:
+- Entropy calculation and visualization
+- KL divergence implementation
+- Temperature sampling effect on entropy
+- DPO KL penalty visualization
+- Distillation loss with KL
+
+## Setup
+
+```python
+!pip install torch transformers accelerate matplotlib seaborn numpy -q
+```
+
+```python
+import torch
+import torch.nn.functional as F
+import numpy as np
+import matplotlib.pyplot as plt
+
+def entropy(probs):
+    """Calculate Shannon entropy"""
+    # Avoid log(0)
+    probs = probs + 1e-10
+    return -(probs * torch.log(probs)).sum(dim=-1)
+
+def kl_divergence(p, q):
+    """KL divergence: KL(P || Q)"""
+    p = p + 1e-10
+    q = q + 1e-10
+    return (p * torch.log(p / q)).sum(dim=-1)
+
+# Example: Temperature effect on entropy
+logits = torch.randn(1, 10)  # 10 classes
+
+temperatures = [0.1, 0.5, 1.0, 2.0, 5.0]
+entropies = []
+
+for temp in temperatures:
+    probs = F.softmax(logits / temp, dim=-1)
+    ent = entropy(probs).item()
+    entropies.append(ent)
+    print(f"Temperature {temp:.1f}: Entropy = {ent:.4f}")
+
+print("\nHigher temperature → Higher entropy → More diverse sampling")
+print("Lower temperature → Lower entropy → More deterministic")
+```
+
+## Key Takeaways
+
+✅ **Module Complete**
+
+## Next Steps
+
+Continue to the next module in the course.
+

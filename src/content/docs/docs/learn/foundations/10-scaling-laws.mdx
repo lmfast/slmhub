@@ -1,0 +1,60 @@
+---
+title: "Module 1.10: Scaling Laws"
+description: "**Goal**: Understand model scaling and compute budgets  **Time**: 40 minutes  **Concepts Covered**: - Chinchilla scaling formula - Compute budget calc..."
+---
+import NotebookWidget from '../../../../../components/NotebookWidget.astro';
+
+<NotebookWidget 
+  notebookPath="notebooks/foundations/10_scaling_laws.ipynb"
+  title="Module 1.10: Scaling Laws"
+  description="**Goal**: Understand model scaling and compute budgets  **Time**: 40 minutes  **Concepts Covered**: - Chinchilla scaling formula - Compute budget calc..."
+/>
+
+
+
+**Goal**: Understand model scaling and compute budgets
+
+**Time**: 40 minutes
+
+**Concepts Covered**:
+- Chinchilla scaling formula
+- Compute budget calculator
+- Training time estimation
+- Interactive calculator
+
+## Setup
+
+```python
+!pip install torch numpy matplotlib seaborn transformers -q
+```
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Chinchilla scaling: optimal model size and data size
+def chinchilla_optimal(N_params, C_total):
+    """
+    N_params: Number of parameters
+    C_total: Total compute budget (FLOPs)
+    Returns: Optimal data size (tokens)
+    """
+    # Chinchilla formula: D_opt = 20 * N
+    D_opt = 20 * N_params
+    return D_opt
+
+# Example
+model_sizes = [135e6, 360e6, 1.7e9, 3e9, 7e9]
+for N in model_sizes:
+    D = chinchilla_optimal(N, None)
+    print(f"Model {N/1e6:.0f}M: Optimal data = {D/1e9:.1f}B tokens")
+```
+
+## Key Takeaways
+
+✅ **Module Complete**
+
+## Next Steps
+
+Continue to the next module in the course.
+

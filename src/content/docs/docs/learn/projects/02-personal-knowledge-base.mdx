@@ -1,0 +1,156 @@
+---
+title: "Module 12.2: Personal Knowledge Base (RAG)"
+description: "**Goal**: Build a complete RAG system for personal knowledge management  **Time**: 120 minutes  **Concepts Covered**: - Document loading and chunking ..."
+---
+import NotebookWidget from '../../../../../components/NotebookWidget.astro';
+
+<NotebookWidget 
+  notebookPath="notebooks/projects/02_personal_knowledge_base.ipynb"
+  title="Module 12.2: Personal Knowledge Base (RAG)"
+  description="**Goal**: Build a complete RAG system for personal knowledge management  **Time**: 120 minutes  **Concepts Covered**: - Document loading and chunking ..."
+/>
+
+
+
+**Goal**: Build a complete RAG system for personal knowledge management
+
+**Time**: 120 minutes
+
+**Concepts Covered**:
+- Document loading and chunking
+- Embedding generation
+- FAISS vector store setup
+- Multi-hop RAG implementation
+- Query interface
+- Performance optimization
+
+## Setup
+
+```python
+!pip install torch transformers accelerate matplotlib seaborn numpy -q
+```
+
+```python
+# Personal Knowledge Base RAG System
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain.embeddings import HuggingFaceEmbeddings
+import faiss
+import numpy as np
+
+class PersonalKnowledgeBase:
+    def __init__(self, embedding_model="sentence-transformers/all-MiniLM-L6-v2"):
+        self.text_splitter = RecursiveCharacterTextSplitter(
+            chunk_size=500,
+            chunk_overlap=50,
+        )
+        self.embeddings = HuggingFaceEmbeddings(model_name=embedding_model)
+        self.vector_store = None
+        self.documents = []
+    
+    def add_documents(self, texts):
+        """Add documents to knowledge base"""
+        # Chunk documents
+        chunks = []
+        for text in texts:
+            chunks.extend(self.text_splitter.split_text(text))
+        
+        # Generate embeddings
+        chunk_embeddings = self.embeddings.embed_documents(chunks)
+        
+        # Create FAISS index
+        dimension = len(chunk_embeddings[0])
+        index = faiss.IndexFlatL2(dimension)
+        
+        # Add embeddings
+        embeddings_array = np.array(chunk_embeddings).astype('float32')
+        index.add(embeddings_array)
+        
+        self.vector_store = index
+        self.documents = chunks
+        
+        print(f"Added {len(chunks)} chunks to knowledge base")
+    
+    def search(self, query, top_k=5):
+        """Search knowledge base"""
+        # Embed query
+        query_embedding = self.embeddings.embed_query(query)
+        query_vector = np.array([query_embedding]).astype('float32')
+        
+        # Search
+        distances, indices = self.vector_store.search(query_vector, top_k)
+        
+        # Retrieve documents
+        results = [self.documents[idx] for idx in indices[0]]
+        
+        return results
+
+# Example usage
+kb = PersonalKnowledgeBase()
+documents = [
+    "Python is a programming language...",
+    "Machine learning uses algorithms...",
+    # Add more documents
+]
+
+# kb.add_documents(documents)
+# results = kb.search("What is Python?")
+
+print("Personal Knowledge Base:")
+print("- Document chunking")
+print("- Embedding generation")
+print("- FAISS vector search")
+print("- Query interface")
+```
+
+```python
+# Multi-Hop RAG
+class MultiHopRAG:
+    def __init__(self, knowledge_base, llm):
+        self.kb = knowledge_base
+        self.llm = llm
+    
+    def query(self, question, max_hops=3):
+        """Multi-hop reasoning with RAG"""
+        context = []
+        current_query = question
+        
+        for hop in range(max_hops):
+            # Retrieve relevant documents
+            docs = self.kb.search(current_query, top_k=3)
+            context.extend(docs)
+            
+            # Generate refined query or answer
+            if hop < max_hops - 1:
+                # Refine query for next hop
+                refinement_prompt = f"""
+Question: {question}
+Context so far: {''.join(context[-3:])}
+What additional information do we need to answer this question?
+"""
+                current_query = self.llm.generate(refinement_prompt)
+            else:
+                # Final answer
+                answer_prompt = f"""
+Question: {question}
+Context: {''.join(context)}
+Answer:
+"""
+                answer = self.llm.generate(answer_prompt)
+                return answer
+        
+        return "Unable to answer"
+
+print("Multi-Hop RAG:")
+print("- Iterative retrieval")
+print("- Query refinement")
+print("- Better for complex questions")
+```
+
+## Key Takeaways
+
+✅ **Module Complete**
+
+## Next Steps
+
+Continue to the next module in the course.
+

@@ -1,0 +1,146 @@
+---
+title: "Module 11.3: Test-Time Compute Scaling"
+description: "**Goal**: Implement test-time compute scaling techniques for better quality  **Time**: 90 minutes  **Concepts Covered**: - Chain-of-thought prompting ..."
+---
+import NotebookWidget from '../../../../../components/NotebookWidget.astro';
+
+<NotebookWidget 
+  notebookPath="notebooks/cutting_edge/03_test_time_compute_scaling.ipynb"
+  title="Module 11.3: Test-Time Compute Scaling"
+  description="**Goal**: Implement test-time compute scaling techniques for better quality  **Time**: 90 minutes  **Concepts Covered**: - Chain-of-thought prompting ..."
+/>
+
+
+
+**Goal**: Implement test-time compute scaling techniques for better quality
+
+**Time**: 90 minutes
+
+**Concepts Covered**:
+- Chain-of-thought prompting
+- Self-consistency (majority voting)
+- Best-of-N sampling
+- Interactive reasoning visualization
+- Quality vs compute trade-offs
+
+## Setup
+
+```python
+!pip install torch transformers accelerate matplotlib seaborn numpy -q
+```
+
+```python
+# Chain-of-Thought Prompting
+def chain_of_thought_prompt(question):
+    """Generate chain-of-thought prompt"""
+    return f"""{question}
+
+Let's think step by step:
+1. First, I need to understand what is being asked.
+2. Then, I'll break down the problem into smaller parts.
+3. I'll solve each part systematically.
+4. Finally, I'll combine the solutions.
+
+Solution: """
+
+# Example
+question = "If a train travels 60 miles in 1 hour, how far will it travel in 3 hours?"
+cot_prompt = chain_of_thought_prompt(question)
+
+print("Chain-of-Thought Prompt:")
+print(cot_prompt)
+```
+
+```python
+# Self-Consistency (Majority Voting)
+import collections
+
+def self_consistency_generate(model, tokenizer, prompt, num_samples=5):
+    """Generate multiple samples and use majority voting"""
+    samples = []
+    
+    for _ in range(num_samples):
+        inputs = tokenizer(prompt, return_tensors="pt")
+        outputs = model.generate(
+            **inputs,
+            max_new_tokens=100,
+            do_sample=True,
+            temperature=0.7,
+            num_return_sequences=1,
+        )
+        response = tokenizer.decode(outputs[0], skip_special_tokens=True)
+        samples.append(response)
+    
+    # Extract answers (simplified - in practice, parse structured output)
+    answers = [sample.split("Answer:")[-1].strip() for sample in samples]
+    
+    # Majority voting
+    answer_counts = collections.Counter(answers)
+    majority_answer = answer_counts.most_common(1)[0][0]
+    confidence = answer_counts[majority_answer] / len(answers)
+    
+    return {
+        "answer": majority_answer,
+        "confidence": confidence,
+        "all_samples": samples,
+        "vote_distribution": dict(answer_counts)
+    }
+
+print("Self-Consistency:")
+print("- Generate multiple samples")
+print("- Use majority voting for final answer")
+print("- Higher confidence with more agreement")
+```
+
+```python
+# Best-of-N Sampling
+def best_of_n_sampling(model, tokenizer, prompt, n=10, scorer=None):
+    """Generate N samples and return the best one"""
+    samples = []
+    scores = []
+    
+    for _ in range(n):
+        inputs = tokenizer(prompt, return_tensors="pt")
+        outputs = model.generate(
+            **inputs,
+            max_new_tokens=100,
+            do_sample=True,
+            temperature=0.8,
+        )
+        response = tokenizer.decode(outputs[0], skip_special_tokens=True)
+        samples.append(response)
+        
+        # Score the response (e.g., using a reward model)
+        if scorer:
+            score = scorer(response)
+        else:
+            # Default: use length as proxy (longer = better for some tasks)
+            score = len(response)
+        
+        scores.append(score)
+    
+    # Return best sample
+    best_idx = scores.index(max(scores))
+    
+    return {
+        "best_sample": samples[best_idx],
+        "best_score": scores[best_idx],
+        "all_samples": samples,
+        "all_scores": scores,
+    }
+
+print("Best-of-N Sampling:")
+print("- Generate N samples")
+print("- Score each sample")
+print("- Return the best one")
+print("- Quality improves with N, but compute increases")
+```
+
+## Key Takeaways
+
+✅ **Module Complete**
+
+## Next Steps
+
+Continue to the next module in the course.
+

@@ -1,0 +1,83 @@
+---
+title: "Module 4.4: MCP Protocol"
+description: "**Goal**: Build MCP server and client for model integration  **Time**: 60 minutes  **Concepts Covered**: - Build MCP server (filesystem example) - Cre..."
+---
+import NotebookWidget from '../../../../../components/NotebookWidget.astro';
+
+<NotebookWidget 
+  notebookPath="notebooks/advanced_topics/04_mcp_protocol.ipynb"
+  title="Module 4.4: MCP Protocol"
+  description="**Goal**: Build MCP server and client for model integration  **Time**: 60 minutes  **Concepts Covered**: - Build MCP server (filesystem example) - Cre..."
+/>
+
+
+
+**Goal**: Build MCP server and client for model integration
+
+**Time**: 60 minutes
+
+**Concepts Covered**:
+- Build MCP server (filesystem example)
+- Create MCP client for model integration
+- Implement tool calling with MCP
+- Database access example
+- API integration example
+
+## Setup
+
+```python
+!pip install torch transformers accelerate matplotlib seaborn numpy -q
+```
+
+```python
+# MCP (Model Context Protocol) allows models to interact with external tools
+
+# Example: Simple MCP server structure
+class MCPServer:
+    """Minimal MCP server implementation"""
+    def __init__(self):
+        self.tools = {}
+    
+    def register_tool(self, name, func, description):
+        self.tools[name] = {
+            "function": func,
+            "description": description
+        }
+    
+    def call_tool(self, tool_name, args):
+        if tool_name in self.tools:
+            return self.tools[tool_name]["function"](**args)
+        else:
+            raise ValueError(f"Tool {tool_name} not found")
+    
+    def list_tools(self):
+        return {name: info["description"] for name, info in self.tools.items()}
+
+# Example tools
+def read_file(path):
+    with open(path, 'r') as f:
+        return f.read()
+
+def write_file(path, content):
+    with open(path, 'w') as f:
+        f.write(content)
+    return f"Written {len(content)} characters to {path}"
+
+# Create server
+server = MCPServer()
+server.register_tool("read_file", read_file, "Read a file from the filesystem")
+server.register_tool("write_file", write_file, "Write content to a file")
+
+print("MCP Tools available:")
+for name, desc in server.list_tools().items():
+    print(f"  {name}: {desc}")
+```
+
+## Key Takeaways
+
+✅ **Module Complete**
+
+## Next Steps
+
+Continue to the next module in the course.
+

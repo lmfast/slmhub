@@ -1,0 +1,107 @@
+---
+title: "Module 11.5: Emergent Abilities & Scaling"
+description: "**Goal**: Understand and measure emergent abilities through scaling  **Time**: 75 minutes  **Concepts Covered**: - Measuring emergent abilities - Chin..."
+---
+import NotebookWidget from '../../../../../components/NotebookWidget.astro';
+
+<NotebookWidget 
+  notebookPath="notebooks/cutting_edge/05_emergent_abilities_scaling.ipynb"
+  title="Module 11.5: Emergent Abilities & Scaling"
+  description="**Goal**: Understand and measure emergent abilities through scaling  **Time**: 75 minutes  **Concepts Covered**: - Measuring emergent abilities - Chin..."
+/>
+
+
+
+**Goal**: Understand and measure emergent abilities through scaling
+
+**Time**: 75 minutes
+
+**Concepts Covered**:
+- Measuring emergent abilities
+- Chinchilla scaling law implementation
+- Optimal compute allocation
+- Model size vs training data trade-offs
+- Emergence visualization across scales
+
+## Setup
+
+```python
+!pip install torch transformers accelerate matplotlib seaborn numpy -q
+```
+
+```python
+# Chinchilla Scaling Law
+import numpy as np
+import matplotlib.pyplot as plt
+
+def chinchilla_optimal_allocation(compute_budget):
+    """Calculate optimal model size and training tokens using Chinchilla law"""
+    # Chinchilla: N_opt = 0.6 * C^0.5, D_opt = 20 * C^0.5
+    # Where C is compute in FLOPs, N is parameters, D is tokens
+    
+    # Convert compute to FLOPs (approximate)
+    # 1 training step ≈ 6 * N * D FLOPs
+    
+    # Optimal allocation
+    N_opt = 0.6 * (compute_budget ** 0.5)  # Parameters
+    D_opt = 20 * (compute_budget ** 0.5)   # Tokens
+    
+    return {
+        "parameters": int(N_opt),
+        "tokens": int(D_opt),
+        "compute_budget": compute_budget,
+    }
+
+# Example
+compute_budgets = [1e18, 1e19, 1e20, 1e21]  # FLOPs
+
+print("Chinchilla Optimal Allocation:")
+for C in compute_budgets:
+    allocation = chinchilla_optimal_allocation(C)
+    print(f"\nCompute: {C:.1e} FLOPs")
+    print(f"  Optimal parameters: {allocation['parameters']:.2e}")
+    print(f"  Optimal tokens: {allocation['tokens']:.2e}")
+```
+
+```python
+# Measuring Emergent Abilities
+def measure_emergent_ability(model_sizes, benchmark_scores, threshold=0.5):
+    """Measure when abilities emerge (cross threshold)"""
+    emergence_points = {}
+    
+    for benchmark_name, scores in benchmark_scores.items():
+        # Find when score crosses threshold
+        for i, (size, score) in enumerate(zip(model_sizes, scores)):
+            if score >= threshold and (i == 0 or scores[i-1] < threshold):
+                emergence_points[benchmark_name] = {
+                    "model_size": size,
+                    "score": score,
+                    "index": i
+                }
+                break
+    
+    return emergence_points
+
+# Example data
+model_sizes = [135e6, 360e6, 1.7e9, 3.8e9, 7e9]  # Parameters
+benchmark_scores = {
+    "MMLU": [0.25, 0.32, 0.42, 0.55, 0.68],
+    "GSM8K": [0.10, 0.18, 0.35, 0.52, 0.75],
+    "HumanEval": [0.05, 0.12, 0.28, 0.45, 0.62],
+}
+
+emergence = measure_emergent_ability(model_sizes, benchmark_scores, threshold=0.5)
+
+print("Emergent Abilities (crossing 50% threshold):")
+for benchmark, info in emergence.items():
+    print(f"  {benchmark}: {info['model_size']/1e9:.2f}B parameters (score: {info['score']:.2f})")
+```
+
+## Key Takeaways
+
+✅ **Module Complete**
+
+## Next Steps
+
+Continue to the next module in the course.
+

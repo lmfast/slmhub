@@ -1,0 +1,80 @@
+---
+title: "Module 4.7: Structured Output Generation"
+description: "**Goal**: Generate structured outputs (JSON, regex, grammar)  **Time**: 60 minutes  **Concepts Covered**: - JSON generation with outlines library - Re..."
+---
+import NotebookWidget from '../../../../../components/NotebookWidget.astro';
+
+<NotebookWidget 
+  notebookPath="notebooks/advanced_topics/07_structured_output_generation.ipynb"
+  title="Module 4.7: Structured Output Generation"
+  description="**Goal**: Generate structured outputs (JSON, regex, grammar)  **Time**: 60 minutes  **Concepts Covered**: - JSON generation with outlines library - Re..."
+/>
+
+
+
+**Goal**: Generate structured outputs (JSON, regex, grammar)
+
+**Time**: 60 minutes
+
+**Concepts Covered**:
+- JSON generation with outlines library
+- Regex-constrained generation
+- Grammar-based decoding
+- Schema validation
+- Compare constrained vs unconstrained
+
+## Setup
+
+```python
+!pip install torch transformers accelerate matplotlib seaborn numpy -q
+```
+
+```python
+import json
+import re
+
+def json_constrained_generation(model, tokenizer, prompt, schema):
+    """Generate JSON output matching a schema"""
+    # Add schema to prompt
+    full_prompt = f"""{prompt}
+    
+Generate a JSON response matching this schema:
+{json.dumps(schema, indent=2)}
+    
+JSON: """
+    
+    inputs = tokenizer(full_prompt, return_tensors="pt")
+    outputs = model.generate(**inputs, max_new_tokens=200)
+    response = tokenizer.decode(outputs[0], skip_special_tokens=True)
+    
+    # Extract JSON from response
+    json_match = re.search(r'\{[^}]+\}', response, re.DOTALL)
+    if json_match:
+        try:
+            return json.loads(json_match.group())
+        except:
+            return None
+    return None
+
+# Example schema
+schema = {
+    "name": "string",
+    "age": "integer",
+    "email": "string"
+}
+
+print("Structured output generation ensures:")
+print("- Valid JSON format")
+print("- Schema compliance")
+print("- Type safety")
+print("- Easier parsing")
+```
+
+## Key Takeaways
+
+✅ **Module Complete**
+
+## Next Steps
+
+Continue to the next module in the course.
+

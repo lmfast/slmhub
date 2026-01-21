@@ -1,0 +1,75 @@
+---
+title: "Module 7.7: GitHub Discussions"
+description: "**Goal**: Engage with community through GitHub Discussions  **Time**: 30 minutes  **Concepts Covered**: - Discussion categorization - Q&A bot examples..."
+---
+import NotebookWidget from '../../../../../components/NotebookWidget.astro';
+
+<NotebookWidget 
+  notebookPath="notebooks/community/07_github_discussions.ipynb"
+  title="Module 7.7: GitHub Discussions"
+  description="**Goal**: Engage with community through GitHub Discussions  **Time**: 30 minutes  **Concepts Covered**: - Discussion categorization - Q&A bot examples..."
+/>
+
+
+
+**Goal**: Engage with community through GitHub Discussions
+
+**Time**: 30 minutes
+
+**Concepts Covered**:
+- Discussion categorization
+- Q&A bot examples
+- Show-and-tell showcase
+- Poll creation tool
+- Discussion analytics
+
+## Setup
+
+```python
+!pip install torch transformers accelerate matplotlib seaborn numpy -q
+```
+
+```python
+# GitHub Discussions structure
+
+discussion_categories = {
+    "general": "General discussions",
+    "q-and-a": "Questions and answers",
+    "ideas": "Feature ideas and suggestions",
+    "show-and-tell": "Project showcases",
+    "announcements": "Community announcements",
+}
+
+def create_poll_template(question, options):
+    """Create poll template for discussions"""
+    poll_markdown = f"""## {question}
+    
+Please react with:
+- 👍 Option 1: {options[0]}
+- ❤️ Option 2: {options[1]}
+- 🎉 Option 3: {options[2] if len(options) > 2 else 'Other'}
+"""
+    return poll_markdown
+
+# Example poll
+poll = create_poll_template(
+    "Which SLM architecture interests you most?",
+    ["Transformer", "Mamba", "Hybrid"]
+)
+
+print("GitHub Discussion Categories:")
+for category, description in discussion_categories.items():
+    print(f"  {category}: {description}")
+
+print("\nExample Poll:")
+print(poll)
+```
+
+## Key Takeaways
+
+✅ **Module Complete**
+
+## Next Steps
+
+Continue to the next module in the course.
+

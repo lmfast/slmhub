@@ -1,0 +1,52 @@
+---
+title: "Module 3.9: Evaluation & Monitoring"
+description: "**Goal**: Monitor production SLM deployments  **Time**: 40 minutes  **Concepts Covered**: - Production metrics (latency, throughput, error rate) - Gra..."
+---
+import NotebookWidget from '../../../../../components/NotebookWidget.astro';
+
+<NotebookWidget 
+  notebookPath="notebooks/hands_on/09_evaluation_monitoring.ipynb"
+  title="Module 3.9: Evaluation & Monitoring"
+  description="**Goal**: Monitor production SLM deployments  **Time**: 40 minutes  **Concepts Covered**: - Production metrics (latency, throughput, error rate) - Gra..."
+/>
+
+
+
+**Goal**: Monitor production SLM deployments
+
+**Time**: 40 minutes
+
+**Concepts Covered**:
+- Production metrics (latency, throughput, error rate)
+- Grafana + Prometheus setup
+- A/B testing framework
+- Weights & Biases integration
+
+## Setup
+
+```python
+!pip install torch transformers accelerate -q
+```
+
+```python
+# Production metrics
+metrics = {
+    "latency": "Time per request (ms)",
+    "throughput": "Requests per second",
+    "error_rate": "Percentage of failed requests",
+    "token_per_sec": "Generation speed",
+}
+
+print("Key Production Metrics:")
+for metric, desc in metrics.items():
+    print(f"  {metric}: {desc}")
+```
+
+## Key Takeaways
+
+✅ **Module Complete**
+
+## Next Steps
+
+Continue to the next module in the course.
+

@@ -1,0 +1,66 @@
+---
+title: "Module 7.1: Discord Server"
+description: "**Goal**: Explore community structure and bot integration  **Time**: 30 minutes  **Concepts Covered**: - Community structure overview - Channel descri..."
+---
+import NotebookWidget from '../../../../../components/NotebookWidget.astro';
+
+<NotebookWidget 
+  notebookPath="notebooks/community/01_discord_server.ipynb"
+  title="Module 7.1: Discord Server"
+  description="**Goal**: Explore community structure and bot integration  **Time**: 30 minutes  **Concepts Covered**: - Community structure overview - Channel descri..."
+/>
+
+
+
+**Goal**: Explore community structure and bot integration
+
+**Time**: 30 minutes
+
+**Concepts Covered**:
+- Community structure overview
+- Channel descriptions with code examples
+- Bot integration examples
+- Event scheduling code
+- Community analytics
+
+## Setup
+
+```python
+!pip install torch transformers accelerate matplotlib seaborn numpy -q
+```
+
+```python
+# Discord server structure for SLM Hub community
+
+channels = {
+    "general": "General discussions about SLMs",
+    "showcase": "Share your projects and demos",
+    "help": "Get help with technical questions",
+    "model-releases": "New model announcements",
+    "tutorials": "Tutorial discussions and feedback",
+    "research": "Research paper discussions",
+}
+
+# Example bot command
+def discord_bot_example():
+    """Example Discord bot command for model info"""
+    def model_info_command(model_name):
+        # Fetch model info from database
+        # Return formatted response
+        return f"Model: {model_name}\nParameters: ...\nBenchmarks: ..."
+    
+    return model_info_command
+
+print("Discord Community Channels:")
+for channel, description in channels.items():
+    print(f"  #{channel}: {description}")
+```
+
+## Key Takeaways
+
+✅ **Module Complete**
+
+## Next Steps
+
+Continue to the next module in the course.
+

@@ -56,6 +56,12 @@
   --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-base: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Footer specific (Premium dark-grounding in light mode) */
+  --color-footer-bg: #0f172a;
+  --color-footer-text: #f8fafc;
+  --color-footer-heading: #ffffff;
+  --color-footer-link: #cbd5e1;
+  --color-footer-link-hover: #FF6B35;
 }
 
 /* ============================================
@@ -510,6 +516,12 @@ button.button {
   --code-bg: rgba(30, 41, 59, 0.5);
   --code-border: rgba(255, 255, 255, 0.1);
   --code-toolbar-bg: rgba(0, 0, 0, 0.2);
+  /* Footer specific (Deep grounding in dark mode) */
+  --color-footer-bg: #020617;
+  --color-footer-text: #94a3b8;
+  --color-footer-heading: #ffffff;
+  --color-footer-link: #64748b;
+  --color-footer-link-hover: #FF8C5A;
 }
 
 [data-theme="dark"] body {
@@ -773,9 +785,188 @@ a.colab-button:hover {
 }
 
 /* ============================================
-   Homepage Title Override
+   Dynamic Sidebar Interaction
    ============================================ */
+/* 
+   The --footer-visible-height variable is dynamically updated 
+   by a script in Footer.astro as the user scrolls.
+*/
+.sidebar-pane {
+  bottom: var(--footer-visible-height, 0px) !important;
+  transition: bottom 0.05s linear;
+  /* Subtle smooth transition for the push effect */
+}
+
 /* Hide the auto-generated Starlight title on the homepage */
 .sl-container>h1#_top {
   display: none !important;
+}
+
+/* ============================================
+   Premium Table Styles
+   ============================================ */
+.sl-markdown-content table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 2rem 0;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  font-size: 0.9rem;
+}
+
+.sl-markdown-content table thead {
+  background: linear-gradient(135deg, rgba(255, 107, 53, 0.15) 0%, rgba(139, 92, 246, 0.1) 100%);
+}
+
+.sl-markdown-content table th {
+  padding: 1rem 1.25rem;
+  text-align: left;
+  font-weight: 700;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--sl-color-white);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  white-space: nowrap;
+}
+
+.sl-markdown-content table td {
+  padding: 0.875rem 1.25rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  color: var(--sl-color-gray-2);
+  vertical-align: middle;
+}
+
+.sl-markdown-content table tbody tr {
+  transition: all 0.2s ease;
+}
+
+.sl-markdown-content table tbody tr:hover {
+  background: rgba(255, 107, 53, 0.08);
+}
+
+.sl-markdown-content table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.sl-markdown-content table a {
+  color: var(--sl-color-text-accent);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.sl-markdown-content table a:hover {
+  color: var(--sl-color-accent-high);
+  text-decoration: underline;
+}
+
+/* Light mode table adjustments */
+:root .sl-markdown-content table {
+  background: rgba(255, 255, 255, 0.9);
+  border-color: var(--sl-color-gray-3);
+}
+
+:root .sl-markdown-content table thead {
+  background: linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(139, 92, 246, 0.05) 100%);
+}
+
+:root .sl-markdown-content table th {
+  color: var(--sl-color-black);
+  border-bottom-color: var(--sl-color-gray-3);
+}
+
+:root .sl-markdown-content table td {
+  color: var(--sl-color-gray-6);
+  border-bottom-color: var(--sl-color-gray-2);
+}
+
+:root .sl-markdown-content table tbody tr:hover {
+  background: rgba(255, 107, 53, 0.05);
+}
+
+/* Responsive table wrapper */
+@media (max-width: 768px) {
+  .sl-markdown-content table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .sl-markdown-content table th,
+  .sl-markdown-content table td {
+    padding: 0.75rem 1rem;
+    min-width: 120px;
+  }
+}
+
+/* ============================================
+   Footer & Sidebar Overlap Fixes
+   ============================================ */
+
+/* Ensure footer sits above everything */
+.custom-footer {
+  position: relative;
+  z-index: 100 !important;
+}
+
+/* Prevent sidebar from bleeding into footer */
+#starlight__sidebar,
+.sidebar,
+.sl-sidebar {
+  z-index: 50;
+}
+
+/* Hide sidebar content that would overlap footer */
+.sidebar-pane,
+#starlight__sidebar {
+  /* Clip at the bottom when footer is visible */
+  contain: paint;
+}
+
+/* Fix right sidebar "On this page" border */
+.right-sidebar-panel,
+starlight-toc,
+aside.right-sidebar {
+  z-index: 40;
+}
+
+/* Make sure right sidebar border doesn't extend past content */
+.right-sidebar,
+aside.right-sidebar {
+  border-left: none !important;
+}
+
+aside.right-sidebar::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: var(--footer-visible-height, 0);
+  width: 1px;
+  background: var(--sl-color-hairline);
+  transition: bottom 0.1s linear;
+}
+
+/* Ensure main content area ends before footer */
+.main-pane,
+.sl-container main {
+  position: relative;
+  z-index: 1;
+}
+
+/* Footer container should have solid background to cover any overflow */
+.footer-container {
+  position: relative;
+  z-index: 101;
+}
+
+/* Ensure the default footer area also respects boundaries */
+.footer-bottom {
+  position: relative;
+  z-index: 99;
 }

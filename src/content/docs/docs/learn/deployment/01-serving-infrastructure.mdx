@@ -1,0 +1,148 @@
+---
+title: "Module 10.1: Serving Infrastructure"
+description: "**Goal**: Set up production-ready serving infrastructure with vLLM and FastAPI  **Time**: 90 minutes  **Concepts Covered**: - vLLM production setup wi..."
+---
+import NotebookWidget from '../../../../../components/NotebookWidget.astro';
+
+<NotebookWidget 
+  notebookPath="notebooks/deployment/01_serving_infrastructure.ipynb"
+  title="Module 10.1: Serving Infrastructure"
+  description="**Goal**: Set up production-ready serving infrastructure with vLLM and FastAPI  **Time**: 90 minutes  **Concepts Covered**: - vLLM production setup wi..."
+/>
+
+
+
+**Goal**: Set up production-ready serving infrastructure with vLLM and FastAPI
+
+**Time**: 90 minutes
+
+**Concepts Covered**:
+- vLLM production setup with PagedAttention
+- Async API server with FastAPI
+- Batch inference optimization
+- PagedAttention KV cache management
+- Throughput benchmarking
+
+## Setup
+
+```python
+!pip install torch transformers accelerate matplotlib seaborn numpy -q
+```
+
+```python
+# vLLM Production Setup
+import subprocess
+import json
+
+# Install vLLM
+# !pip install vllm fastapi uvicorn -q
+
+print("vLLM provides:")
+print("- PagedAttention for efficient KV cache")
+print("- Continuous batching for high throughput")
+print("- Async API support")
+print("- Production-ready serving infrastructure")
+
+# Example vLLM server setup
+vllm_config = {
+    "model": "HuggingFaceTB/SmolLM2-1.7B",
+    "tensor_parallel_size": 1,
+    "gpu_memory_utilization": 0.9,
+    "max_model_len": 2048,
+    "dtype": "float16",
+}
+
+print(f"\nvLLM Config: {json.dumps(vllm_config, indent=2)}")
+```
+
+```python
+# FastAPI Async Server Example
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
+from typing import List, Optional
+import asyncio
+
+app = FastAPI(title="SLM Inference API")
+
+class GenerationRequest(BaseModel):
+    prompt: str
+    max_tokens: int = 100
+    temperature: float = 0.7
+    top_p: float = 0.9
+
+class GenerationResponse(BaseModel):
+    text: str
+    tokens_generated: int
+    latency_ms: float
+
+@app.post("/generate", response_model=GenerationResponse)
+async def generate(request: GenerationRequest):
+    """Generate text from prompt"""
+    # In production, this would call vLLM engine
+    # For demo purposes, we show the structure
+    import time
+    start = time.time()
+    
+    # Simulated generation
+    await asyncio.sleep(0.1)  # Simulate inference time
+    
+    latency = (time.time() - start) * 1000
+    
+    return GenerationResponse(
+        text="Generated text...",
+        tokens_generated=request.max_tokens,
+        latency_ms=latency
+    )
+
+@app.get("/health")
+async def health():
+    return {"status": "healthy"}
+
+print("FastAPI server structure created!")
+print("Run with: uvicorn main:app --host 0.0.0.0 --port 8000")
+```
+
+```python
+# Batch Inference Optimization
+import torch
+import time
+
+def batch_inference(model, tokenizer, prompts, batch_size=8):
+    """Optimized batch inference"""
+    results = []
+    
+    for i in range(0, len(prompts), batch_size):
+        batch = prompts[i:i+batch_size]
+        
+        # Tokenize batch
+        inputs = tokenizer(batch, return_tensors="pt", padding=True, truncation=True)
+        
+        # Generate
+        with torch.no_grad():
+            outputs = model.generate(
+                **inputs,
+                max_new_tokens=100,
+                do_sample=True,
+                temperature=0.7,
+            )
+        
+        # Decode
+        decoded = tokenizer.batch_decode(outputs, skip_special_tokens=True)
+        results.extend(decoded)
+    
+    return results
+
+print("Batch inference improves throughput by:")
+print("- Processing multiple requests together")
+print("- Better GPU utilization")
+print("- Reduced overhead per request")
+```
+
+## Key Takeaways
+
+✅ **Module Complete**
+
+## Next Steps
+
+Continue to the next module in the course.
+

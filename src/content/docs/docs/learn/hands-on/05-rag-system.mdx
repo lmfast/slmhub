@@ -1,0 +1,123 @@
+---
+title: "Build a RAG Pipeline with SLMs"
+description: "This notebook demonstrates how to build a Retrieval Augmented Generation system using ChromaDB, Sentence Transformers, and Ollama, corresponding to th..."
+---
+import NotebookWidget from '../../../../../components/NotebookWidget.astro';
+
+<NotebookWidget 
+  notebookPath="notebooks/hands_on/05_rag_system.ipynb"
+  title="Build a RAG Pipeline with SLMs"
+  description="This notebook demonstrates how to build a Retrieval Augmented Generation system using ChromaDB, Sentence Transformers, and Ollama, corresponding to th..."
+/>
+
+
+
+This notebook demonstrates how to build a Retrieval Augmented Generation system using ChromaDB, Sentence Transformers, and Ollama, corresponding to the SLM Hub [RAG Guide](https://slmhub.gitbook.io/slmhub/docs/learn/concepts/rag).
+
+## 1. Setup Environment
+We need to install Ollama (backend), the python client, and vector database tools.
+
+```python
+# Install Python basic libraries
+!pip install chromadb sentence-transformers ollama
+```
+
+### Install and Start Ollama
+Since Colab is a fresh Linux environment, we install the Ollama binary and start it in the background.
+
+```python
+!curl -fsSL https://ollama.com/install.sh | sh
+```
+
+```python
+import subprocess
+import time
+
+# Start Ollama server in background
+process = subprocess.Popen(["ollama", "serve"])
+time.sleep(5)
+print("Ollama started!")
+```
+
+## 2. Pull the Model
+We'll use `phi3` or `phi4` for generation. This might take a minute.
+
+```python
+!ollama pull phi3
+```
+
+## 3. Create Vector Store
+Index some dummy documents.
+
+```python
+from sentence_transformers import SentenceTransformer
+import chromadb
+
+# Initialize
+embedder = SentenceTransformer("BAAI/bge-small-en-v1.5")
+client = chromadb.Client()
+try:
+    client.delete_collection("knowledge")
+except:
+    pass
+collection = client.create_collection("knowledge")
+
+# Documents
+documents = [
+    "The refund policy allows full refunds within 30 days of purchase.",
+    "Standard shipping is free for all orders over $50 within the US.",
+    "Our support team is available 24/7 via live chat and email."
+]
+
+# Embed and Store
+embeddings = embedder.encode(documents)
+collection.add(
+    embeddings=embeddings.tolist(),
+    documents=documents,
+    ids=[f"doc_{i}" for i in range(len(documents))]
+)
+print("Documents indexed.")
+```
+
+## 4. RAG Function
+Combine retrieval and generation.
+
+```python
+import ollama
+
+def retrieve(query, k=1):
+    query_emb = embedder.encode(query)
+    results = collection.query(
+        query_embeddings=[query_emb.tolist()],
+        n_results=k
+    )
+    return results["documents"][0]
+
+def ask_rag(question):
+    # 1. Retrieve
+    context_docs = retrieve(question)
+    context_text = "\n".join(context_docs)
+    print(f"[Retrieved Context]: {context_text}\n")
+    
+    # 2. Augment Prompt
+    prompt = f"""Answer the question based ONLY on the context below.
+    
+    Context:
+    {context_text}
+    
+    Question: {question}
+    Answer:"""
+    
+    # 3. Generate
+    response = ollama.chat(
+        model="phi3",
+        messages=[{"role": "user", "content": prompt}]
+    )
+    return response["message"]["content"]
+
+# Test
+q = "What is the policy on getting money back?"
+print(f"[Question]: {q}")
+print(f"[Answer]: {ask_rag(q)}")
+```
+

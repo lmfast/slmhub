@@ -1,0 +1,81 @@
+---
+title: "Module 1.7: Hardware & GPU Basics"
+description: "**Goal**: Understand GPU capabilities and memory requirements  **Time**: 40 minutes  **Concepts Covered**: - GPU taxonomy (T4, RTX 4090, A100, H100) -..."
+---
+import NotebookWidget from '../../../../../components/NotebookWidget.astro';
+
+<NotebookWidget 
+  notebookPath="notebooks/foundations/07_hardware_gpu_basics.ipynb"
+  title="Module 1.7: Hardware & GPU Basics"
+  description="**Goal**: Understand GPU capabilities and memory requirements  **Time**: 40 minutes  **Concepts Covered**: - GPU taxonomy (T4, RTX 4090, A100, H100) -..."
+/>
+
+
+
+**Goal**: Understand GPU capabilities and memory requirements
+
+**Time**: 40 minutes
+
+**Concepts Covered**:
+- GPU taxonomy (T4, RTX 4090, A100, H100)
+- FP32 vs FP16 vs BF16 vs INT8 vs INT4
+- Memory calculations
+- Interactive GPU picker tool
+
+## Setup
+
+```python
+!pip install torch numpy matplotlib seaborn transformers -q
+```
+
+```python
+import torch
+
+# GPU specifications
+gpus = {
+    "T4": {"vram_gb": 16, "compute_capability": 7.5, "tensor_cores": True},
+    "RTX 4090": {"vram_gb": 24, "compute_capability": 8.9, "tensor_cores": True},
+    "A100": {"vram_gb": 40, "compute_capability": 8.0, "tensor_cores": True},
+    "H100": {"vram_gb": 80, "compute_capability": 9.0, "tensor_cores": True},
+}
+
+print("GPU Specifications:")
+for name, specs in gpus.items():
+    print(f"  {name}: {specs['vram_gb']}GB VRAM, CC {specs['compute_capability']}")
+```
+
+## Memory Requirements by Precision
+
+```python
+def calculate_memory(params, precision="fp16"):
+    bytes_per_param = {
+        "fp32": 4,
+        "fp16": 2,
+        "bf16": 2,
+        "int8": 1,
+        "int4": 0.5,
+    }
+    return params * bytes_per_param[precision] / 1e9
+
+model_sizes = {
+    "135M": 135e6,
+    "360M": 360e6,
+    "1.7B": 1.7e9,
+    "3B": 3e9,
+    "7B": 7e9,
+}
+
+print("Memory Requirements (GB):")
+print(f"{'Model':<10} {'FP32':<8} {'FP16':<8} {'INT8':<8} {'INT4':<8}")
+for name, params in model_sizes.items():
+    print(f"{name:<10} {calculate_memory(params, 'fp32'):<8.2f} {calculate_memory(params, 'fp16'):<8.2f} {calculate_memory(params, 'int8'):<8.2f} {calculate_memory(params, 'int4'):<8.2f}")
+```
+
+## Key Takeaways
+
+✅ **Module Complete**
+
+## Next Steps
+
+Continue to the next module in the course.
+

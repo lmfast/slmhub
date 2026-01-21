@@ -1,0 +1,91 @@
+---
+title: "Dataset Curation: Deduplication & Quality Filtering"
+description: "This notebook demonstrates key data curation techniques used for training SLMs, corresponding to the SLM Hub [Dataset Guide](https://slmhub.gitbook.io..."
+---
+import NotebookWidget from '../../../../../components/NotebookWidget.astro';
+
+<NotebookWidget 
+  notebookPath="notebooks/hands_on/10_dataset_engineering.ipynb"
+  title="Dataset Curation: Deduplication & Quality Filtering"
+  description="This notebook demonstrates key data curation techniques used for training SLMs, corresponding to the SLM Hub [Dataset Guide](https://slmhub.gitbook.io..."
+/>
+
+
+
+This notebook demonstrates key data curation techniques used for training SLMs, corresponding to the SLM Hub [Dataset Guide](https://slmhub.gitbook.io/slmhub/docs/learn/concepts/datasets).
+
+## 1. Setup
+Install `datasketch` for MinHash deduplication.
+
+```python
+!pip install datasketch
+```
+
+## 2. Deduplication (MinHash)
+Detect near-duplicate documents to clean your training data.
+
+```python
+from datasketch import MinHash
+
+def get_minhash(text, num_perm=128):
+    m = MinHash(num_perm=num_perm)
+    for word in text.split():
+        m.update(word.encode('utf8'))
+    return m
+
+docs = [
+    "The quick brown fox jumps over the lazy dog.",
+    "The quick brown fox jumps over the lazy dog.", # Exact duplicate
+    "The fast brown fox jumps over the lazy dog.",  # Near duplicate
+    "Machine learning is fascinating."
+]
+
+unique_hashes = set()
+unique_docs = []
+
+print("Processing documents...")
+for doc in docs:
+    m = get_minhash(doc)
+    # In real pipeline, use LSH (Locality Sensitive Hashing) for efficiency
+    # Here simple hash comparison for exact/near detection logic would be more complex
+    # For this demo, we check exact MinHash match (which implies strong similarity)
+    
+    # Simply digest for exact dedup of hash signature
+    signature = tuple(m.digest())
+    
+    if signature not in unique_hashes:
+        unique_hashes.add(signature)
+        unique_docs.append(doc)
+        print(f"Keep: '{doc}'")
+    else:
+        print(f"Drop: '{doc}' (Duplicate)")
+```
+
+## 3. Heuristic Quality Filtering
+Simple rules to remove low-quality text.
+
+```python
+def quality_check(text):
+    words = text.split()
+    if len(words) < 5:
+        return False, "Too short"
+    
+    # Check for symbol ratio (spam/code noise)
+    alnum_count = sum(c.isalnum() for c in text)
+    if alnum_count / len(text) < 0.7:
+        return False, "Too many symbols"
+        
+    return True, "Pass"
+
+examples = [
+    "Valid sentence for training.",
+    "Hi",
+    "$$$ @@@ ### ..."
+]
+
+print("\nQuality Check:")
+for ex in examples:
+    passed, reason = quality_check(ex)
+    print(f"'{ex}' -> {reason}")
+```
+

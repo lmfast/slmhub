@@ -1,0 +1,86 @@
+---
+title: "Module 6.3: Hardware Compatibility Matrix"
+description: "**Goal**: Calculate hardware requirements and compatibility  **Time**: 45 minutes  **Concepts Covered**: - Memory calculation functions - Speed estima..."
+---
+import NotebookWidget from '../../../../../components/NotebookWidget.astro';
+
+<NotebookWidget 
+  notebookPath="notebooks/models_hub/03_hardware_compatibility_matrix.ipynb"
+  title="Module 6.3: Hardware Compatibility Matrix"
+  description="**Goal**: Calculate hardware requirements and compatibility  **Time**: 45 minutes  **Concepts Covered**: - Memory calculation functions - Speed estima..."
+/>
+
+
+
+**Goal**: Calculate hardware requirements and compatibility
+
+**Time**: 45 minutes
+
+**Concepts Covered**:
+- Memory calculation functions
+- Speed estimation algorithms
+- GPU compatibility checker
+- Batch size calculator
+- Interactive requirements tool
+
+## Setup
+
+```python
+!pip install torch transformers accelerate matplotlib seaborn numpy -q
+```
+
+```python
+def calculate_memory_requirements(params, precision="fp16", batch_size=1, seq_len=2048):
+    """Calculate memory requirements for inference"""
+    bytes_per_param = {
+        "fp32": 4,
+        "fp16": 2,
+        "bf16": 2,
+        "int8": 1,
+        "int4": 0.5,
+    }[precision]
+    
+    # Model weights
+    model_memory_gb = params * bytes_per_param / 1e9
+    
+    # KV cache (approximate: 2 * params * batch * seq_len * bytes_per_param)
+    kv_cache_gb = params * 2 * batch_size * seq_len * bytes_per_param / 1e9
+    
+    # Activation memory (rough estimate)
+    activation_memory_gb = batch_size * seq_len * params * 0.1 * bytes_per_param / 1e9
+    
+    total_memory_gb = model_memory_gb + kv_cache_gb + activation_memory_gb
+    
+    return {
+        "model_memory_gb": model_memory_gb,
+        "kv_cache_gb": kv_cache_gb,
+        "activation_memory_gb": activation_memory_gb,
+        "total_memory_gb": total_memory_gb,
+    }
+
+def check_gpu_compatibility(model_params, precision, gpu_memory_gb=16):
+    """Check if model fits on GPU"""
+    reqs = calculate_memory_requirements(model_params, precision)
+    fits = reqs["total_memory_gb"] <= gpu_memory_gb * 0.9  # 90% safety margin
+    return fits, reqs
+
+# Example
+model_params = 1_700_000_000  # 1.7B
+gpu_memory = 16  # T4 GPU
+
+for precision in ["fp16", "int8", "int4"]:
+    fits, reqs = check_gpu_compatibility(model_params, precision, gpu_memory)
+    status = "✅ Fits" if fits else "❌ Too large"
+    print(f"{precision.upper()}: {status}")
+    print(f"  Total memory: {reqs['total_memory_gb']:.2f} GB")
+    print()
+```
+
+## Key Takeaways
+
+✅ **Module Complete**
+
+## Next Steps
+
+Continue to the next module in the course.
+

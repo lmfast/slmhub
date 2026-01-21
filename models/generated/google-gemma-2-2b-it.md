@@ -64,7 +64,7 @@ ollama run gemma-2-2b-it
 | **Library** | transformers |
 | **License** | unknown |
 | **Last modified** | 2024-08-27T19:41:44+00:00 |
-| **Downloads** | 179.1K |
+| **Downloads** | 181.4K |
 | **Likes** | 1.3K |
 
 ## Links

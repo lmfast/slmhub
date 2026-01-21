@@ -1,0 +1,81 @@
+---
+title: "Module 5.1: Linear Algebra Essentials"
+description: "**Goal**: Master matrix operations for transformers  **Time**: 60 minutes  **Concepts Covered**: - Matrix operations for attention (Q, K, V) - Dot pro..."
+---
+import NotebookWidget from '../../../../../components/NotebookWidget.astro';
+
+<NotebookWidget 
+  notebookPath="notebooks/mathematics/01_linear_algebra_essentials.ipynb"
+  title="Module 5.1: Linear Algebra Essentials"
+  description="**Goal**: Master matrix operations for transformers  **Time**: 60 minutes  **Concepts Covered**: - Matrix operations for attention (Q, K, V) - Dot pro..."
+/>
+
+
+
+**Goal**: Master matrix operations for transformers
+
+**Time**: 60 minutes
+
+**Concepts Covered**:
+- Matrix operations for attention (Q, K, V)
+- Dot product similarity visualization
+- Softmax derivation and implementation
+- Scaling by √d_k explanation
+- Interactive attention heatmap builder
+
+## Setup
+
+```python
+!pip install torch transformers accelerate matplotlib seaborn numpy -q
+```
+
+```python
+import torch
+import torch.nn.functional as F
+import matplotlib.pyplot as plt
+import numpy as np
+
+# Matrix operations for attention
+def attention_mechanism(Q, K, V):
+    """Scaled dot-product attention"""
+    d_k = Q.size(-1)
+    
+    # Step 1: Compute similarity scores
+    scores = torch.matmul(Q, K.transpose(-2, -1))
+    
+    # Step 2: Scale by sqrt(d_k) to prevent large values
+    scores = scores / np.sqrt(d_k)
+    
+    # Step 3: Apply softmax
+    attention_weights = F.softmax(scores, dim=-1)
+    
+    # Step 4: Weighted sum of values
+    output = torch.matmul(attention_weights, V)
+    
+    return output, attention_weights
+
+# Example
+seq_len = 5
+d_k = 64
+Q = torch.randn(1, seq_len, d_k)
+K = torch.randn(1, seq_len, d_k)
+V = torch.randn(1, seq_len, d_k)
+
+output, attn = attention_mechanism(Q, K, V)
+
+print(f"Q shape: {Q.shape}")
+print(f"K shape: {K.shape}")
+print(f"V shape: {V.shape}")
+print(f"Attention weights shape: {attn.shape}")
+print(f"Output shape: {output.shape}")
+print(f"\nScaling by √d_k = {np.sqrt(d_k):.2f} prevents gradient vanishing")
+```
+
+## Key Takeaways
+
+✅ **Module Complete**
+
+## Next Steps
+
+Continue to the next module in the course.
+

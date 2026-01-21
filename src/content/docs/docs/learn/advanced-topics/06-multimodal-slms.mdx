@@ -1,0 +1,65 @@
+---
+title: "Module 4.6: Multimodal SLMs"
+description: "**Goal**: Work with vision-language models  **Time**: 90 minutes  **Concepts Covered**: - Load MiniCPM-V or similar - Process image + text inputs - Co..."
+---
+import NotebookWidget from '../../../../../components/NotebookWidget.astro';
+
+<NotebookWidget 
+  notebookPath="notebooks/advanced_topics/06_multimodal_slms.ipynb"
+  title="Module 4.6: Multimodal SLMs"
+  description="**Goal**: Work with vision-language models  **Time**: 90 minutes  **Concepts Covered**: - Load MiniCPM-V or similar - Process image + text inputs - Co..."
+/>
+
+
+
+**Goal**: Work with vision-language models
+
+**Time**: 90 minutes
+
+**Concepts Covered**:
+- Load MiniCPM-V or similar
+- Process image + text inputs
+- Contrastive learning (CLIP-style)
+- Fine-tune on custom image dataset
+- Visualize image-text embeddings
+
+## Setup
+
+```python
+!pip install torch transformers accelerate matplotlib seaborn numpy -q
+```
+
+```python
+import torch
+from transformers import AutoProcessor, AutoModelForVision2Seq
+from PIL import Image
+
+# Multimodal model example
+# model_name = "openbmb/MiniCPM-V-2"  # Example multimodal SLM
+
+print("Multimodal SLMs can process:")
+print("- Images + Text prompts")
+print("- Generate text descriptions")
+print("- Answer questions about images")
+print("- Visual reasoning tasks")
+
+# Example usage pattern:
+# processor = AutoProcessor.from_pretrained(model_name)
+# model = AutoModelForVision2Seq.from_pretrained(model_name)
+# 
+# image = Image.open("image.jpg")
+# prompt = "Describe this image"
+# 
+# inputs = processor(image, prompt, return_tensors="pt")
+# outputs = model.generate(**inputs)
+# description = processor.decode(outputs[0], skip_special_tokens=True)
+```
+
+## Key Takeaways
+
+✅ **Module Complete**
+
+## Next Steps
+
+Continue to the next module in the course.
+

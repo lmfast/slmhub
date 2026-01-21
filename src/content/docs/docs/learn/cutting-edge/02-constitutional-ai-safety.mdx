@@ -1,0 +1,193 @@
+---
+title: "Module 11.2: Constitutional AI & Safety"
+description: "**Goal**: Implement safety filters and constitutional AI workflow  **Time**: 90 minutes  **Concepts Covered**: - Constitutional AI workflow - Critique..."
+---
+import NotebookWidget from '../../../../../components/NotebookWidget.astro';
+
+<NotebookWidget 
+  notebookPath="notebooks/cutting_edge/02_constitutional_ai_safety.ipynb"
+  title="Module 11.2: Constitutional AI & Safety"
+  description="**Goal**: Implement safety filters and constitutional AI workflow  **Time**: 90 minutes  **Concepts Covered**: - Constitutional AI workflow - Critique..."
+/>
+
+
+
+**Goal**: Implement safety filters and constitutional AI workflow
+
+**Time**: 90 minutes
+
+**Concepts Covered**:
+- Constitutional AI workflow
+- Critique and revision pipeline
+- Safety filter implementation
+- Toxicity detection
+- PII detection
+- Prompt injection prevention
+
+## Setup
+
+```python
+!pip install torch transformers accelerate matplotlib seaborn numpy -q
+```
+
+```python
+# Constitutional AI Workflow
+class ConstitutionalAI:
+    def __init__(self, model, constitution):
+        self.model = model
+        self.constitution = constitution  # List of principles
+    
+    def critique(self, response, prompt):
+        """Critique response against constitution"""
+        critiques = []
+        
+        for principle in self.constitution:
+            critique_prompt = f"""
+Principle: {principle}
+Response: {response}
+Prompt: {prompt}
+
+Does the response violate this principle? Explain.
+"""
+            # Check if response violates principle
+            violation = self._check_violation(response, principle)
+            if violation:
+                critiques.append({
+                    "principle": principle,
+                    "violation": violation,
+                    "severity": "high"
+                })
+        
+        return critiques
+    
+    def revise(self, response, critiques):
+        """Revise response based on critiques"""
+        if not critiques:
+            return response
+        
+        revision_prompt = f"""
+Original response: {response}
+Critiques: {critiques}
+
+Please revise the response to address these critiques while maintaining helpfulness.
+"""
+        revised = self.model.generate(revision_prompt)
+        return revised
+    
+    def _check_violation(self, response, principle):
+        """Check if response violates principle"""
+        # Simplified: check for keywords
+        # In production, use a safety classifier
+        return False
+
+# Example constitution
+constitution = [
+    "Be helpful, harmless, and honest",
+    "Do not generate harmful content",
+    "Respect privacy and confidentiality",
+    "Do not provide medical or legal advice",
+]
+
+print("Constitutional AI:")
+print("- Critiques responses against principles")
+print("- Revises responses to be safer")
+print("- Iterative improvement process")
+```
+
+```python
+# Safety Filter Implementation
+import re
+from typing import List, Dict
+
+class SafetyFilter:
+    def __init__(self):
+        # Toxicity keywords (simplified)
+        self.toxicity_patterns = [
+            r"\b(kill|harm|violence)\b",
+            # Add more patterns
+        ]
+        
+        # PII patterns
+        self.pii_patterns = [
+            r"\b\d{3}-\d{2}-\d{4}\b",  # SSN
+            r"\b\d{4}\s?\d{4}\s?\d{4}\s?\d{4}\b",  # Credit card
+            r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b",  # Email
+        ]
+    
+    def check_toxicity(self, text: str) -> Dict:
+        """Check for toxic content"""
+        for pattern in self.toxicity_patterns:
+            if re.search(pattern, text, re.IGNORECASE):
+                return {
+                    "is_toxic": True,
+                    "reason": f"Matched pattern: {pattern}",
+                    "severity": "high"
+                }
+        return {"is_toxic": False}
+    
+    def detect_pii(self, text: str) -> List[Dict]:
+        """Detect personally identifiable information"""
+        pii_found = []
+        
+        for pattern in self.pii_patterns:
+            matches = re.findall(pattern, text)
+            if matches:
+                pii_found.append({
+                    "type": self._get_pii_type(pattern),
+                    "matches": matches,
+                    "count": len(matches)
+                })
+        
+        return pii_found
+    
+    def _get_pii_type(self, pattern: str) -> str:
+        """Get PII type from pattern"""
+        if "SSN" in pattern or "\d{3}-\d{2}-\d{4}" in pattern:
+            return "SSN"
+        elif "credit" in pattern or "\d{4}" in pattern:
+            return "Credit Card"
+        elif "@" in pattern:
+            return "Email"
+        return "Unknown"
+    
+    def filter_response(self, text: str) -> Dict:
+        """Comprehensive safety check"""
+        toxicity = self.check_toxicity(text)
+        pii = self.detect_pii(text)
+        
+        is_safe = not toxicity["is_toxic"] and len(pii) == 0
+        
+        return {
+            "is_safe": is_safe,
+            "toxicity": toxicity,
+            "pii": pii,
+            "filtered_text": self._redact_pii(text, pii) if pii else text
+        }
+    
+    def _redact_pii(self, text: str, pii_list: List[Dict]) -> str:
+        """Redact PII from text"""
+        filtered = text
+        for pii_item in pii_list:
+            for match in pii_item["matches"]:
+                filtered = filtered.replace(match, "[REDACTED]")
+        return filtered
+
+# Example usage
+filter = SafetyFilter()
+test_text = "Contact me at john.doe@example.com or call 555-1234"
+
+result = filter.filter_response(test_text)
+print("Safety Filter Results:")
+print(f"  Safe: {result['is_safe']}")
+print(f"  PII detected: {len(result['pii'])}")
+print(f"  Filtered text: {result['filtered_text']}")
+```
+
+## Key Takeaways
+
+✅ **Module Complete**
+
+## Next Steps
+
+Continue to the next module in the course.
+

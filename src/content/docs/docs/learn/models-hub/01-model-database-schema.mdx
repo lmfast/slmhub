@@ -1,0 +1,91 @@
+---
+title: "Module 6.1: Model Database Schema"
+description: "**Goal**: Design and implement model metadata schema  **Time**: 45 minutes  **Concepts Covered**: - YAML schema definition - Model metadata structure ..."
+---
+import NotebookWidget from '../../../../../components/NotebookWidget.astro';
+
+<NotebookWidget 
+  notebookPath="notebooks/models_hub/01_model_database_schema.ipynb"
+  title="Module 6.1: Model Database Schema"
+  description="**Goal**: Design and implement model metadata schema  **Time**: 45 minutes  **Concepts Covered**: - YAML schema definition - Model metadata structure ..."
+/>
+
+
+
+**Goal**: Design and implement model metadata schema
+
+**Time**: 45 minutes
+
+**Concepts Covered**:
+- YAML schema definition
+- Model metadata structure
+- Validation functions
+- Example model entries
+- Schema documentation generator
+
+## Setup
+
+```python
+!pip install torch transformers accelerate matplotlib seaborn numpy -q
+```
+
+```python
+import yaml
+from typing import Dict, List, Optional
+
+# Model database schema
+model_schema = {
+    "name": str,
+    "parameters": int,
+    "architecture": str,
+    "license": str,
+    "base_model": Optional[str],
+    "fine_tuned_from": Optional[str],
+    "benchmarks": Dict[str, float],
+    "hardware_requirements": {
+        "fp16_memory_gb": float,
+        "int8_memory_gb": float,
+        "int4_memory_gb": float,
+    },
+    "download_links": {
+        "huggingface": str,
+    },
+    "tags": List[str],
+}
+
+# Example model entry
+example_model = {
+    "name": "SmolLM-135M",
+    "parameters": 135_000_000,
+    "architecture": "Transformer",
+    "license": "Apache-2.0",
+    "base_model": None,
+    "fine_tuned_from": None,
+    "benchmarks": {
+        "mmlu": 25.3,
+        "hellaswag": 45.2,
+        "perplexity": 12.5,
+    },
+    "hardware_requirements": {
+        "fp16_memory_gb": 0.5,
+        "int8_memory_gb": 0.25,
+        "int4_memory_gb": 0.125,
+    },
+    "download_links": {
+        "huggingface": "HuggingFaceTB/SmolLM2-135M",
+    },
+    "tags": ["small", "general", "instruction-tuned"],
+}
+
+print("Model Database Schema:")
+print(yaml.dump(example_model, default_flow_style=False))
+```
+
+## Key Takeaways
+
+✅ **Module Complete**
+
+## Next Steps
+
+Continue to the next module in the course.
+

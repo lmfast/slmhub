@@ -64,7 +64,7 @@ ollama run zero-nl2cmds-v1-gguf
 | **Library** | transformers |
 | **License** | unknown |
 | **Last modified** | 2025-10-05T16:56:29+00:00 |
-| **Downloads** | 126 |
+| **Downloads** | 46 |
 | **Likes** | 0 |
 
 ## Links

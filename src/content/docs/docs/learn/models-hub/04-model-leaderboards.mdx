@@ -1,0 +1,77 @@
+---
+title: "Module 6.4: Model Leaderboards"
+description: "**Goal**: Generate and visualize model leaderboards  **Time**: 45 minutes  **Concepts Covered**: - Leaderboard generation from database - Category-bas..."
+---
+import NotebookWidget from '../../../../../components/NotebookWidget.astro';
+
+<NotebookWidget 
+  notebookPath="notebooks/models_hub/04_model_leaderboards.ipynb"
+  title="Module 6.4: Model Leaderboards"
+  description="**Goal**: Generate and visualize model leaderboards  **Time**: 45 minutes  **Concepts Covered**: - Leaderboard generation from database - Category-bas..."
+/>
+
+
+
+**Goal**: Generate and visualize model leaderboards
+
+**Time**: 45 minutes
+
+**Concepts Covered**:
+- Leaderboard generation from database
+- Category-based rankings
+- Weighted scoring
+- Filtering and sorting
+- Live leaderboard updates
+
+## Setup
+
+```python
+!pip install torch transformers accelerate matplotlib seaborn numpy -q
+```
+
+```python
+import pandas as pd
+import numpy as np
+
+# Example leaderboard data
+leaderboard_data = [
+    {"name": "Phi-3-mini", "mmlu": 69.0, "hellaswag": 82.3, "gsm8k": 73.2, "params": 3800},
+    {"name": "SmolLM-1.7B", "mmlu": 42.5, "hellaswag": 68.1, "gsm8k": 45.3, "params": 1700},
+    {"name": "SmolLM-360M", "mmlu": 32.1, "hellaswag": 55.2, "gsm8k": 28.7, "params": 360},
+    {"name": "SmolLM-135M", "mmlu": 25.3, "hellaswag": 45.2, "gsm8k": 18.5, "params": 135},
+]
+
+df = pd.DataFrame(leaderboard_data)
+
+def calculate_weighted_score(row, weights={"mmlu": 0.4, "hellaswag": 0.3, "gsm8k": 0.3}):
+    """Calculate weighted average score"""
+    score = 0
+    for benchmark, weight in weights.items():
+        score += row[benchmark] * weight
+    return score
+
+df["weighted_score"] = df.apply(calculate_weighted_score, axis=1)
+df = df.sort_values("weighted_score", ascending=False)
+
+print("Model Leaderboard (by weighted score):")
+print(df[["name", "mmlu", "hellaswag", "gsm8k", "weighted_score"]].to_string(index=False))
+
+# Category-based rankings
+print("\n" + "="*50)
+print("Category Rankings:")
+print("="*50)
+
+for category in ["mmlu", "hellaswag", "gsm8k"]:
+    print(f"\nTop models by {category.upper()}:")
+    top = df.nlargest(3, category)[["name", category]]
+    print(top.to_string(index=False))
+```
+
+## Key Takeaways
+
+✅ **Module Complete**
+
+## Next Steps
+
+Continue to the next module in the course.
+

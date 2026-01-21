@@ -1,0 +1,54 @@
+---
+title: "Module 3.6: Inference Optimization"
+description: "**Goal**: Optimize inference speed and memory  **Time**: 75 minutes  **Concepts Covered**: - Speculative decoding (draft + verifier) - FlashAttention ..."
+---
+import NotebookWidget from '../../../../../components/NotebookWidget.astro';
+
+<NotebookWidget 
+  notebookPath="notebooks/hands_on/06_inference_optimization.ipynb"
+  title="Module 3.6: Inference Optimization"
+  description="**Goal**: Optimize inference speed and memory  **Time**: 75 minutes  **Concepts Covered**: - Speculative decoding (draft + verifier) - FlashAttention ..."
+/>
+
+
+
+**Goal**: Optimize inference speed and memory
+
+**Time**: 75 minutes
+
+**Concepts Covered**:
+- Speculative decoding (draft + verifier)
+- FlashAttention implementation
+- Kernel optimization
+- Speed benchmarks
+
+## Setup
+
+```python
+!pip install torch transformers accelerate -q
+```
+
+```python
+import torch
+import time
+
+def benchmark_inference(model, tokenizer, prompt, num_tokens=100):
+    """Benchmark generation speed"""
+    inputs = tokenizer(prompt, return_tensors="pt")
+    start = time.time()
+    outputs = model.generate(**inputs, max_new_tokens=num_tokens)
+    elapsed = time.time() - start
+    tokens_per_sec = num_tokens / elapsed
+    return tokens_per_sec
+
+print("Inference optimization can provide 2-10x speedup!")
+```
+
+## Key Takeaways
+
+✅ **Module Complete**
+
+## Next Steps
+
+Continue to the next module in the course.
+

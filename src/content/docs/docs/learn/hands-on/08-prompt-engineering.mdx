@@ -1,0 +1,82 @@
+---
+title: "Prompt Engineering for SLMs"
+description: "This notebook demonstrates effective prompting strategies for Small Language Models, corresponding to the SLM Hub [Prompting Guide](https://slmhub.git..."
+---
+import NotebookWidget from '../../../../../components/NotebookWidget.astro';
+
+<NotebookWidget 
+  notebookPath="notebooks/hands_on/08_prompt_engineering.ipynb"
+  title="Prompt Engineering for SLMs"
+  description="This notebook demonstrates effective prompting strategies for Small Language Models, corresponding to the SLM Hub [Prompting Guide](https://slmhub.git..."
+/>
+
+
+
+This notebook demonstrates effective prompting strategies for Small Language Models, corresponding to the SLM Hub [Prompting Guide](https://slmhub.gitbook.io/slmhub/docs/learn/fundamentals/prompting).
+
+## 1. Setup
+We use Ollama or Transformers. For this Colab, we'll use `transformers` to run a small model if you don't have Ollama running.
+
+```python
+!pip install transformers accelerate
+```
+
+## 2. Load Model
+Loading `Phi-3-mini-4k-instruct`, a very capable SLM.
+
+```python
+from transformers import pipeline
+import torch
+
+pipe = pipeline(
+    "text-generation",
+    model="microsoft/Phi-3-mini-4k-instruct",
+    model_kwargs={"torch_dtype": torch.bfloat16},
+    device_map="auto",
+)
+```
+
+## 3. Basic vs. Structured Prompts
+SLMs need more structure than LLMs.
+
+```python
+def generate(prompt):
+    messages = [
+        {"role": "system", "content": "You are a helpful AI assistant."},
+        {"role": "user", "content": prompt},
+    ]
+    outputs = pipe(messages, max_new_tokens=128)
+    return outputs[0]["generated_text"][-1]["content"]
+
+# Bad Prompt
+print("--- Weak Prompt ---")
+print(generate("Fix this code: def add(a,b): return a-b"))
+
+# Good Prompt (Structured)
+print("\n--- Strong Prompt ---")
+strong_prompt = """
+Role: Python Expert
+Task: Debug the following function.
+Code:
+def add(a,b): return a-b
+
+format:
+1. Identify the bug
+2. Provide fixed code
+"""
+print(generate(strong_prompt))
+```
+
+## 4. Chain of Thought
+Asking the model to think step-by-step.
+
+```python
+cot_prompt = """
+Solve this logic puzzle: 
+I have 3 apples. I eat one. I buy two more strings of bananas. How many apples do I have?
+
+Think step by step.
+"""
+print(generate(cot_prompt))
+```
+

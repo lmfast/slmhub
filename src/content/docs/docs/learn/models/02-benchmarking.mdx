@@ -1,0 +1,55 @@
+---
+title: "Module 2.2: Benchmarking SLMs"
+description: "**Goal**: Evaluate models on standard benchmarks  **Time**: 90 minutes  **Concepts Covered**: - Perplexity - MMLU (57 subjects) - HumanEval (code gene..."
+---
+import NotebookWidget from '../../../../../components/NotebookWidget.astro';
+
+<NotebookWidget 
+  notebookPath="notebooks/models/02_benchmarking.ipynb"
+  title="Module 2.2: Benchmarking SLMs"
+  description="**Goal**: Evaluate models on standard benchmarks  **Time**: 90 minutes  **Concepts Covered**: - Perplexity - MMLU (57 subjects) - HumanEval (code gene..."
+/>
+
+
+
+**Goal**: Evaluate models on standard benchmarks
+
+**Time**: 90 minutes
+
+**Concepts Covered**:
+- Perplexity
+- MMLU (57 subjects)
+- HumanEval (code generation)
+- GSM8K (math reasoning)
+- HellaSwag (commonsense)
+- Visualize results (radar charts)
+
+## Setup
+
+```python
+!pip install torch transformers accelerate -q
+```
+
+```python
+import torch
+from transformers import AutoModelForCausalLM, AutoTokenizer
+
+def calculate_perplexity(model, tokenizer, text):
+    """Calculate perplexity on text"""
+    inputs = tokenizer(text, return_tensors="pt")
+    with torch.no_grad():
+        outputs = model(**inputs, labels=inputs["input_ids"])
+        loss = outputs.loss
+    return torch.exp(loss).item()
+
+print("Perplexity measures how well a model predicts text!")
+```
+
+## Key Takeaways
+
+✅ **Module Complete**
+
+## Next Steps
+
+Continue to the next module in the course.
+

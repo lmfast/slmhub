@@ -63,7 +63,7 @@ ollama run distilbart-news-summarizer
 | **Pipeline tag** | summarization |
 | **Library** | transformers |
 | **License** | unknown |
-| **Last modified** | 2026-01-19T13:51:43+00:00 |
+| **Last modified** | 2026-01-21T11:28:36+00:00 |
 | **Downloads** | 1.1K |
 | **Likes** | 1 |
 

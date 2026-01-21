@@ -1,0 +1,57 @@
+---
+title: "Module 2.4: Hardware Requirements Matrix"
+description: "**Goal**: Calculate memory and compute requirements for deployment  **Time**: 30 minutes  **Concepts Covered**: - Memory requirements matrix (FP16, IN..."
+---
+import NotebookWidget from '../../../../../components/NotebookWidget.astro';
+
+<NotebookWidget 
+  notebookPath="notebooks/models/04_hardware_requirements.ipynb"
+  title="Module 2.4: Hardware Requirements Matrix"
+  description="**Goal**: Calculate memory and compute requirements for deployment  **Time**: 30 minutes  **Concepts Covered**: - Memory requirements matrix (FP16, IN..."
+/>
+
+
+
+**Goal**: Calculate memory and compute requirements for deployment
+
+**Time**: 30 minutes
+
+**Concepts Covered**:
+- Memory requirements matrix (FP16, INT8, INT4)
+- Batch size calculations
+- Interactive calculator
+- Deployment recommendations
+
+## Setup
+
+```python
+!pip install torch transformers accelerate -q
+```
+
+```python
+def calculate_deployment_memory(model_params, precision="fp16", batch_size=1, seq_len=2048):
+    """Calculate memory needed for inference"""
+    bytes_per_param = {"fp16": 2, "int8": 1, "int4": 0.5}[precision]
+    model_memory = model_params * bytes_per_param / 1e9
+    
+    # KV cache memory (approximate)
+    kv_memory = model_params * 2 * batch_size * seq_len * bytes_per_param / 1e9
+    
+    return model_memory + kv_memory
+
+print("Deployment Memory Calculator:")
+for model in ["135M", "360M", "1.7B", "3B", "7B"]:
+    params = float(model.replace("M", "").replace("B", "")) * (1e9 if "B" in model else 1e6)
+    for prec in ["fp16", "int8", "int4"]:
+        mem = calculate_deployment_memory(params, prec)
+        print(f"{model} ({prec}): {mem:.2f} GB")
+```
+
+## Key Takeaways
+
+✅ **Module Complete**
+
+## Next Steps
+
+Continue to the next module in the course.
+

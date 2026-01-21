@@ -64,7 +64,7 @@ ollama run codeup-llama-3-8b
 | **Library** | — |
 | **License** | unknown |
 | **Last modified** | 2024-12-26T12:20:34+00:00 |
-| **Downloads** | 3 |
+| **Downloads** | 2 |
 | **Likes** | 5 |
 
 ## Links

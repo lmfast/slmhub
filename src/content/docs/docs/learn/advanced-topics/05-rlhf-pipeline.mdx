@@ -1,0 +1,63 @@
+---
+title: "Module 4.5: RLHF Pipeline"
+description: "**Goal**: Implement complete RLHF pipeline with PPO  **Time**: 120 minutes  **Concepts Covered**: - Supervised fine-tuning stage - Reward model traini..."
+---
+import NotebookWidget from '../../../../../components/NotebookWidget.astro';
+
+<NotebookWidget 
+  notebookPath="notebooks/advanced_topics/05_rlhf_pipeline.ipynb"
+  title="Module 4.5: RLHF Pipeline"
+  description="**Goal**: Implement complete RLHF pipeline with PPO  **Time**: 120 minutes  **Concepts Covered**: - Supervised fine-tuning stage - Reward model traini..."
+/>
+
+
+
+**Goal**: Implement complete RLHF pipeline with PPO
+
+**Time**: 120 minutes
+
+**Concepts Covered**:
+- Supervised fine-tuning stage
+- Reward model training
+- PPO implementation with trl
+- DPO comparison
+- Full RLHF pipeline end-to-end
+
+## Setup
+
+```python
+!pip install torch transformers accelerate matplotlib seaborn numpy -q
+```
+
+```python
+import torch
+from transformers import AutoModelForCausalLM, AutoTokenizer
+from trl import PPOTrainer, PPOConfig
+
+print("RLHF Pipeline:")
+print("1. Supervised Fine-Tuning (SFT)")
+print("2. Reward Model Training")
+print("3. Reinforcement Learning (PPO)")
+print("4. Evaluation")
+
+# PPO Configuration
+ppo_config = PPOConfig(
+    model_name="microsoft/Phi-3-mini-4k-instruct",
+    learning_rate=1e-5,
+    batch_size=32,
+    mini_batch_size=4,
+    gradient_accumulation_steps=1,
+    ppo_epochs=4,
+)
+
+print(f"\nPPO Config: {ppo_config}")
+```
+
+## Key Takeaways
+
+✅ **Module Complete**
+
+## Next Steps
+
+Continue to the next module in the course.
+

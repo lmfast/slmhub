@@ -64,8 +64,8 @@ ollama run qwen3-8b
 | **Library** | transformers |
 | **License** | unknown |
 | **Last modified** | 2025-07-26T03:49:13+00:00 |
-| **Downloads** | 3.9M |
-| **Likes** | 861 |
+| **Downloads** | 4.1M |
+| **Likes** | 866 |
 
 ## Links
 

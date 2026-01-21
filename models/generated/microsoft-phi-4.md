@@ -64,7 +64,7 @@ ollama run phi-4
 | **Library** | transformers |
 | **License** | unknown |
 | **Last modified** | 2025-11-24T16:57:37+00:00 |
-| **Downloads** | 535.6K |
+| **Downloads** | 541.7K |
 | **Likes** | 2.2K |
 
 ## Links
