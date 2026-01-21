@@ -22,59 +22,74 @@ export default defineConfig({
       social: {
         github: 'https://github.com/lmfast/slmhub',
       },
+      locales: {
+        root: {
+          label: 'English',
+          lang: 'en',
+        },
+      },
+      // Override text for search
+      translations: {
+        'search.label': 'Search Course, Foundations, Models...',
+      },
       // Disable default index page to allow custom homepage
       disable404Route: false,
       sidebar: [
         {
-          label: 'Home',
-          link: '/',
+          label: 'Course',
+          items: [
+            { label: 'Start Here', link: '/docs/start-here/' },
+            {
+              label: 'Concepts',
+              autogenerate: { directory: 'docs/learn/concepts' }
+            },
+            {
+              label: 'Tutorials',
+              autogenerate: { directory: 'docs/learn/tutorials' }
+            },
+            // Include tracks if needed or keep them accessible via search/links
+            {
+              label: 'Tracks',
+              autogenerate: { directory: 'docs/learn', collapsed: true }
+            }
+          ]
         },
         {
-          label: 'Start Here',
-          link: '/docs/start-here/',
-        },
-        {
-          label: 'Principles',
-          link: '/docs/principles/',
-        },
-        {
-          label: 'Learn',
-          autogenerate: {
-            directory: 'docs/learn',
-          },
+          label: 'Foundations',
+          autogenerate: { directory: 'docs/learn/fundamentals' },
         },
         {
           label: 'Models',
-          autogenerate: {
-            directory: 'docs/models',
-            collapsed: true,
-          },
+          autogenerate: { directory: 'docs/models', collapsed: true },
         },
         {
           label: 'Deploy',
-          autogenerate: {
-            directory: 'docs/deploy',
-          },
+          autogenerate: { directory: 'docs/deploy' },
         },
         {
           label: 'Tools',
-          autogenerate: {
-            directory: 'docs/tools',
-          },
+          autogenerate: { directory: 'docs/tools' }
         },
         {
           label: 'Community',
-          autogenerate: {
-            directory: 'docs/community',
-          },
+          items: [
+            { label: 'Overview', link: '/docs/community/' },
+            { label: 'Newsletter', link: '/docs/community/newsletter/' },
+            { label: 'Contributing', link: '/docs/community/contributing/' },
+            { label: 'Code of Conduct', link: '/docs/community/code-of-conduct/' },
+          ]
+        },
+        {
+          label: 'About',
+          link: '/docs/about/',
         },
       ],
       customCss: [
         './src/styles/custom.css',
       ],
-      // components: {
-      //   PageFrame: './src/components/PageFrame.astro',
-      // },
+      components: {
+        Header: './src/components/HeaderOverride.astro',
+      },
       head: [
         {
           tag: 'meta',
