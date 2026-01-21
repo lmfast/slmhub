@@ -5,8 +5,9 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "astro build",
+    "build": "node scripts/notebook-to-mdx.mjs && astro build",
     "preview": "astro preview",
+    "sync:notebooks": "node scripts/notebook-to-mdx.mjs",
     "astro": "astro",
     "sync-models": "python scripts/sync_models.py"
   },

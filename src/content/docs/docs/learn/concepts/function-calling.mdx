@@ -1,117 +1,57 @@
 ---
-title: "Function Calling"
-description: "Teach SLMs to use tools, APIs, and structured data outputs"
+title: "Function Calling & Structured Output with SLMs"
+description: "This notebook demonstrates how to use function calling (tool use) and structured data extraction with Ollama, corresponding to the SLM Hub [Function C..."
 ---
-
 import NotebookWidget from '../../../../../components/NotebookWidget.astro';
 
 <NotebookWidget 
   notebookPath="notebooks/function_calling.ipynb"
-  title="Function Calling with Ollama"
-  description="Learn how to make SLMs use tools and output structured JSON."
+  title="Function Calling & Structured Output with SLMs"
+  description="This notebook demonstrates how to use function calling (tool use) and structured data extraction with Ollama, corresponding to the SLM Hub [Function C..."
 />
 
-# Function Calling
 
-**What is Function Calling?** It's teaching your SLM to use tools - like calculators, APIs, databases, or any function you write. Instead of guessing or hallucinating, the model can actually call real functions to get real data.
 
-**Why it matters:** This is how you build agents that can interact with the real world, not just generate text.
+This notebook demonstrates how to use function calling (tool use) and structured data extraction with Ollama, corresponding to the SLM Hub [Function Calling Guide](https://slmhub.gitbook.io/slmhub/docs/learn/concepts/function-calling).
 
-## How Function Calling Works: Step by Step
+## 1. Setup Environment
+Install Ollama, OpenAI SDK (compatible with Ollama), and Instructor for structured outputs.
 
-**Without Function Calling:**
-```
-User: "What's the weather in Tokyo?"
-Model: "I don't have access to real-time weather data..."
-       ↑ Model can't access external information
+```python
+!pip install ollama openai instructor pydantic
 ```
 
-**With Function Calling:**
-```
-User: "What's the weather in Tokyo?"
-Model: "I need to check the weather. Let me call the weather function."
-       ↓
-Model outputs: {"tool": "get_weather", "args": {"city": "Tokyo"}}
-       ↓
-Your code executes: get_weather("Tokyo") → "22°C, Sunny"
-       ↓
-Model: "The weather in Tokyo is 22°C and sunny."
-       ↑ Model now has real data!
+### Install and Start Ollama
+We install the Ollama binary and run it in the background.
+
+```python
+!curl -fsSL https://ollama.com/install.sh | sh
 ```
 
-### The Complete Flow
+```python
+import subprocess
+import time
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│  STEP 1: User asks a question                                   │
-│  ─────────────────────────────                                  │
-│  User: "What's the weather in Tokyo?"                           │
-│           │                                                     │
-│           ▼                                                     │
-│  ┌──────────────────────────────────────────────────────────┐  │
-│  │  STEP 2: Model analyzes the question                     │  │
-│  │  ────────────────────────────────                         │  │
-│  │  SLM thinks: "I need real-time weather data.             │  │
-│  │              I should use the get_weather function."      │  │
-│  └──────────────────────────────────────────────────────────┘  │
-│           │                                                     │
-│           ▼                                                     │
-│  ┌──────────────────────────────────────────────────────────┐  │
-│  │  STEP 3: Model outputs structured JSON                   │  │
-│  │  ───────────────────────────────                          │  │
-│  │  {                                                        │  │
-│  │    "tool": "get_weather",                                 │  │
-│  │    "args": {"city": "Tokyo"}                              │  │
-│  │  }                                                        │  │
-│  └──────────────────────────────────────────────────────────┘  │
-│           │                                                     │
-│           ▼                                                     │
-│  ┌──────────────────────────────────────────────────────────┐  │
-│  │  STEP 4: Your code executes the function                 │  │
-│  │  ────────────────────────────────                         │  │
-│  │  result = get_weather("Tokyo")                            │  │
-│  │  → "22°C, Sunny"                                          │  │
-│  └──────────────────────────────────────────────────────────┘  │
-│           │                                                     │
-│           ▼                                                     │
-│  ┌──────────────────────────────────────────────────────────┐  │
-│  │  STEP 5: Model generates final answer                    │  │
-│  │  ───────────────────────────────                          │  │
-│  │  "The weather in Tokyo is 22°C and sunny."               │  │
-│  └──────────────────────────────────────────────────────────┘  │
-│                                                                 │
-│  ✅ Model has real data, not hallucinations!                   │
-└─────────────────────────────────────────────────────────────────┘
+# Start Ollama server in background
+process = subprocess.Popen(["ollama", "serve"])
+time.sleep(5)
+print("Ollama started!")
 ```
 
-**Key Benefits:**
-- ✅ Access to real-time data (weather, stock prices, etc.)
-- ✅ Can perform calculations accurately
-- ✅ Can interact with databases and APIs
-- ✅ Reduces hallucinations by using real data
+## 2. Pull Model
+Qwen2.5 is excellent for function calling. We'll use the 7B version (finetuned for tools).
 
-## Supported Models (2026)
+```python
+!ollama pull qwen2.5:7b
+```
 
-Not all models support function calling. Top SLM choices:
-
-| Model | Quality | Method |
-|-------|---------|--------|
-| **Phi-4** | ⭐⭐⭐⭐⭐ | Native support |
-| **Qwen2.5-7B** | ⭐⭐⭐⭐⭐ | Native, very reliable |
-| **Mistral 7B v0.3** | ⭐⭐⭐⭐ | Native |
-| **Llama 3.2** | ⭐⭐⭐⭐ | Native/Prompted |
-| **SmolLM2** | ⭐⭐⭐ | Prompt engineering needed |
-
-## Implementation with Ollama
-
-Ollama supports native tool calling with compatible models.
-
-### 1. Define the Tool
+## 3. Basic Tool Calling Loop
+We define a dummy weather tool and let the model call it.
 
 ```python
 import ollama
 
-# Define the tool schema (OpenAI format)
+# 1. Define Tool
 weather_tool = {
   'type': 'function',
   'function': {
@@ -124,116 +64,78 @@ weather_tool = {
           'type': 'string',
           'description': 'The name of the city',
         },
-        'format': {
-          'type': 'string',
-          'enum': ['celsius', 'fahrenheit'],
-          'description': 'The temperature unit',
-        },
       },
       'required': ['city'],
     },
   },
 }
-```
 
-### 2. Implement the Function
+# 2. Python Function
+def get_current_weather(city):
+    print(f"Executing tool: get_current_weather({city})")
+    return f"The weather in {city} is 25 degrees Celsius and sunny."
 
-```python
-def get_current_weather(city, format='celsius'):
-    # In real life, call an API here
-    if city.lower() == 'tokyo':
-        return '{"temp": 22, "condition": "sunny"}'
-    elif city.lower() == 'london':
-        return '{"temp": 15, "condition": "cloudy"}'
-    else:
-        return '{"temp": 20, "condition": "unknown"}'
+functions_map = {'get_current_weather': get_current_weather}
 
-# Map name to function
-available_functions = {
-    'get_current_weather': get_current_weather
-}
-```
+# 3. Chat with Model
+query = "How is the weather in Paris?"
+print(f"User: {query}")
 
-### 3. Chat with Tools
-
-```python
+messages = [{'role': 'user', 'content': query}]
 response = ollama.chat(
     model='qwen2.5:7b',
-    messages=[{'role': 'user', 'content': 'What is the weather in Tokyo?'}],
-    tools=[weather_tool] # Pass available tools
+    messages=messages,
+    tools=[weather_tool]
 )
 
-# Check if model wants to call a tool
+# 4. Handle Tool Call
 if response['message'].get('tool_calls'):
     for tool in response['message']['tool_calls']:
+        fn_name = tool['function']['name']
+        fn_args = tool['function']['arguments']
         
-        # Get function info
-        function_name = tool['function']['name']
-        function_args = tool['function']['arguments']
+        # Call Python function
+        result = functions_map[fn_name](**fn_args)
         
-        print(f"Model calling: {function_name}({function_args})")
+        # Feed back to model
+        messages.append(response['message'])
+        messages.append({
+            'role': 'tool',
+            'content': result
+        })
         
-        # Execute function
-        function_to_call = available_functions[function_name]
-        function_response = function_to_call(**function_args)
-        
-        # Add tool output back to conversation
-        final_response = ollama.chat(
-            model='qwen2.5:7b',
-            messages=[
-                {'role': 'user', 'content': 'What is the weather in Tokyo?'},
-                response['message'], # The tool call request
-                {
-                    'role': 'tool',
-                    'content': function_response,
-                },
-            ],
-        )
-        
-        print("Final Answer:", final_response['message']['content'])
+        final_res = ollama.chat(model='qwen2.5:7b', messages=messages)
+        print(f"Model: {final_res['message']['content']}")
 ```
 
-## Structured Output (JSON)
-
-Sometimes you just want data extraction, not a tool loop.
+## 4. Structured Output with Instructor
+Force the model to output valid JSON matching a Pydantic schema.
 
 ```python
 from pydantic import BaseModel
+from openai import OpenAI
+import instructor
 
 class UserInfo(BaseModel):
     name: str
     age: int
-    interests: list[str]
+    skills: list[str]
 
-# Use libraries like 'instructor' or 'outlines' for strict JSON
-import instructor
-from openai import OpenAI
-
+# Patch OpenAI client to use Instructor + Ollama
 client = instructor.patch(OpenAI(
     base_url="http://localhost:11434/v1",
     api_key="ollama"
 ))
 
+# Extract data
+text = "Gaurav is a 28 year old engineer who loves Typescript and Rust."
 user = client.chat.completions.create(
-    model="phi3.5",
-    messages=[
-        {"role": "user", "content": "Extract info: John is 30 and loves AI and coding."}
-    ],
-    response_model=UserInfo,
+    model="qwen2.5:7b",
+    messages=[{"role": "user", "content": f"Extract info: {text}"}],
+    response_model=UserInfo
 )
 
-print(user.name)       # John
-print(user.interests)  # ['AI', 'coding']
+print("Extracted JSON:")
+print(user.model_dump_json(indent=2))
 ```
 
-## Best Practices
-
-1.  **Clear Descriptions**: The model reads the `description` field to know *when* to use a tool. Be verbose.
-2.  **Simple Signatures**: Keep arguments simple (strings, numbers). Avoid complex objects.
-3.  **Error Handling**: If the tool fails, feed the error back to the model so it can try again.
-4.  **System Prompt**: Tell the model "You have access to tools. Use them whenever you need."
-
-## Next Steps
-
-- [Build Agents](/slmhub/docs/learn/concepts/agents/) - Use tools in loops
-- [RAG Guide](/slmhub/docs/learn/concepts/rag/) - Use search as a tool

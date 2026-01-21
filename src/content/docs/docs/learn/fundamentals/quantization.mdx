@@ -1,249 +1,63 @@
 ---
-title: "Quantization"
-description: "Reduce model size and speed up inference by converting to lower precision"
+title: "Quantization: Reducing Model Size"
+description: "This notebook demonstrates how to load models with 4-bit quantization to drastically reduce memory usage, corresponding to the SLM Hub [Quantization G..."
 ---
-
 import NotebookWidget from '../../../../../components/NotebookWidget.astro';
 
 <NotebookWidget 
   notebookPath="notebooks/quantization.ipynb"
-  title="Hands-on Quantization"
-  description="Load a 14B model on a free GPU using 4-bit quantization."
+  title="Quantization: Reducing Model Size"
+  description="This notebook demonstrates how to load models with 4-bit quantization to drastically reduce memory usage, corresponding to the SLM Hub [Quantization G..."
 />
 
-# Quantization
 
-Quantization reduces model size and speeds up inference. A 7B model can go from 14GB to 3.5GB.
 
-## What is Quantization?
+This notebook demonstrates how to load models with 4-bit quantization to drastically reduce memory usage, corresponding to the SLM Hub [Quantization Guide](https://slmhub.gitbook.io/slmhub/docs/learn/fundamentals/quantization).
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│  PRECISION LEVELS                                               │
-│  ────────────────                                               │
-│                                                                 │
-│  FP32 (32-bit)   ████████████████████████████████  4 bytes     │
-│  FP16 (16-bit)   ████████████████                  2 bytes     │
-│  INT8 (8-bit)    ████████                          1 byte      │
-│  INT4 (4-bit)    ████                              0.5 bytes   │
-│                                                                 │
-│  Lower precision = Smaller model = Faster inference            │
-│  But: Some quality loss                                         │
-│                                                                 │
-└─────────────────────────────────────────────────────────────────┘
-```
-
-**Real-world impact:**
-
-| Model | FP16 | INT8 | INT4 |
-|-------|------|------|------|
-| Phi-4 (14B) | 28 GB | 14 GB | 7 GB |
-| Qwen3-8B | 16 GB | 8 GB | 4 GB |
-| Gemma-3-4B | 8 GB | 4 GB | 2 GB |
-| SmolLM3 (3B) | 6 GB | 3 GB | 1.5 GB |
-
-## How Quantization Works
-
-```
-┌─────────────────────────────────────────────────────────────────┐
-│  ORIGINAL WEIGHT (FP16)         QUANTIZED (INT4)               │
-│  ──────────────────────         ────────────────               │
-│                                                                 │
-│  0.23456789                     3                               │
-│  -0.12345678                    -2                              │
-│  0.87654321                     14                              │
-│  -0.45678901                    -7                              │
-│                                                                 │
-│  Storage: 2 bytes each          Storage: 0.5 bytes each        │
-│                                                                 │
-│  + Scale factor + Zero point stored once per group             │
-│  During inference: INT4 × scale + zero → approximate FP16      │
-│                                                                 │
-└─────────────────────────────────────────────────────────────────┘
-```
-
-## Quantization Methods
-
-### Post-Training Quantization (PTQ)
-
-Quantize after training - fast and easy:
+## 1. Setup
+Install `bitsandbytes` and `accelerate`.
 
 ```python
-from transformers import AutoModelForCausalLM, BitsAndBytesConfig
+!pip install transformers bitsandbytes accelerate
+```
+
+## 2. Load in 4-bit (NF4)
+We will load Microsoft's Phi-4 (or Phi-3 if 14B is too large for your colab instance, though 4-bit 14B fits in 16GB T4) in 4-bit precision.
+
+```python
 import torch
+from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
 
-# 4-bit quantization with BitsAndBytes
-model = AutoModelForCausalLM.from_pretrained(
-    "microsoft/Phi-4",
-    quantization_config=BitsAndBytesConfig(
-        load_in_4bit=True,
-        bnb_4bit_quant_type="nf4",      # Normal Float 4
-        bnb_4bit_compute_dtype=torch.bfloat16
-    ),
-    device_map="auto"
-)
-```
+model_id = "microsoft/Phi-4"
 
-### GPTQ
-
-GPU-optimized, uses calibration data for better quality:
-
-```python
-# Load pre-quantized GPTQ model
-from transformers import AutoModelForCausalLM
-
-model = AutoModelForCausalLM.from_pretrained(
-    "TheBloke/Llama-2-7B-GPTQ",
-    device_map="auto"
-)
-# Quality: ~99% of original at INT4
-```
-
-### AWQ (Activation-aware)
-
-Preserves important weights for best quality:
-
-```python
-# AWQ quantized model
-from transformers import AutoModelForCausalLM
-
-model = AutoModelForCausalLM.from_pretrained(
-    "TheBloke/Llama-2-7B-AWQ",
-    device_map="auto"
-)
-# Quality: ~99.5% of original
-```
-
-### GGUF (llama.cpp format)
-
-CPU-optimized for local deployment:
-
-```bash
-# Download GGUF model
-wget https://huggingface.co/.../model.Q4_K_M.gguf
-
-# Run with llama.cpp
-./llama-cli -m model.Q4_K_M.gguf -p "Hello!"
-```
-
-```
-GGUF NAMING:
-┌─────────────────────────────────────────────────────────────────┐
-│  model.Q4_K_M.gguf                                              │
-│        │ │ │                                                    │
-│        │ │ └── Size: S(mall), M(edium), L(arge)                │
-│        │ └──── Type: K = keep important weights higher         │
-│        └────── Bits: 4-bit quantization                        │
-│                                                                 │
-│  Quality ranking:                                               │
-│  Q8 > Q6_K > Q5_K_M > Q4_K_M > Q4_0 > Q3_K > Q2_K              │
-│  ↑ Best                                           Smallest ↑   │
-│                                                                 │
-└─────────────────────────────────────────────────────────────────┘
-```
-
-## Choosing Quantization
-
-```
-┌─────────────────────────────────────────────────────────────────┐
-│  DECISION GUIDE                                                 │
-│  ──────────────                                                 │
-│                                                                 │
-│  Have GPU with enough VRAM?                                     │
-│        │                                                        │
-│        ├─ YES → Use BitsAndBytes, AWQ, or GPTQ                 │
-│        │        Best: AWQ for quality                           │
-│        │                                                        │
-│        └─ NO  → Use GGUF with llama.cpp                        │
-│                 Works great on CPU!                             │
-│                                                                 │
-│  ─────────────────────────────────────────────────────────────  │
-│                                                                 │
-│  Quality requirements?                                          │
-│        │                                                        │
-│        ├─ Maximum quality → FP16 or INT8                       │
-│        ├─ Good enough    → INT4 (Q4_K_M)  ← Most common       │
-│        └─ Minimum size   → INT2/INT3 (experimental)            │
-│                                                                 │
-└─────────────────────────────────────────────────────────────────┘
-```
-
-## Quick Start with Ollama
-
-The easiest path - already quantized:
-
-```bash
-# Pre-quantized models ready to use
-ollama pull phi3.5           # Default (Q4)
-ollama pull qwen2.5:7b-q8_0  # Higher quality
-ollama pull llama3.2:3b-q4_0 # Smaller, faster
-
-# Check model size
-ollama list
-```
-
-## Python Quick Start
-
-```python
-from transformers import AutoModelForCausalLM, AutoTokenizer
-from transformers import BitsAndBytesConfig
-import torch
-
-# Load 4-bit quantized model
+# Config for 4-bit quantization
 bnb_config = BitsAndBytesConfig(
     load_in_4bit=True,
     bnb_4bit_quant_type="nf4",
-    bnb_4bit_compute_dtype=torch.bfloat16,
-    bnb_4bit_use_double_quant=True  # Extra compression
+    bnb_4bit_compute_dtype=torch.float16,
+    bnb_4bit_use_double_quant=True
 )
 
+# Load model
 model = AutoModelForCausalLM.from_pretrained(
-    "microsoft/Phi-4",
+    model_id,
     quantization_config=bnb_config,
-    device_map="auto"
+    device_map="auto",
+    trust_remote_code=True
 )
-tokenizer = AutoTokenizer.from_pretrained("microsoft/Phi-4")
 
-# Use as normal
-inputs = tokenizer("Hello!", return_tensors="pt").to("cuda")
-outputs = model.generate(**inputs, max_new_tokens=50)
-print(tokenizer.decode(outputs[0]))
+tokenizer = AutoTokenizer.from_pretrained(model_id, trust_remote_code=True)
+
+print("Model loaded in 4-bit!")
+print(f"Memory footprint: {model.get_memory_footprint() / 1024**3:.2f} GB")
 ```
 
-## Quality vs Size Trade-offs
+## 3. Run Inference
+Even heavily compressed, the model retains its capabilities.
 
-```
-         Quality ▲
-                 │
-           FP16  ●━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  100%
-                 │
-           INT8  ●━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━     99%
-                 │
-        Q5_K_M   ●━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━       98%
-                 │
-        Q4_K_M   ●━━━━━━━━━━━━━━━━━━━━━━━━━━━━         96%
-                 │
-          Q4_0   ●━━━━━━━━━━━━━━━━━━━━━━━━             94%
-                 │
-          Q3_K   ●━━━━━━━━━━━━━━━━━━                   90%
-                 │
-          Q2_K   ●━━━━━━━━━━━━                         85%
-                 │
-                 └────────────────────────────────▶
-                 1.0  0.5  0.35  0.25  0.2  0.15
-                           Size multiplier
+```python
+inputs = tokenizer("Why is quantization important for SLMs?", return_tensors="pt").to("cuda")
+outputs = model.generate(**inputs, max_new_tokens=100)
+print(tokenizer.decode(outputs[0], skip_special_tokens=True))
 ```
 
-## Key Takeaways
-
-1. **INT4 is the sweet spot** - 4x smaller, ~96% quality
-2. **Use Ollama for easy path** - Pre-quantized, just works
-3. **GGUF for CPU** - llama.cpp optimized format
-4. **AWQ/GPTQ for production** - Best quality at low precision
-5. **Test on your task** - Quality loss varies by use case
-
-## Next Steps
-
-- [Fine-Tuning](/slmhub/docs/learn/fundamentals/fine-tuning/) - Train with QLoRA
-- [llama.cpp Guide](/slmhub/docs/deploy/quickstarts/llama-cpp/) - GGUF deployment
-- [Model Directory](/slmhub/docs/models/) - Find quantized models

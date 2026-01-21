@@ -1,43 +1,59 @@
 ---
-title: Ollama
-description: "The simplest local runtime for SLMs."
+title: "Ollama Quickstart on Google Colab"
+description: "This notebook demonstrates how to install and run [Ollama](https://ollama.com/) directly in a Google Colab environment (Free Tier compatible).  ## 1. ..."
 ---
-
-
 import NotebookWidget from '../../../../../components/NotebookWidget.astro';
 
 <NotebookWidget 
   notebookPath="notebooks/ollama_quickstart.ipynb"
-  title="Try Ollama in Colab"
-  description="Don't want to install locally? Run Ollama + Phi-4 directly in your browser with a free GPU."
+  title="Ollama Quickstart on Google Colab"
+  description="This notebook demonstrates how to install and run [Ollama](https://ollama.com/) directly in a Google Colab environment (Free Tier compatible).  ## 1. ..."
 />
 
-## Why use it
 
-- Lowest friction local dev loop.
-- Great for prototyping an OpenAI-compatible interface.
 
-## Run
+This notebook demonstrates how to install and run [Ollama](https://ollama.com/) directly in a Google Colab environment (Free Tier compatible).
 
-```bash
-ollama run phi4
+## 1. Install Ollama
+We will download and install the Ollama Linux binary.
+
+```python
+!curl -fsSL https://ollama.com/install.sh | sh
 ```
 
-## Connect as an API
+## 2. Start the Ollama Server
+Ollama needs to run in the background to serve requests. We use Python's `subprocess` to start it.
 
-Many setups expose:
+```python
+import subprocess
+import time
 
-```bash
-curl http://localhost:11434/v1/chat/completions \
+# Start Ollama serve in the background
+process = subprocess.Popen(["ollama", "serve"])
+
+# Give it a few seconds to initialize
+time.sleep(5)
+print("Ollama server started!")
+```
+
+## 3. Run a Model
+Now we can pull and run a model. Let's try `phi4`, a powerful SLM from Microsoft.
+
+> **Note:** The first run will take some time to download the model weights (approx 2-3GB).
+
+```python
+!ollama run phi4 "Why are Small Language Models (SLMs) important in 2026?"
+```
+
+## 4. Use via API
+You can also query the model using curl or python libraries, as Ollama provides an OpenAI-compatible API.
+
+```python
+!curl http://localhost:11434/v1/chat/completions \
   -H "Content-Type: application/json" \
   -d '{
     "model": "phi4",
-    "messages": [{"role": "user", "content": "Give me a 1-sentence summary of SLMs."}]
+    "messages": [{"role": "user", "content": "Explain quantum computing in one sentence."}]
   }'
 ```
-
-## Production note
-
-Ollama is amazing for dev. For high concurrency and throughput, use vLLM: `deploy/quickstarts/vllm.md`.
-
 
