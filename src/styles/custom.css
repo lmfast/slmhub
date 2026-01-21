@@ -112,9 +112,6 @@ html {
 /* ============================================
    Glassmorphism Header
    ============================================ */
-/* ============================================
-   Glassmorphism Header
-   ============================================ */
 header.header,
 .sl-container header {
   background-color: var(--glass-bg) !important;
@@ -122,25 +119,17 @@ header.header,
   -webkit-backdrop-filter: blur(var(--blur-amount));
   border-bottom: 1px solid var(--glass-border);
   box-shadow: var(--glass-shadow);
+  box-shadow: var(--glass-shadow);
   transition: all var(--transition-base);
 }
 
-/* Resize Logo */
-.site-title img {
+/* Navbar Logo Sizing */
+.site-title svg {
   height: 28px !important;
-  width: auto !important;
-  transition: all 0.3s ease;
-}
-
-.site-title:hover img {
-  transform: scale(1.05);
-}
-
-/* Navbar Links (Desktop) - enhance readability */
-.header .site-title {
-  font-size: 1.1rem;
-  font-weight: 700;
-  letter-spacing: -0.01em;
+  /* Small, compact logo */
+  width: auto;
+  color: var(--sl-color-text-accent);
+  /* Theme aware color */
 }
 
 /* ============================================

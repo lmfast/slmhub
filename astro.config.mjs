@@ -15,8 +15,7 @@ export default defineConfig({
       description: 'Developer-centric documentation for Small Language Models (SLMs)',
       favicon: '/favicon.svg',
       logo: {
-        dark: './src/assets/logo-dark.svg',
-        light: './src/assets/logo-light.svg',
+        src: './src/assets/logo.svg',
         alt: 'SLM Hub',
         replacesTitle: false,
       },
@@ -27,60 +26,56 @@ export default defineConfig({
       disable404Route: false,
       sidebar: [
         {
+          label: 'Home',
+          link: '/',
+        },
+        {
           label: 'Course',
           items: [
             { label: 'Start Here', link: '/docs/start-here/' },
             {
-              label: 'Concepts',
-              autogenerate: { directory: 'docs/learn/concepts' }
+              label: 'Learn',
+              autogenerate: { directory: 'docs/learn' },
             },
             {
-              label: 'Tutorials',
-              autogenerate: { directory: 'docs/learn/tutorials' }
+              label: 'Deploy',
+              autogenerate: { directory: 'docs/deploy' },
             },
-            // Include tracks if needed or keep them accessible via search/links
             {
-              label: 'Tracks',
-              autogenerate: { directory: 'docs/learn', collapsed: true }
-            }
-          ]
+              label: 'Models',
+              autogenerate: { directory: 'docs/models', collapsed: true },
+            },
+            {
+              label: 'Tools',
+              autogenerate: { directory: 'docs/tools' },
+            },
+          ],
         },
         {
           label: 'Foundations',
           autogenerate: { directory: 'docs/learn/fundamentals' },
         },
         {
-          label: 'Models',
-          autogenerate: { directory: 'docs/models', collapsed: true },
-        },
-        {
-          label: 'Deploy',
-          autogenerate: { directory: 'docs/deploy' },
-        },
-        {
-          label: 'Tools',
-          autogenerate: { directory: 'docs/tools' }
-        },
-        {
           label: 'Community',
           items: [
-            { label: 'Overview', link: '/docs/community/' },
-            { label: 'Newsletter', link: '/docs/community/newsletter/' },
-            { label: 'Contributing', link: '/docs/community/contributing/' },
-            { label: 'Code of Conduct', link: '/docs/community/code-of-conduct/' },
-          ]
+            { label: 'Overview', autogenerate: { directory: 'docs/community' } },
+          ],
         },
         {
           label: 'About',
           link: '/docs/about/',
         },
+        {
+          label: 'Contributing',
+          link: '/docs/community/contributing/',
+        },
       ],
       customCss: [
         './src/styles/custom.css',
       ],
-      components: {
-        Header: './src/components/HeaderOverride.astro',
-      },
+      // components: {
+      //   PageFrame: './src/components/PageFrame.astro',
+      // },
       head: [
         {
           tag: 'meta',
@@ -139,6 +134,14 @@ export default defineConfig({
           lang: 'en',
         },
       },
+      // UI Translations
+      components: {
+        // Override default components if needed in future
+      },
+      // Custom translations for UI elements
+      textTranslations: {
+        'search.label': 'Search Course, Foundations, & Models...',
+      },
       expressiveCode: {
         themes: ['github-dark', 'github-light'],
         defaultProps: {
@@ -159,7 +162,6 @@ export default defineConfig({
         minHeadingLevel: 2,
         maxHeadingLevel: 4,
       },
-      pagination: true,
     }),
     tailwind({
       applyBaseStyles: false,
