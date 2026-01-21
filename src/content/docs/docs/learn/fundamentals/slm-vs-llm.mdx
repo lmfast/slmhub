@@ -1,0 +1,65 @@
+---
+title: "SLMs vs LLMs: A Developer's Perspective"
+description: "This notebook helps you benchmark and compare the trade-offs between Small Language Models (SLMs) and Large Language Models (LLMs) in code. Guide: [SL..."
+---
+import NotebookWidget from '../../../../../components/NotebookWidget.astro';
+
+<NotebookWidget 
+  notebookPath="notebooks/slm_vs_llm.ipynb"
+  title="SLMs vs LLMs: A Developer's Perspective"
+  description="This notebook helps you benchmark and compare the trade-offs between Small Language Models (SLMs) and Large Language Models (LLMs) in code. Guide: [SL..."
+/>
+
+
+
+This notebook helps you benchmark and compare the trade-offs between Small Language Models (SLMs) and Large Language Models (LLMs) in code. Guide: [SLM vs LLM](/slmhub/docs/learn/fundamentals/slm-vs-llm).
+
+## 1. The Trade-off Matrix
+We can visualize the trade-off code.
+
+```python
+import pandas as pd
+import matplotlib.pyplot as plt
+
+data = {
+    "Model Type": ["LLM (70B+)", "SLM (7B)", "Micro-SLM (1B)"],
+    "VRAM Required (GB)": [48, 6, 2],
+    "Inference Speed (tokens/s)": [15, 80, 200],
+    "General Reasoning Score": [95, 85, 60],
+    "Cost ($/1M Tok)": [5.00, 0.20, 0.05]
+}
+
+df = pd.DataFrame(data)
+display(df)
+```
+
+## 2. When to choose what?
+
+### Choose SLM if:
+- You need **low latency** (<100ms)
+- You need **privacy** (running locally)
+- You have **cost constraints**
+- You have a **specific task** (summarization, extraction)
+
+### Choose LLM if:
+- You need **broad general knowledge**
+- You need complex **multi-step reasoning** (though SLMs are catching up)
+- You have **unlimited budget**
+
+## 3. Cost Simulation
+Let's calculate the cost difference for a startup serving 1M requests per month.
+
+```python
+requests_per_month = 1_000_000
+avg_tokens = 500
+total_tokens_millions = (requests_per_month * avg_tokens) / 1_000_000
+
+llm_cost = total_tokens_millions * 5.00
+slm_cost = total_tokens_millions * 0.20
+
+print(f"Monthly Cost Analysis (1M reqs):")
+print(f"LLM API Cost: ${llm_cost:,.2f}")
+print(f"SLM Self-Host Cost (Est): ${slm_cost:,.2f}")
+print(f"Savings: ${(llm_cost - slm_cost):,.2f} per month")
+```
+

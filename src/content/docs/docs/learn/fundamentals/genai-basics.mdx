@@ -1,189 +1,82 @@
 ---
-title: "GenAI & SLMs"
-description: "Understanding Generative AI and where Small Language Models fit in"
+title: "Generative AI & Small Language Models (SLMs)"
+description: "Understanding the basics of GenAI and where SLMs fit into the hierarchy. Guide: [GenAI Basics](/slmhub/docs/learn/fundamentals/genai-basics).  ## 1. T..."
 ---
+import NotebookWidget from '../../../../../components/NotebookWidget.astro';
 
-import ColabButton from '../../../../../components/ColabButton.astro';
+<NotebookWidget 
+  notebookPath="notebooks/genai_basics.ipynb"
+  title="Generative AI & Small Language Models (SLMs)"
+  description="Understanding the basics of GenAI and where SLMs fit into the hierarchy. Guide: [GenAI Basics](/slmhub/docs/learn/fundamentals/genai-basics).  ## 1. T..."
+/>
 
-<ColabButton path="docs/learn/fundamentals/genai_basics.ipynb" />
 
-# Generative AI & SLMs
 
-**What is Generative AI?** It's AI that creates new content - text, images, code, music. Unlike traditional AI that classifies or predicts, GenAI generates something new.
+Understanding the basics of GenAI and where SLMs fit into the hierarchy. Guide: [GenAI Basics](/slmhub/docs/learn/fundamentals/genai-basics).
 
-**Where do SLMs fit?** Small Language Models are the efficient, local version of the huge cloud-based models. They bring GenAI to your laptop, phone, or edge device.
+## 1. The AI Hierarchy
+Where do SLMs fit? Let's visualize.
 
-## Understanding the AI Hierarchy
-
-Let's break down how everything connects:
-
-```
-┌─────────────────────────────────────────────────────────────────┐
-│  AI (Artificial Intelligence)                                   │
-│  │                                                              │
-│  ├── Machine Learning (ML)                                      │
-│  │   │                                                          │
-│  │   ├── Deep Learning (DL)                                     │
-│  │   │   │                                                      │
-│  │   │   ├── Generative AI (GenAI)                              │
-│  │   │   │   │                                                  │
-│  │   │   │   ├── LLMs (Large Models: GPT-4, Claude)             │
-│  │   │   │   │   - Cloud-based, huge, expensive                 │
-│  │   │   │   │                                                  │
-│  │   │   │   └── SLMs (Small Models: Phi-4, Llama 3 8B) ◀── YOU │
-│  │   │   │       - Local, efficient, private                    │
-│  │   │   │                                                  │
-│  │   │   └── Image Gen (Stable Diffusion, Midjourney)           │
-│  │   │                                                      │
-│  │   └── Predictive AI (Regression, Classification)             │
-│  │                                                              │
-│  └── Symbolic AI (Old school logic)                             │
-│                                                                 │
-└─────────────────────────────────────────────────────────────────┘
+```python
+print("""
+AI (Artificial Intelligence)
+├── Machine Learning (ML)
+│   ├── Deep Learning (DL)
+│   │   ├── Generative AI (GenAI)
+│   │   │   ├── LLMs (GPT-4, Claude) -> Cloud, Huge, $$$$
+│   │   │   └── SLMs (Phi-3, Llama-3-8B) -> Local, Fast, Free <--- YOU ARE HERE
+""")
 ```
 
-## How SLMs Generate Text: The Simple Explanation
+## 2. Token Probability Demo
+SLMs are just 'next token predictors'. Let's see this in action using a small model.
 
-Think of an SLM as a super-smart autocomplete. It predicts the next word based on what came before.
-
-### Step-by-Step Process
-
-```
-┌─────────────────────────────────────────────────────────────────┐
-│  STEP 1: You type "The sky is"                                  │
-│           │                                                      │
-│           ▼                                                      │
-│  ┌──────────────────────────────────────────┐                  │
-│  │  MODEL CALCULATES PROBABILITIES          │                  │
-│  │  ───────────────────────────────          │                  │
-│  │                                           │                  │
-│  │  "blue"     → 60%  ████████████████      │                  │
-│  │  "dark"     → 20%  ██████                │                  │
-│  │  "cloudy"   → 10%  ███                   │                  │
-│  │  "cheese"   → 0.01% ▏                    │                  │
-│  │  ... (thousands more words)              │                  │
-│  └──────────────────────────────────────────┘                  │
-│           │                                                      │
-│           ▼                                                      │
-│  STEP 2: Model picks "blue" (highest probability)              │
-│           │                                                      │
-│           ▼                                                      │
-│  STEP 3: Your text is now "The sky is blue"                    │
-│           │                                                      │
-│           ▼                                                      │
-│  STEP 4: Model predicts next word: "today", "tonight", etc.    │
-│           │                                                      │
-│           ▼                                                      │
-│  REPEAT until complete sentence/response                        │
-└─────────────────────────────────────────────────────────────────┘
+```python
+!pip install transformers torch accelerate
 ```
 
-**Key insight:** The model doesn't "know" facts. It learned patterns from billions of text examples. It knows "sky" is often followed by "blue" because it saw that pattern many times during training.
+```python
+from transformers import AutoTokenizer, AutoModelForCausalLM
+import torch
 
-## Key Concepts Explained Simply
+# Load a very small model for demonstration (GPT-2 is small/fast)
+tokenizer = AutoTokenizer.from_pretrained("gpt2")
+model = AutoModelForCausalLM.from_pretrained("gpt2")
 
-### Context Window: The Model's Memory
+text = "The sky is"
+inputs = tokenizer(text, return_tensors="pt")
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│  CONTEXT WINDOW = How much text the model can "remember"       │
-│  ────────────────────────────────────────────────────────────  │
-│                                                                 │
-│  Think of it like reading a book:                              │
-│                                                                 │
-│  Context: 4K tokens (about 3,000 words)                        │
-│  ┌─────────────────────────────────────┐                     │
-│  │ "Once upon a time..."                 │                     │
-│  │ ...                                   │                     │
-│  │ "The end."                            │                     │
-│  └─────────────────────────────────────┘                     │
-│  ↑ Model can see all of this                                  │
-│                                                                 │
-│  If you add more text beyond 4K tokens:                        │
-│  ┌─────────────────────────────────────┐                     │
-│  │ "Once upon a time..."  ← FORGOTTEN! │                     │
-│  │ ...                                   │                     │
-│  │ "New text here..."                    │                     │
-│  └─────────────────────────────────────┘                     │
-│                                                                 │
-│  Common sizes:                                                  │
-│  • Standard: 4K-8K tokens (3K-6K words)                        │
-│  • Long: 128K tokens (96K words) - like Qwen2.5                │
-│                                                                 │
-└─────────────────────────────────────────────────────────────────┘
+with torch.no_grad():
+    outputs = model(**inputs)
+    predictions = outputs.logits[0, -1, :]
+    probs = torch.softmax(predictions, dim=-1)
+
+# Get top 5 predictions
+top_k = 5
+top_probs, top_indices = torch.topk(probs, top_k)
+
+print(f"Input: '{text}' ... Predicting next word:\n")
+for i in range(top_k):
+    word = tokenizer.decode(top_indices[i])
+    prob = top_probs[i].item()
+    print(f"{word.strip():<10} : {prob:.2%}")
 ```
 
-### Temperature: Controlling Creativity
+## 3. Temperature
+Temperature controls randomness. Low temp = focused. High temp = creative.
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│  TEMPERATURE = How "random" vs "predictable" the model is      │
-│  ────────────────────────────────────────────────────────────  │
-│                                                                 │
-│  Temperature 0.0 (Deterministic):                              │
-│  Input: "The capital of France is"                             │
-│  Output: "Paris" (always the same)                             │
-│  ✅ Good for: Code, math, factual answers                      │
-│                                                                 │
-│  Temperature 0.7 (Balanced):                                   │
-│  Input: "Write a story about a cat"                            │
-│  Output: Varied but sensible stories                           │
-│  ✅ Good for: Chat, creative writing                           │
-│                                                                 │
-│  Temperature 1.5+ (Very Creative):                             │
-│  Input: "Write a story about a cat"                            │
-│  Output: Wild, unpredictable stories                           │
-│  ⚠️  Risk: May produce nonsense or hallucinations              │
-│                                                                 │
-└─────────────────────────────────────────────────────────────────┘
+```python
+def generate(text, temp):
+    print(f"--- Temperature: {temp} ---")
+    out = model.generate(**tokenizer(text, return_tensors="pt"), 
+                         max_new_tokens=20, 
+                         temperature=temp, 
+                         do_sample=True, 
+                         top_k=50)
+    print(tokenizer.decode(out[0], skip_special_tokens=True) + "\n")
+
+text = "The confusing thing about time travel is"
+generate(text, 0.1) # Focused
+generate(text, 1.5) # Crazy
 ```
 
-### Hallucinations: When Models Make Things Up
-
-```
-┌─────────────────────────────────────────────────────────────────┐
-│  HALLUCINATION = Model confidently states false information    │
-│  ────────────────────────────────────────────────────────────  │
-│                                                                 │
-│  Example:                                                       │
-│  User: "When was the SLM Hub website launched?"                │
-│  Model: "SLM Hub was launched on March 15, 2025."              │
-│         ↑ This might be completely made up!                    │
-│                                                                 │
-│  Why it happens:                                                │
-│  • Model learned to complete patterns, not verify facts        │
-│  • It doesn't "know" anything - it predicts based on patterns  │
-│  • Training data might have been wrong or outdated             │
-│                                                                 │
-│  How to fix:                                                    │
-│  ✅ Use RAG (Retrieval Augmented Generation)                   │
-│     → Give the model access to real facts                      │
-│  ✅ Use function calling                                       │
-│     → Let model call APIs/databases for real data              │
-│  ✅ Fine-tune on your domain                                   │
-│     → Train on accurate, domain-specific data                  │
-│                                                                 │
-└─────────────────────────────────────────────────────────────────┘
-```
-
-## SLMs vs LLMs
-
-| Feature | LLM (e.g., GPT-4) | SLM (e.g., Phi-4) |
-|---------|-------------------|-------------------|
-| **Parameters** | 1 Trillion+ | 1B - 10B |
-| **Running Cost** | $$$ (GPU Cluster) | Free (Laptop/Phone) |
-| **Privacy** | Sends data to cloud | 100% Local |
-| **Capabilities** | Complex reasoning, world knowledge | Specific tasks, coding, chatting |
-| **Latency** | Network delay | Instant (Local) |
-
-## Why SLMs Now? (2026)
-
-1.  **Distillation**: We learned to train small models on high-quality data from large models. A 3B model now acts like a 30B model from 2023.
-2.  **Hardware**: Phones and laptops now have NPUs (Neural Processing Units) capable of running these models.
-3.  **Privacy**: Companies want AI without sending sensitive data to OpenAI/Google.
-
-## Next Steps
-
--   [Tokenization](/slmhub/docs/learn/fundamentals/tokenization/) - How text becomes numbers
--   [Architecture](/slmhub/docs/learn/fundamentals/architecture/) - How the brain works
--   [Deploy](/slmhub/docs/deploy/) - Run your first SLM

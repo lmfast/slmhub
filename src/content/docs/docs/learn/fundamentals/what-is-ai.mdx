@@ -1,179 +1,60 @@
 ---
 title: "What is AI?"
-description: "Start from the basics: Understanding AI, Machine Learning, and Deep Learning"
+description: "Let's start from the very beginning and build up to understanding Small Language Models (SLMs). Guide: [What is AI](/slmhub/docs/learn/fundamentals/wh..."
 ---
+import NotebookWidget from '../../../../../components/NotebookWidget.astro';
 
-# What is AI?
+<NotebookWidget 
+  notebookPath="notebooks/what_is_ai.ipynb"
+  title="What is AI?"
+  description="Let's start from the very beginning and build up to understanding Small Language Models (SLMs). Guide: [What is AI](/slmhub/docs/learn/fundamentals/wh..."
+/>
 
-Let's start from the very beginning and build up to understanding Small Language Models (SLMs).
 
-## The Big Picture
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                                                                 │
-│   ┌───────────────────────────────────────────────────────┐   │
-│   │                 ARTIFICIAL INTELLIGENCE                │   │
-│   │  (Making machines that can perform tasks requiring    │   │
-│   │   human intelligence)                                  │   │
-│   │                                                         │   │
-│   │   ┌───────────────────────────────────────────────┐   │   │
-│   │   │          MACHINE LEARNING                     │   │   │
-│   │   │  (Machines that learn from data, not          │   │   │
-│   │   │   explicit programming)                       │   │   │
-│   │   │                                               │   │   │
-│   │   │   ┌───────────────────────────────────┐      │   │   │
-│   │   │   │      DEEP LEARNING                │      │   │   │
-│   │   │   │  (Neural networks with many       │      │   │   │
-│   │   │   │   layers that learn patterns)     │      │   │   │
-│   │   │   │                                   │      │   │   │
-│   │   │   │   ┌───────────────────────┐      │      │   │   │
-│   │   │   │   │  LANGUAGE MODELS      │      │      │   │   │
-│   │   │   │   │  (AI that understands │      │      │   │   │
-│   │   │   │   │   and generates text) │      │      │   │   │
-│   │   │   │   └───────────────────────┘      │      │   │   │
-│   │   │   │                                   │      │   │   │
-│   │   │   └───────────────────────────────────┘      │   │   │
-│   │   │                                               │   │   │
-│   │   └───────────────────────────────────────────────┘   │   │
-│   │                                                         │   │
-│   └───────────────────────────────────────────────────────┘   │
-│                                                                 │
-└─────────────────────────────────────────────────────────────────┘
+Let's start from the very beginning and build up to understanding Small Language Models (SLMs). Guide: [What is AI](/slmhub/docs/learn/fundamentals/what-is-ai).
+
+## 1. Machine Learning vs. Traditional Programming
+Check how a computer "learns" logic.
+
+```python
+import numpy as np
+from sklearn.linear_model import LinearRegression
+
+# Traditional Programming: We write the rule (y = 2x + 1)
+def traditional_func(x):
+    return 2 * x + 1
+
+# Machine Learning: We give data, it finds the rule
+X_train = np.array([[1], [2], [3], [4], [5]])
+y_train = np.array([3, 5, 7, 9, 11]) # The pattern is 2x + 1
+
+model = LinearRegression()
+model.fit(X_train, y_train)
+
+print(f"Learned Coefficient (Slope): {model.coef_[0]:.2f} (Expected: 2.0)")
+print(f"Learned Intercept: {model.intercept_:.2f} (Expected: 1.0)")
 ```
 
-## Artificial Intelligence (AI)
+## 2. Neural Networks (Deep Learning)
+A simple neural network using PyTorch.
 
-**Simple Definition:** Making computers do things that normally require human intelligence.
+```python
+import torch
+import torch.nn as nn
 
-**Examples:**
-- Recognizing faces in photos
-- Understanding spoken commands
-- Playing chess
-- Translating languages
-- Writing code
+# A tiny brain
+class SimpleNet(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.layer1 = nn.Linear(1, 10)
+        self.relu = nn.ReLU()
+        self.layer2 = nn.Linear(10, 1)
+    
+    def forward(self, x):
+        return self.layer2(self.relu(self.layer1(x)))
 
-**The Key Idea:** Instead of programming every rule manually, we create systems that can figure things out on their own.
-
-## Machine Learning (ML)
-
-**Simple Definition:** Teaching computers to learn from examples, not explicit instructions.
-
-**Traditional Programming vs Machine Learning:**
-
-```
-Traditional Programming:
-┌──────────┐     ┌──────────┐     ┌──────────┐
-│  Rules   │ ──▶ │ Computer │ ──▶ │ Answers  │
-│ (Code)   │     │          │     │          │
-└──────────┘     └──────────┘     └──────────┘
-
-Machine Learning:
-┌──────────┐     ┌──────────┐     ┌──────────┐
-│ Examples │ ──▶ │ Computer │ ──▶ │  Rules   │
-│ (Data)   │     │ (Learns) │     │ (Model)  │
-└──────────┘     └──────────┘     └──────────┘
+net = SimpleNet()
+print(net)
 ```
 
-**Example:**
-- **Traditional:** Write code with rules like "if email contains 'free money', mark as spam"
-- **Machine Learning:** Show the computer 10,000 spam emails and 10,000 real emails, let it figure out the patterns
-
-## Deep Learning
-
-**Simple Definition:** Machine learning using artificial neural networks with many layers.
-
-**What's a Neural Network?**
-
-Think of it like a brain made of math:
-
-```
-Input Layer    Hidden Layers    Output Layer
-┌────────┐     ┌────────┐       ┌────────┐
-│ Pixel 1│────▶│ Node 1 │──┐    │  Cat   │
-├────────┤     ├────────┤  │    ├────────┤
-│ Pixel 2│────▶│ Node 2 │──┼───▶│  Dog   │
-├────────┤     ├────────┤  │    ├────────┤
-│ Pixel 3│────▶│ Node 3 │──┘    │  Bird  │
-├────────┤     ├────────┤       └────────┘
-│  ...   │     │  ...   │
-└────────┘     └────────┘
-```
-
-Each "node" does a simple calculation. When you stack many layers together, they can learn incredibly complex patterns.
-
-**Why "Deep"?**
-Because these networks have many layers (sometimes hundreds!). Each layer learns progressively more complex features:
-- **Layer 1:** Edges and corners
-- **Layer 2:** Shapes and textures
-- **Layer 3:** Parts (eyes, ears)
-- **Layer 4:** Whole objects (faces, animals)
-
-## Language Models
-
-**Simple Definition:** AI systems trained to understand and generate human language.
-
-**How They Work:**
-
-1. **Training:** Read millions of books, websites, and documents
-2. **Learning:** Figure out patterns in how words relate to each other
-3. **Prediction:** Given some text, predict what comes next
-
-**Example:**
-
-```
-Input:  "The cat sat on the ___"
-Model thinks:
-  - "mat" (very likely)
-  - "chair" (likely)
-  - "moon" (unlikely but possible)
-  - "quantum" (very unlikely)
-```
-
-**Types of Language Models:**
-
-- **Large Language Models (LLMs):** Huge models like GPT-4, Claude (100B+ parameters)
-- **Small Language Models (SLMs):** Compact models like Phi-3, Gemma (1B-10B parameters)
-
-## Why Small Language Models?
-
-**The Problem with Large Models:**
-- Require expensive cloud GPUs
-- Slow inference
-- Privacy concerns (data sent to servers)
-- High cost per request
-
-**The SLM Solution:**
-- Run on your laptop or phone
-- Fast responses
-- Complete privacy (everything local)
-- Zero ongoing costs
-
-**The Trade-off:**
-- Slightly less capable than the largest models
-- But **good enough** for most real-world tasks!
-
-## Real-World Analogy
-
-Think of AI models like vehicles:
-
-- **LLMs:** Semi-trucks - Powerful, but need special infrastructure, expensive to run
-- **SLMs:** Cars - Smaller, but perfect for everyday use, you can park them anywhere
-
-You don't need a semi-truck to go to the grocery store!
-
-## Key Takeaways
-
-1. **AI** = Making machines intelligent
-2. **Machine Learning** = Learning from data, not rules
-3. **Deep Learning** = Using neural networks with many layers
-4. **Language Models** = AI that understands and generates text
-5. **SLMs** = Compact language models you can run locally
-
-## Next Steps
-
-Now that you understand the basics:
-
-- **[GenAI Basics](/slmhub/docs/learn/fundamentals/genai-basics/)** - How generative AI creates new content
-- **[Architecture](/slmhub/docs/learn/fundamentals/architecture/)** - How transformers (the tech behind SLMs) actually work
-- **[Tokenization](/slmhub/docs/learn/fundamentals/tokenization/)** - How text becomes numbers that models can process

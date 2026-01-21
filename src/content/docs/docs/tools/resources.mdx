@@ -1,0 +1,71 @@
+---
+title: "SLM Resources Dashboard"
+description: "Essential tools and libraries for working with SLMs. Guide: [Model Picker](/slmhub/docs/tools/model-picker).  ## 1. Library Checker Check which essent..."
+---
+import NotebookWidget from '../../../../../components/NotebookWidget.astro';
+
+<NotebookWidget 
+  notebookPath="notebooks/resources.ipynb"
+  title="SLM Resources Dashboard"
+  description="Essential tools and libraries for working with SLMs. Guide: [Model Picker](/slmhub/docs/tools/model-picker).  ## 1. Library Checker Check which essent..."
+/>
+
+
+
+Essential tools and libraries for working with SLMs. Guide: [Model Picker](/slmhub/docs/tools/model-picker).
+
+## 1. Library Checker
+Check which essential SLM libraries are installed in your environment.
+
+```python
+import importlib
+
+libraries = [
+    "transformers", "torch", "peft", "trl", 
+    "datasets", "accelerate", "bitsandbytes", 
+    "sentence_transformers", "chromadb", "vllm"
+]
+
+print(f"{'Library':<25} {'Status':<10} {'Version'}")
+print("-" * 45)
+
+for lib in libraries:
+    try:
+        module = importlib.import_module(lib)
+        version = getattr(module, "__version__", "installed")
+        print(f"{lib:<25} {'✅':<10} {version}")
+    except ImportError:
+        print(f"{lib:<25} {'❌':<10} Not Found")
+
+print("\nTo install missing: !pip install <library_name>")
+```
+
+## 2. Speed Test: Embedding Models
+Quickly benchmark commonly used embedding models.
+
+```python
+!pip install sentence-transformers
+```
+
+```python
+import time
+from sentence_transformers import SentenceTransformer
+
+models_to_test = [
+    "all-MiniLM-L6-v2",      # Ultra fast
+    "BAAI/bge-small-en-v1.5" # High quality small
+]
+
+text = "The quick brown fox jumps over the lazy dog." * 100
+
+for m_name in models_to_test:
+    print(f"Loading {m_name}...")
+    model = SentenceTransformer(m_name)
+    
+    start = time.time()
+    emb = model.encode([text] * 10)
+    end = time.time()
+    
+    print(f" -> Time for 10 docs: {end-start:.4f}s\n")
+```
+

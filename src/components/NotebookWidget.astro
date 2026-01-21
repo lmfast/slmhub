@@ -21,110 +21,31 @@ const colabUrl = `https://colab.research.google.com/github/${repoOwner}/${repoNa
 const rawUrl = `https://raw.githubusercontent.com/${repoOwner}/${repoName}/${branch}/${notebookPath}`;
 ---
 
-<div class="notebook-widget">
-  <div class="content">
-    <div class="header">
-      <div class="icon-wrapper">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="colab-icon"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-      </div>
-      <div class="text">
-        <h3 class="title">{title}</h3>
-        <p class="desc">{description}</p>
-      </div>
-    </div>
-    
-    <div class="actions">
-      <!-- Open in Colab Badge -->
-      <a href={colabUrl} target="_blank" rel="noopener noreferrer" class="badge-link colab">
-        <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab" />
-      </a>
-      
-      <!-- Download .ipynb Badge -->
-      <a href={rawUrl} download target="_blank" rel="noopener noreferrer" class="badge-button">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-          <polyline points="7 10 12 15 17 10"></polyline>
-          <line x1="12" y1="15" x2="12" y2="3"></line>
-        </svg>
-        <span>Download .ipynb</span>
-      </a>
-    </div>
-  </div>
+<div class="notebook-actions">
+  <!-- Open in Colab Badge -->
+  <a href={colabUrl} target="_blank" rel="noopener noreferrer" class="badge-link colab">
+    <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab" />
+  </a>
+  
+  <!-- Download .ipynb Badge -->
+  <a href={rawUrl} download target="_blank" rel="noopener noreferrer" class="badge-button">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+      <polyline points="7 10 12 15 17 10"></polyline>
+      <line x1="12" y1="15" x2="12" y2="3"></line>
+    </svg>
+    <span>Download .ipynb</span>
+  </a>
 </div>
 
 <style>
-  .notebook-widget {
-    margin: 2rem 0;
-    border-radius: 12px;
-    background: linear-gradient(145deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
-    border: 1px solid rgba(255,255,255,0.08); /* Faint border */
-    backdrop-filter: blur(10px);
-    overflow: hidden;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-  }
-
-  .notebook-widget:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 30px rgba(0,0,0,0.12);
-    border-color: rgba(var(--sl-color-accent-rgb), 0.3);
-  }
-
-  .content {
-    padding: 1.5rem;
+  .notebook-actions {
     display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-
-  /* Responsive layout: row on larger screens */
-  @media (min-width: 640px) {
-    .content {
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-between;
-    }
-  }
-
-  .header {
-    display: flex;
-    align-items: flex-start;
-    gap: 1rem;
-    flex: 1;
-  }
-
-  .icon-wrapper {
-    padding: 0.75rem;
-    border-radius: 10px;
-    background: rgba(var(--sl-color-accent-rgb), 0.1);
-    color: var(--sl-color-accent);
-    display: flex;
+    gap: 0.75rem;
     align-items: center;
-    justify-content: center;
+    margin: 1.5rem 0;
   }
 
-  .text h3 {
-    margin: 0;
-    font-size: 1.1rem;
-    font-weight: 600;
-    line-height: 1.3;
-    color: var(--sl-color-white);
-  }
-
-  .text p {
-    margin: 0.25rem 0 0;
-    font-size: 0.9rem;
-    line-height: 1.4;
-    color: var(--sl-color-gray-3);
-  }
-
-  .actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    align-items: center;
-  }
-
-  /* Badge Link for images (Colab) */
   .badge-link {
     display: inline-flex;
     transition: opacity 0.2s;
@@ -133,40 +54,30 @@ const rawUrl = `https://raw.githubusercontent.com/${repoOwner}/${repoName}/${bra
     opacity: 0.8;
   }
   .badge-link img {
-    height: 32px; /* Standard badge height */
+    height: 28px; /* Compact height */
   }
 
   /* Custom Button Badge (Download) */
   .badge-button {
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-    height: 32px;
-    padding: 0 1rem;
-    background-color: #333; /* Dark background */
-    color: white;
-    border-radius: 6px; /* Similar radius to shields.io badges */
-    font-size: 0.8rem;
-    font-weight: 600;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    gap: 0.4rem;
+    height: 28px;
+    padding: 0 0.8rem;
+    background-color: transparent;
+    color: var(--sl-color-text);
+    border: 1px solid var(--sl-color-gray-4);
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 500;
     text-decoration: none;
-    transition: background-color 0.2s;
-    border: 1px solid rgba(255,255,255,0.1);
+    transition: all 0.2s;
   }
 
   .badge-button:hover {
-    background-color: #444;
+    background-color: var(--sl-color-gray-6);
+    border-color: var(--sl-color-gray-3);
+    color: var(--sl-color-text);
     text-decoration: none;
-    color: white;
   }
-
-  :global([data-theme='light']) .badge-button {
-    background-color: #f0f0f0;
-    color: #333;
-    border: 1px solid #ccc;
-  }
-  :global([data-theme='light']) .badge-button:hover {
-    background-color: #e0e0e0;
-  }
-
 </style>

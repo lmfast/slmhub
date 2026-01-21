@@ -1,0 +1,67 @@
+---
+title: "Start Here: The Developer's Path"
+description: "Welcome to SLM Hub. This notebook serves as an interactive introduction to Small Language Models (SLMs). You can run the code cells below to check you..."
+---
+import NotebookWidget from '../../../../../components/NotebookWidget.astro';
+
+<NotebookWidget 
+  notebookPath="notebooks/start_here.ipynb"
+  title="Start Here: The Developer's Path"
+  description="Welcome to SLM Hub. This notebook serves as an interactive introduction to Small Language Models (SLMs). You can run the code cells below to check you..."
+/>
+
+
+
+Welcome to SLM Hub. This notebook serves as an interactive introduction to Small Language Models (SLMs). You can run the code cells below to check your environment's readiness for SLMs.
+
+## What are Small Language Models?
+
+**Small Language Models (SLMs)** are a class of language models designed to be efficient, accessible, and practical for real-world deployment. Unlike their larger counterparts (LLMs), SLMs prioritize resource efficiency while maintaining strong performance on targeted tasks.
+
+## Environment Check
+Let's see what hardware you have available for running SLMs. This simple script checks for GPU availability (CUDA/MPS).
+
+```python
+import torch
+
+def check_hardware():
+    if torch.cuda.is_available():
+        return f"✅ GPU Detected: {torch.cuda.get_device_name(0)} (VRAM: {torch.cuda.get_device_properties(0).total_memory / 1024**3:.2f} GB)"
+    elif torch.backends.mps.is_available():
+        return "✅ Apple Silicon GPU (MPS) Detected"
+    else:
+        return "⚠️ No GPU detected. You can still run SLMs on CPU (slower but functional)."
+
+print(check_hardware())
+```
+
+## Defining Characteristics of SLMs
+
+### 1. **Resource Efficiency**
+SLMs run on constrained hardware:
+- Consumer-grade GPUs (4-16GB VRAM)
+- CPUs with 8-32GB RAM
+- Edge devices (Phones, IoT)
+
+### 2. **Fast Inference**
+Low latency makes them ideal for interactive chatbots and detailed analysis.
+
+## Quick Demo: Loading a Tiny Model
+Let's load a tiny SLM (`gpt2` or similar small proxy for this demo) just to prove you can run inference right now.
+
+```python
+!pip install transformers accelerate
+```
+
+```python
+from transformers import pipeline
+
+# Ideally we'd use Phi-3, but for a quick 'Start Here' demo without auth, we use a public tiny model
+generator = pipeline('text-generation', model='gpt2')
+print(generator("Hello, I am a small language model", max_length=30, num_return_sequences=1)[0]['generated_text'])
+```
+
+## Next Steps
+- **Deploy Locally**: Try the [Ollama Quickstart](/slmhub/docs/deploy/quickstarts/ollama/)
+- **Learn Fundamentals**: Read [SLM vs LLM](/slmhub/docs/learn/fundamentals/slm-vs-llm/)
+

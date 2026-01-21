@@ -23,7 +23,12 @@ const NOTEBOOK_MAPPING = {
     'agents.ipynb': 'docs/learn/concepts/agents.mdx',
     'datasets.ipynb': 'docs/learn/concepts/datasets.mdx',
     'vllm_quickstart.ipynb': 'docs/deploy/quickstarts/vllm.mdx',
-    'llama_cpp_quickstart.ipynb': 'docs/deploy/quickstarts/llama-cpp.mdx'
+    'llama_cpp_quickstart.ipynb': 'docs/deploy/quickstarts/llama-cpp.mdx',
+    'start_here.ipynb': 'docs/start-here.mdx',
+    'slm_vs_llm.ipynb': 'docs/learn/fundamentals/slm-vs-llm.mdx',
+    'genai_basics.ipynb': 'docs/learn/fundamentals/genai-basics.mdx',
+    'what_is_ai.ipynb': 'docs/learn/fundamentals/what-is-ai.mdx',
+    'resources.ipynb': 'docs/tools/resources.mdx'
 };
 
 function ensureDir(dirPath) {
