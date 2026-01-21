@@ -138,10 +138,6 @@ export default defineConfig({
       components: {
         // Override default components if needed in future
       },
-      // Custom translations for UI elements
-      textTranslations: {
-        'search.label': 'Search Course, Foundations, & Models...',
-      },
       expressiveCode: {
         themes: ['github-dark', 'github-light'],
         defaultProps: {
