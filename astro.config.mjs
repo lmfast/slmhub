@@ -19,9 +19,13 @@ export default defineConfig({
         alt: 'SLM Hub',
         replacesTitle: false,
       },
-      social: {
-        github: 'https://github.com/lmfast/slmhub',
-      },
+      social: [
+        {
+          label: 'GitHub',
+          href: 'https://github.com/lmfast/slmhub',
+          icon: 'github',
+        },
+      ],
       // Disable default index page to allow custom homepage
       disable404Route: false,
       sidebar: [
