@@ -58,92 +58,97 @@ const frontmatter = {
       </div>
     </section>
 
-    <!-- Course Curriculum Section -->
-    <section class="course-section">
-      <h2 class="section-title">🗺️ Your Learning Path</h2>
-      <p class="section-subtitle">A structured curriculum to take you from zero to deploying your own SLM.</p>
+    <!-- Courses Section (Exhaustive List) -->
+    <section class="courses-section">
+      <h2 class="section-title">� Courses</h2>
+      <p class="section-subtitle">Everything you need to master Small Language Models — from first principles to production deployment.</p>
 
-      <div class="learning-path">
-        <div class="path-card">
-          <div class="path-number">01</div>
-          <h3>Start Here</h3>
-          <p>What are SLMs? Environment setup. Your first 5-line inference.</p>
-          <a href="/slmhub/docs/start-here/">Begin →</a>
+      <div class="courses-grid">
+        <!-- Fundamentals Column -->
+        <div class="course-column">
+          <h3 class="column-title">🧠 Fundamentals</h3>
+          <ul class="course-list">
+            <li><a href="/slmhub/docs/start-here/">Start Here: Introduction to SLMs</a></li>
+            <li><a href="/slmhub/docs/learn/fundamentals/what-is-ai/">What is AI? (ML, DL, Neural Networks)</a></li>
+            <li><a href="/slmhub/docs/learn/fundamentals/genai-basics/">Generative AI Basics</a></li>
+            <li><a href="/slmhub/docs/learn/fundamentals/slm-vs-llm/">SLM vs LLM: Trade-offs & When to Use</a></li>
+            <li><a href="/slmhub/docs/learn/fundamentals/tokenization/">Tokenization (BPE, Subword, Byte-level)</a></li>
+            <li><a href="/slmhub/docs/learn/fundamentals/architecture/">Model Architecture (Transformers, Attention)</a></li>
+            <li><a href="/slmhub/docs/learn/fundamentals/embeddings/">Embeddings & Vector Representations</a></li>
+            <li><a href="/slmhub/docs/learn/fundamentals/quantization/">Quantization (4-bit, 8-bit, GPTQ, GGUF)</a></li>
+            <li><a href="/slmhub/docs/learn/fundamentals/prompting-for-slms/">Prompting Strategies for SLMs</a></li>
+            <li><a href="/slmhub/docs/learn/fundamentals/fine-tuning/">Fine-Tuning (LoRA, QLoRA, PEFT)</a></li>
+          </ul>
         </div>
-        <div class="path-card">
-          <div class="path-number">02</div>
-          <h3>Fundamentals</h3>
-          <p>Tokenization, Architecture, Quantization, Embeddings.</p>
-          <a href="/slmhub/docs/learn/fundamentals/">Explore →</a>
+
+        <!-- Concepts Column -->
+        <div class="course-column">
+          <h3 class="column-title">💡 Concepts</h3>
+          <ul class="course-list">
+            <li><a href="/slmhub/docs/learn/concepts/rag/">RAG: Retrieval-Augmented Generation</a></li>
+            <li><a href="/slmhub/docs/learn/concepts/function-calling/">Function Calling & Tool Use</a></li>
+            <li><a href="/slmhub/docs/learn/concepts/agents/">Building AI Agents (ReAct Loop)</a></li>
+            <li><a href="/slmhub/docs/learn/concepts/datasets/">Dataset Curation & Quality Filtering</a></li>
+          </ul>
+
+          <h3 class="column-title" style="margin-top: 2rem;">🚀 Deployment</h3>
+          <ul class="course-list">
+            <li><a href="/slmhub/docs/deploy/quickstarts/ollama/">Ollama Quickstart (Local)</a></li>
+            <li><a href="/slmhub/docs/deploy/quickstarts/vllm/">vLLM for High-Throughput Serving</a></li>
+            <li><a href="/slmhub/docs/deploy/quickstarts/llama-cpp/">llama.cpp for CPU/Edge</a></li>
+            <li><a href="/slmhub/docs/deploy/quickstarts/transformers-js/">Transformers.js (In-Browser)</a></li>
+          </ul>
         </div>
-        <div class="path-card">
-          <div class="path-number">03</div>
-          <h3>Concepts</h3>
-          <p>RAG, Function Calling, Agents, and Dataset Curation.</p>
-          <a href="/slmhub/docs/learn/concepts/rag/">Deep Dive →</a>
-        </div>
-        <div class="path-card">
-          <div class="path-number">04</div>
-          <h3>Deploy</h3>
-          <p>Run models locally with Ollama, vLLM, llama.cpp, or in-browser.</p>
-          <a href="/slmhub/docs/deploy/quickstarts/ollama/">Deploy →</a>
+
+        <!-- Tools & Resources Column -->
+        <div class="course-column">
+          <h3 class="column-title">� Tools & Resources</h3>
+          <ul class="course-list">
+            <li><a href="/slmhub/docs/tools/model-picker/">Interactive Model Picker</a></li>
+            <li><a href="/slmhub/docs/tools/hardware-picker/">Hardware Calculator (VRAM)</a></li>
+            <li><a href="/slmhub/docs/tools/resources/">Libraries & Frameworks</a></li>
+            <li><a href="/slmhub/docs/tools/prompt-eval-harness/">Prompt Evaluation Harness</a></li>
+          </ul>
+
+          <h3 class="column-title" style="margin-top: 2rem;">👥 Community</h3>
+          <ul class="course-list">
+            <li><a href="/slmhub/docs/about/">About SLM Hub</a></li>
+            <li><a href="/slmhub/docs/community/contributing/">Contributing Guide</a></li>
+            <li><a href="https://github.com/lmfast/slmhub/discussions">GitHub Discussions</a></li>
+            <li><a href="/slmhub/docs/community/code-of-conduct/">Code of Conduct</a></li>
+          </ul>
         </div>
       </div>
     </section>
 
-    <!-- Foundations Section -->
-    <section class="foundations-section">
-      <h2 class="section-title">📚 Foundations</h2>
-      <p class="section-subtitle">Master the core building blocks of every language model.</p>
-      <CardGrid>
-        <Card title="Tokenization" class="foundation-card">
-          <p>How text becomes numbers. BPE, subword, and byte-level tokenizers.</p>
-          <a href="/slmhub/docs/learn/fundamentals/tokenization/">Learn →</a>
-        </Card>
-        <Card title="Model Architecture" class="foundation-card">
-          <p>Transformers, attention, layers, and what makes SLMs "small".</p>
-          <a href="/slmhub/docs/learn/fundamentals/architecture/">Learn →</a>
-        </Card>
-        <Card title="Quantization" class="foundation-card">
-          <p>4-bit, 8-bit, GPTQ, GGUF. Run big models on small hardware.</p>
-          <a href="/slmhub/docs/learn/fundamentals/quantization/">Learn →</a>
-        </Card>
-        <Card title="Fine-Tuning" class="foundation-card">
-          <p>LoRA, QLoRA, and PEFT. Customize models for your domain.</p>
-          <a href="/slmhub/docs/learn/fundamentals/fine-tuning/">Learn →</a>
-        </Card>
-      </CardGrid>
-    </section>
-
-    <!-- Top Models Section -->
+    <!-- Top Models Section (Improved) -->
     <section class="models-section">
       <h2 class="section-title">🏆 Top Models</h2>
-      <p class="section-subtitle">Automatically synced from Hugging Face, sorted by community love.</p>
+      <p class="section-subtitle">Auto-synced from Hugging Face daily. Sorted by community popularity.</p>
       
       {topModels.length > 0 ? (
-        <div class="models-table-wrapper">
-          <table class="models-table">
-            <thead>
-              <tr>
-                <th>Model</th>
-                <th>Author</th>
-                <th>Task</th>
-                <th>❤️ Likes</th>
-                <th>⬇️ Downloads</th>
-              </tr>
-            </thead>
-            <tbody>
-              {topModels.map((m) => (
-                <tr>
-                  <td><a href={`/slmhub/docs/models/generated/${m.slug}/`}>{m.display_name}</a></td>
-                  <td>{m.author}</td>
-                  <td>{m.pipeline_tag}</td>
-                  <td>{m.likes}</td>
-                  <td>{m.downloads}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div class="models-grid">
+          {topModels.map((m) => (
+            <div class="model-card">
+              <div class="model-header">
+                <h4><a href={`/slmhub/docs/models/generated/${m.slug}/`}>{m.display_name}</a></h4>
+                <span class="model-author">by {m.author}</span>
+              </div>
+              <div class="model-meta">
+                <span class="tag">{m.pipeline_tag || 'text-generation'}</span>
+              </div>
+              <div class="model-stats">
+                <span>❤️ {m.likes}</span>
+                <span>⬇️ {m.downloads}</span>
+              </div>
+              <p class="model-use-case">
+                {m.pipeline_tag === 'text-generation' && 'Chatbots, content generation, code assistance'}
+                {m.pipeline_tag === 'text2text-generation' && 'Translation, summarization, Q&A'}
+                {m.pipeline_tag === 'text-to-code' && 'Code generation, debugging, documentation'}
+                {!m.pipeline_tag && 'General-purpose language tasks'}
+              </p>
+            </div>
+          ))}
         </div>
       ) : (
         <p class="no-data">Model data syncs daily via GitHub Actions. Check back soon!</p>
@@ -153,16 +158,14 @@ const frontmatter = {
       </div>
     </section>
 
-    <!-- Newsletter Section -->
-    <section class="newsletter-section">
-      <div class="newsletter-content">
-        <h2>📬 Stay Updated</h2>
-        <p>Get the latest SLM news, tutorials, and model releases. No spam, just value.</p>
-        <form class="newsletter-form" action="https://buttondown.email/api/emails/embed-subscribe/slmhub" method="post" target="_blank">
+    <!-- Newsletter Section (Compact Inline) -->
+    <section class="newsletter-section-compact">
+      <div class="newsletter-inline">
+        <span class="newsletter-label">📬 Stay Updated</span>
+        <form class="newsletter-form-inline" action="https://buttondown.email/api/emails/embed-subscribe/slmhub" method="post" target="_blank">
           <input type="email" name="email" placeholder="your@email.com" required />
           <button type="submit">Subscribe</button>
         </form>
-        <small>Powered by Buttondown. Unsubscribe anytime.</small>
       </div>
     </section>
 
@@ -331,168 +334,139 @@ const frontmatter = {
   }
 
   /* ============================================
-     Learning Path Cards
+     Courses Section (3-Column Grid)
      ============================================ */
-  .course-section {
+  .courses-section {
     padding: 5rem 0;
     position: relative;
   }
 
-  .learning-path {
+  .courses-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1.5rem;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2.5rem;
+    animation: fadeInUp 0.6s ease-out 0.2s both;
   }
 
-  .path-card {
-    background: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 1.25rem;
-    padding: 2rem 1.5rem;
-    position: relative;
-    overflow: hidden;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    animation: fadeInUp 0.6s ease-out both;
+  .course-column {
+    background: linear-gradient(145deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 1rem;
+    padding: 1.5rem;
   }
 
-  .path-card:nth-child(1) { animation-delay: 0.1s; }
-  .path-card:nth-child(2) { animation-delay: 0.2s; }
-  .path-card:nth-child(3) { animation-delay: 0.3s; }
-  .path-card:nth-child(4) { animation-delay: 0.4s; }
-
-  .path-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 4px;
-    background: linear-gradient(90deg, var(--sl-color-accent), #8B5CF6);
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-
-  .path-card:hover {
-    transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 20px 50px rgba(0,0,0,0.2);
-    border-color: rgba(255, 107, 53, 0.3);
-  }
-
-  .path-card:hover::before {
-    opacity: 1;
-  }
-
-  .path-number {
-    font-size: 4rem;
-    font-weight: 900;
-    background: linear-gradient(135deg, var(--sl-color-accent), #8B5CF6);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    opacity: 0.2;
-    position: absolute;
-    top: -0.75rem;
-    right: 0.75rem;
-    font-family: 'Space Grotesk', sans-serif;
-    transition: opacity 0.3s;
-  }
-
-  .path-card:hover .path-number {
-    opacity: 0.4;
-  }
-
-  .path-card h3 {
-    font-size: 1.3rem;
+  .column-title {
+    font-size: 1rem;
     font-weight: 700;
-    margin-bottom: 0.75rem;
+    margin-bottom: 1rem;
     color: var(--sl-color-white);
-  }
-
-  .path-card p {
-    font-size: 0.95rem;
-    color: var(--sl-color-gray-3);
-    margin-bottom: 1.25rem;
-    line-height: 1.5;
-  }
-
-  .path-card a {
-    font-weight: 600;
-    color: var(--sl-color-text-accent);
-    text-decoration: none;
-    display: inline-flex;
+    display: flex;
     align-items: center;
-    gap: 0.25rem;
-    transition: gap 0.2s;
-  }
-
-  .path-card a:hover {
     gap: 0.5rem;
   }
 
-  /* ============================================
-     Foundations Section
-     ============================================ */
-  .foundations-section {
-    padding: 5rem 0;
-    position: relative;
+  .course-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .course-list li {
+    margin-bottom: 0.5rem;
+  }
+
+  .course-list a {
+    color: var(--sl-color-gray-3);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.2s, padding-left 0.2s;
+    display: block;
+    padding: 0.35rem 0;
+  }
+
+  .course-list a:hover {
+    color: var(--sl-color-text-accent);
+    padding-left: 0.5rem;
   }
 
   /* ============================================
-     Models Table
+     Models Cards (Grid)
      ============================================ */
   .models-section {
     padding: 5rem 0;
     position: relative;
   }
 
-  .models-table-wrapper {
-    overflow-x: auto;
-    border-radius: 1rem;
-    border: 1px solid var(--sl-color-hairline);
-    background: var(--sl-color-bg-nav);
+  .models-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
     animation: fadeInUp 0.6s ease-out 0.2s both;
   }
 
-  .models-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.95rem;
+  .model-card {
+    background: var(--sl-color-bg-nav);
+    border: 1px solid var(--sl-color-hairline);
+    border-radius: 1rem;
+    padding: 1.25rem;
+    transition: all 0.3s;
   }
 
-  .models-table th, .models-table td {
-    padding: 1.25rem 1rem;
-    text-align: left;
-    border-bottom: 1px solid var(--sl-color-hairline);
+  .model-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    border-color: rgba(255, 107, 53, 0.3);
   }
 
-  .models-table th {
-    background: rgba(0,0,0,0.2);
-    font-weight: 600;
-    color: var(--sl-color-gray-2);
-    font-size: 0.85rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+  .model-header h4 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin: 0 0 0.25rem 0;
   }
 
-  .models-table tbody tr {
-    transition: background 0.2s;
-  }
-
-  .models-table tbody tr:hover {
-    background: rgba(255, 107, 53, 0.05);
-  }
-
-  .models-table td a {
+  .model-header h4 a {
     color: var(--sl-color-text-accent);
-    font-weight: 600;
     text-decoration: none;
-    transition: color 0.2s;
   }
 
-  .models-table td a:hover {
+  .model-header h4 a:hover {
     text-decoration: underline;
+  }
+
+  .model-author {
+    font-size: 0.8rem;
+    color: var(--sl-color-gray-4);
+  }
+
+  .model-meta {
+    margin: 0.75rem 0;
+  }
+
+  .model-meta .tag {
+    display: inline-block;
+    background: rgba(255, 107, 53, 0.1);
+    color: var(--sl-color-accent);
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    text-transform: uppercase;
+  }
+
+  .model-stats {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.85rem;
+    color: var(--sl-color-gray-3);
+    margin-bottom: 0.75rem;
+  }
+
+  .model-use-case {
+    font-size: 0.8rem;
+    color: var(--sl-color-gray-4);
+    margin: 0;
+    line-height: 1.4;
+    font-style: italic;
   }
 
   .cta-link {
@@ -528,91 +502,78 @@ const frontmatter = {
   }
 
   /* ============================================
-     Newsletter Section
+     Newsletter Section (Compact Inline)
      ============================================ */
-  .newsletter-section {
-    padding: 5rem 0;
-    position: relative;
+  .newsletter-section-compact {
+    padding: 2rem 0 3rem;
   }
 
-  .newsletter-content {
-    max-width: 550px;
-    margin: 0 auto;
-    text-align: center;
-    padding: 3rem;
-    background: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 1.5rem;
-    animation: fadeInUp 0.6s ease-out;
-  }
-
-  .newsletter-content h2 {
-    font-size: 2rem;
-    margin-bottom: 0.75rem;
-    font-family: 'Space Grotesk', sans-serif;
-  }
-
-  .newsletter-content p {
-    color: var(--sl-color-gray-3);
-    margin-bottom: 1.5rem;
-    font-size: 1.05rem;
-  }
-
-  .newsletter-form {
+  .newsletter-inline {
     display: flex;
-    gap: 0.75rem;
+    align-items: center;
     justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    padding: 1.5rem 2rem;
+    background: var(--sl-color-bg-nav);
+    border: 1px solid var(--sl-color-hairline);
+    border-radius: 999px;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .newsletter-label {
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--sl-color-white);
+    white-space: nowrap;
+  }
+
+  .newsletter-form-inline {
+    display: flex;
+    gap: 0.5rem;
     flex-wrap: wrap;
   }
 
-  .newsletter-form input[type="email"] {
-    padding: 1rem 1.25rem;
+  .newsletter-form-inline input[type="email"] {
+    padding: 0.6rem 1rem;
     border: 1px solid var(--sl-color-hairline);
-    border-radius: 0.75rem;
-    font-size: 1rem;
+    border-radius: 999px;
+    font-size: 0.9rem;
     background: var(--sl-color-bg);
     color: var(--sl-color-text);
-    min-width: 220px;
-    transition: border-color 0.2s, box-shadow 0.2s;
+    min-width: 180px;
   }
 
-  .newsletter-form input[type="email"]:focus {
+  .newsletter-form-inline input[type="email"]:focus {
     outline: none;
     border-color: var(--sl-color-accent);
-    box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.2);
   }
 
-  .newsletter-form button {
-    padding: 1rem 2rem;
-    background: linear-gradient(135deg, var(--sl-color-accent), #E85A2A);
+  .newsletter-form-inline button {
+    padding: 0.6rem 1.25rem;
+    background: var(--sl-color-accent);
     color: white;
     border: none;
-    border-radius: 0.75rem;
-    font-weight: 700;
-    font-size: 1rem;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 0.9rem;
     cursor: pointer;
-    transition: all 0.3s;
-    box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+    transition: all 0.2s;
   }
 
-  .newsletter-form button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(255, 107, 53, 0.4);
+  .newsletter-form-inline button:hover {
+    background: #E85A2A;
+    transform: scale(1.05);
   }
-
-  .newsletter-content small {
-    display: block;
-    margin-top: 1.25rem;
-    color: var(--sl-color-gray-5);
-    font-size: 0.8rem;
-  }
-
   /* ============================================
      Responsive Design
      ============================================ */
   @media (max-width: 1024px) {
-    .learning-path {
+    .courses-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .models-grid {
       grid-template-columns: repeat(2, 1fr);
     }
   }
@@ -647,7 +608,11 @@ const frontmatter = {
       height: 250px;
     }
 
-    .learning-path {
+    .courses-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .models-grid {
       grid-template-columns: 1fr;
     }
 
@@ -655,8 +620,10 @@ const frontmatter = {
       font-size: 1.8rem;
     }
 
-    .newsletter-content {
-      padding: 2rem 1.5rem;
+    .newsletter-inline {
+      border-radius: 1rem;
+      flex-direction: column;
+      text-align: center;
     }
   }
 </style>
