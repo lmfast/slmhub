@@ -1,345 +1,43 @@
 ---
 title: Ollama
-description: The easiest way to run SLMs locally - install, run, and deploy in minutes
+description: "The simplest local runtime for SLMs."
 ---
 
-import ColabButton from '../../../../../components/ColabButton.astro';
 
-<ColabButton path="docs/deploy/quickstarts/ollama.ipynb" />
+import NotebookWidget from '../../../../../components/NotebookWidget.astro';
 
-# Ollama
+<NotebookWidget 
+  notebookPath="notebooks/ollama_quickstart.ipynb"
+  title="Try Ollama in Colab"
+  description="Don't want to install locally? Run Ollama + Phi-4 directly in your browser with a free GPU."
+/>
 
-Ollama is the fastest path from "I want to try an SLM" to actually running one. One command to install, one command to run.
+## Why use it
 
-## Quick Start
+- Lowest friction local dev loop.
+- Great for prototyping an OpenAI-compatible interface.
 
-### Installation
-
-```bash
-# macOS/Linux
-curl -fsSL https://ollama.com/install.sh | sh
-
-# Windows - download from https://ollama.com/download
-```
-
-### Run Your First Model
+## Run
 
 ```bash
-# Download and run Phi-3.5 (3.8B parameters)
-ollama run phi3.5
-
-# Chat directly
->>> Write a haiku about coding
->>> /bye
+ollama run phi4
 ```
 
-## Available Models
+## Connect as an API
 
-### Featured SLMs (2026)
-
-| Model | Size | Command | Best For |
-|-------|------|---------|----------|
-| phi3.5 | 3.8B | `ollama run phi3.5` | General, reasoning |
-| phi4 | 14B | `ollama run phi4` | Complex tasks |
-| qwen2.5:3b | 3B | `ollama run qwen2.5:3b` | Multilingual |
-| qwen2.5:7b | 7B | `ollama run qwen2.5:7b` | Balanced |
-| gemma2:2b | 2B | `ollama run gemma2:2b` | Fast, lightweight |
-| llama3.2:3b | 3B | `ollama run llama3.2:3b` | General purpose |
-| codellama:7b | 7B | `ollama run codellama:7b` | Code generation |
-| smollm2:1.7b | 1.7B | `ollama run smollm2:1.7b` | Edge devices |
-
-### Quantization Variants
-
-```bash
-# Default (Q4_K_M - good balance)
-ollama run qwen2.5:7b
-
-# Specific quantization
-ollama run qwen2.5:7b-q4_0   # Smallest, fastest
-ollama run qwen2.5:7b-q5_K_M # Better quality
-ollama run qwen2.5:7b-q8_0   # Best quality
-```
-
-## Using the API
-
-### OpenAI-Compatible Endpoint
+Many setups expose:
 
 ```bash
 curl http://localhost:11434/v1/chat/completions \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "phi3.5",
-    "messages": [
-      {"role": "system", "content": "You are a helpful assistant."},
-      {"role": "user", "content": "Explain SLMs in one sentence."}
-    ],
-    "temperature": 0.7
+    "model": "phi4",
+    "messages": [{"role": "user", "content": "Give me a 1-sentence summary of SLMs."}]
   }'
 ```
 
-### Python Integration
+## Production note
 
-```python
-import ollama
+Ollama is amazing for dev. For high concurrency and throughput, use vLLM: `deploy/quickstarts/vllm.md`.
 
-# Simple chat
-response = ollama.chat(
-    model='phi3.5',
-    messages=[
-        {'role': 'user', 'content': 'What is a small language model?'}
-    ]
-)
-print(response['message']['content'])
-```
 
-### Streaming Responses
-
-```python
-import ollama
-
-# Stream for real-time output
-for chunk in ollama.chat(
-    model='phi3.5',
-    messages=[{'role': 'user', 'content': 'Write a story'}],
-    stream=True
-):
-    print(chunk['message']['content'], end='', flush=True)
-```
-
-### Using with LangChain
-
-```python
-from langchain_ollama import OllamaLLM
-
-llm = OllamaLLM(model="phi3.5")
-response = llm.invoke("Explain quantization")
-print(response)
-```
-
-## Model Management
-
-```bash
-# List installed models
-ollama list
-
-# Download model without running
-ollama pull phi4
-
-# Show model details
-ollama show phi3.5
-
-# Remove model
-ollama rm phi3.5
-
-# Copy model (for customization)
-ollama cp phi3.5 my-phi
-```
-
-## Custom Models (Modelfiles)
-
-Create custom model configurations:
-
-```dockerfile
-# Modelfile
-FROM phi3.5
-
-# Set system prompt
-SYSTEM """You are a helpful coding assistant. Always explain your code."""
-
-# Configure parameters
-PARAMETER temperature 0.7
-PARAMETER top_p 0.9
-PARAMETER num_ctx 4096
-```
-
-```bash
-# Create custom model
-ollama create my-coder -f Modelfile
-
-# Run custom model
-ollama run my-coder
-```
-
-## Importing Models
-
-### From GGUF
-
-```dockerfile
-# Modelfile
-FROM ./my-model.gguf
-
-TEMPLATE """{{ .Prompt }}"""
-```
-
-```bash
-ollama create my-model -f Modelfile
-```
-
-### From Safetensors
-
-```dockerfile
-# Modelfile
-FROM ./model-directory
-
-TEMPLATE """{{ .System }}
-User: {{ .Prompt }}
-Assistant: """
-```
-
-## Configuration
-
-### Environment Variables
-
-```bash
-# Custom models directory
-export OLLAMA_MODELS=/path/to/models
-
-# Change host/port
-export OLLAMA_HOST=0.0.0.0:11434
-
-# Increase context window
-export OLLAMA_NUM_CTX=8192
-```
-
-### GPU Configuration
-
-```bash
-# Specify GPU layers (0 = CPU only)
-OLLAMA_NUM_GPU=99  # All layers on GPU
-
-# Multi-GPU
-CUDA_VISIBLE_DEVICES=0,1 ollama run phi4
-```
-
-## Common Use Cases
-
-### Chat Application
-
-```python
-import ollama
-
-def chat_loop():
-    messages = []
-    
-    while True:
-        user_input = input("You: ")
-        if user_input.lower() == '/exit':
-            break
-            
-        messages.append({'role': 'user', 'content': user_input})
-        
-        response = ollama.chat(
-            model='phi3.5',
-            messages=messages
-        )
-        
-        assistant_message = response['message']['content']
-        messages.append({'role': 'assistant', 'content': assistant_message})
-        
-        print(f"AI: {assistant_message}")
-
-chat_loop()
-```
-
-### Embeddings
-
-```python
-import ollama
-
-# Generate embeddings
-response = ollama.embeddings(
-    model='nomic-embed-text',
-    prompt='Small language models are efficient'
-)
-
-embedding = response['embedding']
-print(f"Embedding dimensions: {len(embedding)}")
-```
-
-### Code Generation
-
-```python
-response = ollama.generate(
-    model='codellama:7b',
-    prompt='Write a Python function to calculate fibonacci numbers',
-    options={'temperature': 0.3}
-)
-print(response['response'])
-```
-
-## Performance Tips
-
-### 1. Choose Right Quantization
-
-```bash
-# 4GB VRAM or less
-ollama run smollm2:1.7b
-
-# 8GB VRAM
-ollama run phi3.5  # or qwen2.5:7b-q4_0
-
-# 16GB+ VRAM
-ollama run phi4
-```
-
-### 2. Optimize Context Window
-
-```bash
-# Smaller context = faster, less memory
-ollama run phi3.5 --num-ctx 2048
-
-# Larger context when needed
-ollama run phi3.5 --num-ctx 8192
-```
-
-### 3. CPU Threads
-
-```bash
-# Set number of threads
-OLLAMA_NUM_THREADS=8 ollama run phi3.5
-```
-
-## When to Use Ollama
-
-**Perfect for:**
-- ✅ Local development and testing
-- ✅ Privacy-focused applications
-- ✅ Prototyping
-- ✅ Single-user applications
-- ✅ Learning and experimentation
-
-**Consider alternatives for:**
-- ❌ High-concurrency production (use vLLM)
-- ❌ Maximum throughput (use TensorRT-LLM)
-- ❌ Custom inference logic (use llama.cpp)
-
-## Troubleshooting
-
-### Model Not Loading
-
-```bash
-# Check GPU memory
-nvidia-smi
-
-# Try smaller quantization
-ollama run phi3.5:q4_0
-
-# Force CPU mode
-CUDA_VISIBLE_DEVICES="" ollama run phi3.5
-```
-
-### Slow Performance
-
-```bash
-# Check if using GPU
-ollama ps  # Should show GPU usage
-
-# Reduce context
-ollama run phi3.5 --num-ctx 2048
-```
-
-## Next Steps
-
-- Explore [vLLM](/slmhub/docs/deploy/quickstarts/vllm/) for production deployment
-- Learn [llama.cpp](/slmhub/docs/deploy/quickstarts/llama-cpp/) for CPU optimization
-- Check [Model Directory](/slmhub/docs/models/) for more models
