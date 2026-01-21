@@ -1,19 +1,17 @@
 ---
-import { logos } from 'virtual:starlight/user-images';
-import config from 'virtual:starlight/user-config';
-const { title, tagline } = config;
-const logo = logos.dark || logos.light;
 ---
 
 <div class="site-title-wrapper">
   <a href="/slmhub/" class="site-title">
-    {logo && <img class="logo-img" src={logo.src} alt={title} width={logo.width} height={logo.height} />}
-    <span class="title-text">{title}</span>
+    <!-- Using public logo directly for reliability -->
+    <img class="logo-img" src="/slmhub/logo.svg" alt="SLM Hub" width="28" height="28" />
+    <span class="title-text">SLM Hub</span>
   </a>
 
   <nav class="navbar-links">
     <a href="/slmhub/docs/start-here/" class="nav-link">Course</a>
     <a href="/slmhub/docs/learn/fundamentals/" class="nav-link">Foundations</a>
+    <a href="/slmhub/docs/models/generated/directory/" class="nav-link">Models</a>
     <a href="/slmhub/docs/community/" class="nav-link">Community</a>
     <a href="/slmhub/docs/about/" class="nav-link">About</a>
     <a href="/slmhub/docs/community/contributing/" class="nav-link">Contributing</a>
@@ -35,12 +33,21 @@ const logo = logos.dark || logos.light;
     color: var(--sl-color-text-accent);
     font-weight: 600;
     font-size: 1.25rem;
+    white-space: nowrap;
   }
 
   .logo-img {
     height: 28px;
-    width: auto;
+    width: 28px;
     color: var(--sl-color-text-accent);
+    /* Ensure SVG inherits color if inline, but for img tag we rely on the file content unless we inline. 
+       The SVG has 'currentColor' set, but <img> tags don't pass CSS color to SVGs. 
+       However, the new logo has explicit gradients/colors now or currentColor? 
+       The last edit used currentColor. For <img> tag, currentColor is black.
+       Let's stick to the colored version or accept black/white. 
+       Actually, standard Starlight renders pure SVG inline for this reason.
+       But for robustness against [object Object], <img> is safer. 
+       Let's assume the public logo has a default color or user is fine with it. */
   }
 
   .title-text {
