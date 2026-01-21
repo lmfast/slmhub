@@ -131,8 +131,12 @@ function processNotebook(notebookName, targetMdxPath) {
     }
 
     // 2. Assemble Final MDX
-    // Ensure imports are present
-    const widgetImport = `import NotebookWidget from '../../../../../components/NotebookWidget.astro';\n\n`;
+    const mdxDir = path.dirname(mdxFullPath);
+    const componentsDir = path.join(ROOT, 'src/components');
+    let relativePathToComponents = path.relative(mdxDir, componentsDir);
+    relativePathToComponents = relativePathToComponents.replace(/\\/g, '/');
+
+    const widgetImport = `import NotebookWidget from '${relativePathToComponents}/NotebookWidget.astro';\n\n`;
     const widgetComponent = `<NotebookWidget \n  notebookPath="notebooks/${notebookName}"\n  title="${title}"\n  description="${description}"\n/>\n\n`;
 
     let finalContent = frontmatter + widgetImport + widgetComponent + mdxContent;
