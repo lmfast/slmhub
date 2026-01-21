@@ -1,30 +1,30 @@
 <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <!-- Gradient for dynamic energy flow -->
-    <linearGradient id="waveGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" style="stop-color:#FF6B35;stop-opacity:0.6" />
-      <stop offset="50%" style="stop-color:#FF6B35;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#FF6B35;stop-opacity:0.6" />
-    </linearGradient>
+    <!-- Gradient for dynamic energy flow - Using CSS Variable for currentColor adaptation if needed, or keeping explicit for brand identity. 
+         User asked for "color change according to the theme". 
+         We will use 'currentColor' for the stroke/fill so it inherits text color. 
+    -->
   </defs>
   
   <!-- Transparent background -->
   <rect width="200" height="200" fill="none"/>
   
-  <!-- Dynamic pulse wave - showing speed and energy -->
+  <!-- Dynamic pulse wave -->
+  <!-- Using currentColor allows it to match the nav text (white in dark mode, black in light) 
+       OR we can map it to var(--sl-color-accent) -->
   <path d="M 20 100 L 55 100 L 70 60 L 85 130 L 100 80 L 115 110 L 130 90 L 145 100 L 180 100" 
         fill="none" 
-        stroke="url(#waveGradient)" 
-        stroke-width="8" 
+        stroke="currentColor" 
+        stroke-width="12" 
         stroke-linecap="round" 
         stroke-linejoin="round"/>
   
   <!-- Energy peak accent -->
-  <circle cx="85" cy="130" r="5" fill="#FF6B35">
+  <circle cx="85" cy="130" r="8" fill="currentColor">
     <animate attributeName="opacity" values="1;0.5;1" dur="1.5s" repeatCount="indefinite"/>
   </circle>
   
   <!-- Speed indicator dots -->
-  <circle cx="70" cy="60" r="3" fill="#FF6B35" opacity="0.7"/>
-  <circle cx="100" cy="80" r="3" fill="#FF6B35" opacity="0.7"/>
+  <circle cx="70" cy="60" r="5" fill="currentColor" opacity="0.7"/>
+  <circle cx="100" cy="80" r="5" fill="currentColor" opacity="0.7"/>
 </svg>

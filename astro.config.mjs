@@ -136,7 +136,7 @@ export default defineConfig({
       },
       // UI Translations
       components: {
-        // Override default components if needed in future
+        SiteTitle: './src/components/SiteTitle.astro',
       },
       expressiveCode: {
         themes: ['github-dark', 'github-light'],

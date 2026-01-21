@@ -1,0 +1,77 @@
+---
+import { logos } from 'virtual:starlight/user-images';
+import config from 'virtual:starlight/user-config';
+const { title, tagline } = config;
+const logo = logos.dark || logos.light;
+---
+
+<div class="site-title-wrapper">
+  <a href="/slmhub/" class="site-title">
+    {logo && <img class="logo-img" src={logo.src} alt={title} width={logo.width} height={logo.height} />}
+    <span class="title-text">{title}</span>
+  </a>
+
+  <nav class="navbar-links">
+    <a href="/slmhub/docs/start-here/" class="nav-link">Course</a>
+    <a href="/slmhub/docs/learn/fundamentals/" class="nav-link">Foundations</a>
+    <a href="/slmhub/docs/community/" class="nav-link">Community</a>
+    <a href="/slmhub/docs/about/" class="nav-link">About</a>
+    <a href="/slmhub/docs/community/contributing/" class="nav-link">Contributing</a>
+  </nav>
+</div>
+
+<style>
+  .site-title-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .site-title {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-decoration: none;
+    color: var(--sl-color-text-accent);
+    font-weight: 600;
+    font-size: 1.25rem;
+  }
+
+  .logo-img {
+    height: 28px;
+    width: auto;
+    color: var(--sl-color-text-accent);
+  }
+
+  .title-text {
+    display: none; /* Hide text on small screens mostly, or keep it */
+  }
+  @media (min-width: 640px) {
+    .title-text { display: block; }
+  }
+
+  /* Navbar Links */
+  .navbar-links {
+    display: none;
+    gap: 1.5rem;
+    align-items: center;
+  }
+
+  @media (min-width: 1024px) {
+    .navbar-links {
+      display: flex;
+    }
+  }
+
+  .nav-link {
+    text-decoration: none;
+    color: var(--sl-color-text);
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+
+  .nav-link:hover {
+    color: var(--sl-color-text-accent);
+  }
+</style>
