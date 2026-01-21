@@ -21,7 +21,9 @@ const NOTEBOOK_MAPPING = {
     'prompting.ipynb': 'docs/learn/fundamentals/prompting-for-slms.mdx',
     'architecture.ipynb': 'docs/learn/fundamentals/architecture.mdx',
     'agents.ipynb': 'docs/learn/concepts/agents.mdx',
-    'datasets.ipynb': 'docs/learn/concepts/datasets.mdx'
+    'datasets.ipynb': 'docs/learn/concepts/datasets.mdx',
+    'vllm_quickstart.ipynb': 'docs/deploy/quickstarts/vllm.mdx',
+    'llama_cpp_quickstart.ipynb': 'docs/deploy/quickstarts/llama-cpp.mdx'
 };
 
 function ensureDir(dirPath) {

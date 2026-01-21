@@ -1,397 +1,100 @@
 ---
-title: vLLM
-description: High-throughput inference server for production SLM deployments
+title: "vLLM Quickstart: High-Throughput Serving"
+description: "This notebook demonstrates how to serve an SLM using vLLM, a high-throughput and memory-efficient inference engine. Guide: [vLLM Deployment](https://s..."
 ---
+import NotebookWidget from '../../../../../components/NotebookWidget.astro';
 
-import ColabButton from '../../../../../components/ColabButton.astro';
+<NotebookWidget 
+  notebookPath="notebooks/vllm_quickstart.ipynb"
+  title="vLLM Quickstart: High-Throughput Serving"
+  description="This notebook demonstrates how to serve an SLM using vLLM, a high-throughput and memory-efficient inference engine. Guide: [vLLM Deployment](https://s..."
+/>
 
-<ColabButton path="docs/deploy/quickstarts/vllm.ipynb" />
 
-# vLLM
 
-vLLM is the go-to solution for serving SLMs at scale. It uses PagedAttention and continuous batching to maximize throughput.
+This notebook demonstrates how to serve an SLM using vLLM, a high-throughput and memory-efficient inference engine. Guide: [vLLM Deployment](https://slmhub.gitbook.io/slmhub/docs/deploy/quickstarts/vllm).
 
-## Quick Start
-
-### Installation
-
-```bash
-pip install vllm
-```
-
-### Run a Model
-
-```bash
-# Start server
-vllm serve microsoft/Phi-4 --dtype bfloat16
-
-# Or with specific configuration
-vllm serve Qwen/Qwen3-8B \
-  --dtype bfloat16 \
-  --max-model-len 8192 \
-  --gpu-memory-utilization 0.9
-```
-
-### Query the API
-
-```bash
-curl http://localhost:8000/v1/chat/completions \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "microsoft/Phi-4",
-    "messages": [
-      {"role": "user", "content": "Explain vLLM in one sentence."}
-    ]
-  }'
-```
-
-## Why vLLM?
-
-### PagedAttention
-
-vLLM's key innovation - manages KV cache like virtual memory:
-
-```
-Traditional: Fixed KV cache per request → Memory waste
-
-vLLM PagedAttention:
-- Allocates memory in pages
-- Non-contiguous storage
-- Near 100% memory utilization
-- Handles variable-length sequences efficiently
-```
-
-### Continuous Batching
-
-```
-Traditional: Wait for batch to complete
-Request 1: [==============]
-Request 2: [====]          (idle waiting)
-
-vLLM Continuous Batching:
-Request 1: [==============]
-Request 2: [====][new req starts immediately]
-           Better GPU utilization
-```
-
-## Configuration Guide
-
-### Basic Server Options
-
-```bash
-vllm serve microsoft/Phi-4 \
-  --host 0.0.0.0 \
-  --port 8000 \
-  --dtype bfloat16 \              # Data type
-  --max-model-len 4096 \           # Context length
-  --gpu-memory-utilization 0.85 \  # VRAM usage (0-1)
-  --max-num-seqs 256               # Concurrent sequences
-```
-
-### Quantization
-
-```bash
-# AWQ quantized model
-vllm serve TheBloke/Phi-3-mini-4k-instruct-AWQ \
-  --quantization awq \
-  --dtype float16
-
-# GPTQ quantized model
-vllm serve TheBloke/Qwen-7B-GPTQ \
-  --quantization gptq
-
-# BitsAndBytes 4-bit
-vllm serve microsoft/Phi-4 \
-  --quantization bitsandbytes \
-  --load-format bitsandbytes
-```
-
-### Multi-GPU
-
-```bash
-# Tensor parallelism across GPUs
-vllm serve Qwen/Qwen3-8B \
-  --tensor-parallel-size 2 \   # 2 GPUs
-  --dtype bfloat16
-
-# Specific GPUs
-CUDA_VISIBLE_DEVICES=0,1 vllm serve ...
-```
-
-## Python SDK
-
-### OpenAI-Compatible Client
+## 1. Install vLLM
+vLLM requires a GPU (T4 is supported).
 
 ```python
-from openai import OpenAI
-
-client = OpenAI(
-    base_url="http://localhost:8000/v1",
-    api_key="not-needed"
-)
-
-response = client.chat.completions.create(
-    model="microsoft/Phi-4",
-    messages=[
-        {"role": "system", "content": "You are a helpful assistant."},
-        {"role": "user", "content": "What is vLLM?"}
-    ],
-    temperature=0.7,
-    max_tokens=500
-)
-
-print(response.choices[0].message.content)
+!pip install vllm
 ```
 
-### Streaming
-
-```python
-stream = client.chat.completions.create(
-    model="microsoft/Phi-4",
-    messages=[{"role": "user", "content": "Write a poem"}],
-    stream=True
-)
-
-for chunk in stream:
-    content = chunk.choices[0].delta.content
-    if content:
-        print(content, end="", flush=True)
-```
-
-### Batch Inference
+## 2. Offline Inference
+Load the model and generate text directly in Python.
 
 ```python
 from vllm import LLM, SamplingParams
 
-# Initialize model
-llm = LLM(model="microsoft/Phi-4")
+# Initialize model (Phi-3-mini is small and fast)
+llm = LLM(model="microsoft/Phi-3-mini-4k-instruct", trust_remote_code=True)
+
+# Define prompts
+prompts = [
+    "Hello, my name is",
+    "The future of AI is",
+    "Write a short poem about coding."
+]
 
 # Sampling parameters
-sampling_params = SamplingParams(
-    temperature=0.7,
-    top_p=0.95,
-    max_tokens=256
-)
-
-# Batch queries
-prompts = [
-    "Explain machine learning:",
-    "What is deep learning?",
-    "Define neural networks:"
-]
+sampling_params = SamplingParams(temperature=0.7, top_p=0.95, max_tokens=60)
 
 # Generate
 outputs = llm.generate(prompts, sampling_params)
 
+# Print results
 for output in outputs:
-    print(f"Prompt: {output.prompt[:50]}...")
-    print(f"Response: {output.outputs[0].text}\n")
+    prompt = output.prompt
+    generated_text = output.outputs[0].text
+    print(f"Prompt: {prompt!r}, Generated text: {generated_text!r}")
 ```
 
-## Advanced Features
-
-### Prefix Caching
-
-Share KV cache for common prefixes:
-
-```bash
-vllm serve microsoft/Phi-4 \
-  --enable-prefix-caching
-```
+## 3. Server Mode (OpenAI Compatible)
+Run vLLM as an API server. (Note: In Colab, this blocks the cell. We run it in background).
 
 ```python
-# Reuse prefix across requests
-# Common system prompt is automatically cached
-responses = client.chat.completions.create(
-    model="microsoft/Phi-4",
-    messages=[
-        {"role": "system", "content": "You are an expert...(long prompt)"},
-        {"role": "user", "content": "Question 1"}
-    ]
-)
-# Subsequent requests with same system prompt are faster
-```
-
-### Speculative Decoding
-
-Use small model to predict tokens, validate with large model:
-
-```bash
-vllm serve microsoft/Phi-4 \
-  --speculative-model microsoft/Phi-3-mini \
-  --num-speculative-tokens 5
-```
-
-### LoRA Adapters
-
-```bash
-# Serve base model with LoRA
-vllm serve microsoft/Phi-4 \
-  --enable-lora \
-  --lora-modules my-adapter=/path/to/adapter
-```
-
-```python
-# Request specific adapter
-response = client.chat.completions.create(
-    model="my-adapter",  # Use LoRA adapter name
-    messages=[{"role": "user", "content": "Hello"}]
-)
-```
-
-## Production Deployment
-
-### Docker
-
-```dockerfile
-FROM vllm/vllm-openai:latest
-
-# Pre-download model
-RUN python -c "from vllm import LLM; LLM('microsoft/Phi-4')"
-
-CMD ["--model", "microsoft/Phi-4", "--dtype", "bfloat16"]
-```
-
-```bash
-docker run -d --gpus all -p 8000:8000 my-vllm-image
-```
-
-### Kubernetes
-
-```yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: vllm-server
-spec:
-  replicas: 1
-  template:
-    spec:
-      containers:
-      - name: vllm
-        image: vllm/vllm-openai:latest
-        args:
-          - "--model"
-          - "microsoft/Phi-4"
-          - "--dtype"
-          - "bfloat16"
-          - "--max-model-len"
-          - "4096"
-        resources:
-          limits:
-            nvidia.com/gpu: 1
-        ports:
-        - containerPort: 8000
-```
-
-### Health Checks
-
-```bash
-# Check if server is ready
-curl http://localhost:8000/health
-
-# Get model info
-curl http://localhost:8000/v1/models
-```
-
-## Performance Tuning
-
-### Memory Optimization
-
-```bash
-# Higher GPU utilization
---gpu-memory-utilization 0.95
-
-# Limit concurrent requests
---max-num-seqs 128
-
-# Reduce context length
---max-model-len 2048
-```
-
-### Throughput Optimization
-
-```bash
-# More concurrent sequences
---max-num-seqs 512
-
-# Enable chunked prefill
---enable-chunked-prefill
-
-# Increase batch size
---max-num-batched-tokens 8192
-```
-
-### Latency Optimization
-
-```bash
-# Speculative decoding
---speculative-model <draft-model>
-
-# Flash attention
---enable-flashinfer  # If supported
-
-# Prefix caching for repeated prompts
---enable-prefix-caching
-```
-
-## Benchmarking
-
-```python
-from vllm import LLM, SamplingParams
+# Start server in background
+import subprocess
 import time
 
-llm = LLM(model="microsoft/Phi-4")
+command = [
+    "python", "-m", "vllm.entrypoints.openai.api_server",
+    "--model", "microsoft/Phi-3-mini-4k-instruct",
+    "--trust-remote-code",
+    "--dtype", "auto",
+    "--port", "8000"
+]
 
-prompts = ["Write a story about AI"] * 100
-sampling = SamplingParams(max_tokens=100)
-
-start = time.time()
-outputs = llm.generate(prompts, sampling)
-elapsed = time.time() - start
-
-tokens = sum(len(o.outputs[0].token_ids) for o in outputs)
-print(f"Throughput: {tokens / elapsed:.0f} tokens/sec")
+process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+print("Starting vLLM server... (takes ~1-2 mins to load model)")
+time.sleep(60) # Wait for model load
 ```
 
-## vLLM vs Ollama
+## 4. Query the API
+Use standard OpenAI client to query the local vLLM server.
 
-| Feature | vLLM | Ollama |
-|---------|------|--------|
-| Ease of use | ⭐⭐ | ⭐⭐⭐⭐⭐ |
-| Throughput | ⭐⭐⭐⭐⭐ | ⭐⭐ |
-| Concurrent users | 100s | 1-3 |
-| LoRA support | ✓ | Limited |
-| Production ready | ✓ | Development |
-| CPU support | Limited | ✓ |
-
-## Troubleshooting
-
-### Out of Memory
-
-```bash
-# Reduce GPU memory usage
---gpu-memory-utilization 0.8
-
-# Use quantization
---quantization awq
-
-# Smaller context
---max-model-len 2048
+```python
+!pip install openai
 ```
 
-### Slow Startup
+```python
+from openai import OpenAI
 
-```bash
-# Pre-download model
-huggingface-cli download microsoft/Phi-4
+client = OpenAI(base_url="http://localhost:8000/v1", api_key="vllm")
 
-# Use cached model
---model /path/to/local/model
+try:
+    completion = client.chat.completions.create(
+        model="microsoft/Phi-3-mini-4k-instruct",
+        messages=[
+            {"role": "user", "content": "Explain vLLM in one sentence."}
+        ]
+    )
+    print("Response:", completion.choices[0].message.content)
+except Exception as e:
+    print("Server might still be loading or failed:", e)
+    # Print logs if failed
+    out, err = process.communicate(timeout=1)
+    print(err.decode())
 ```
 
-## Next Steps
-
-- Learn [llama.cpp](/slmhub/docs/deploy/quickstarts/llama-cpp/) for CPU inference
-- Explore [production patterns](/slmhub/docs/deploy/production/)
-- Check [Model Directory](/slmhub/docs/models/) for compatible models
