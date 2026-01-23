@@ -20,7 +20,7 @@ We don’t maintain a “best model” leaderboard or benchmark-heavy rankings. 
 
 Start with:
 
-- `models/generated/directory.md`
+- `/docs/models/generated/directory/`
 - `tools/model-picker.md`
 
 

@@ -2,7 +2,7 @@ name: Sync model metadata (HF)
 
 on:
   schedule:
-    - cron: "0 2 * * *" # daily 02:00 UTC
+    - cron: "0 2 */3 * *" # every 3 days at 02:00 UTC
   workflow_dispatch: {}
 
 permissions:
@@ -32,7 +32,9 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "chore(docs): auto-sync model pages"
-          file_pattern: "data/models.* src/content/docs/docs/models/generated/*.md src/content/docs/docs/models/generated/*.mdx"
+          file_pattern: "data/models.*"
+
+
 
 
 

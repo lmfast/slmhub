@@ -78,7 +78,7 @@ nav:
   - Models:
     - Models overview: models/README.md
     - How we describe models (no leaderboards): models/model-page-standard.md
-    - Directory (auto-generated): models/generated/directory.md
+    - Directory (auto-generated): docs/models/generated/directory/
     - Featured models:
       - Featured models overview: models/featured/README.md
       - Phi: models/featured/phi.md

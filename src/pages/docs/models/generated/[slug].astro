@@ -1,0 +1,447 @@
+---
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import { Icon } from '@astrojs/starlight/components';
+import fs from 'node:fs';
+import path from 'node:path';
+
+// Ensure this page is prerendered
+export const prerender = true;
+
+type GGUFVariant = {
+  variant_repo_id: string;
+  quantization_method: string | null;
+  quantization_level: string | null;
+  file_name: string;
+  file_size_bytes: number | null;
+  file_size_gb: number | null;
+  bits_per_weight: number | null;
+  estimated_quality: string | null;
+  recommended_vram_gb: number | null;
+  variant_url: string | null;
+};
+
+type ModelDetails = {
+  model_id: string;
+  model_name?: string | null;
+  provider?: string | null;
+  slug: string;
+  description?: string | null;
+  base_model?: string | null;
+  architecture?: string | null;
+  parameters?: string | null;
+  parameter_count?: number | null;
+  likes?: number | null;
+  downloads?: number | null;
+  downloads_30d?: number | null;
+  license?: string | null;
+  library?: string | null;
+  pipeline_tag?: string | null;
+  model_url?: string | null;
+  last_updated?: string | null;
+  technical_specifications?: Record<string, any> | null;
+  tokenizer_information?: Record<string, any> | null;
+  hardware_requirements?: Record<string, any> | null;
+  use_cases?: Record<string, any> | null;
+  training_information?: Record<string, any> | null;
+  gguf_variants?: GGUFVariant[] | null;
+};
+
+export function getStaticPaths() {
+  // Define readModelsJson inline to avoid scoping issues
+  const readModelsJson = (): { last_synced_at?: string; models: any[] } => {
+    const modelsPath = path.resolve(process.cwd(), 'data/models.json');
+    if (!fs.existsSync(modelsPath)) {
+      console.warn(`[slug].astro] models.json not found at ${modelsPath}`);
+      return { models: [] };
+    }
+    try {
+      const raw = fs.readFileSync(modelsPath, 'utf-8');
+      const obj = JSON.parse(raw);
+      const models = Array.isArray(obj) ? obj : (obj.models || []);
+      return { last_synced_at: obj.last_synced_at, models };
+    } catch (e) {
+      console.error(`[slug].astro] Error reading models.json:`, e);
+      return { models: [] };
+    }
+  };
+
+  try {
+    const { models } = readModelsJson();
+    const validModels = models.filter((m) => m && typeof m.slug === 'string' && m.slug.length > 0);
+    console.log(`[slug].astro] Generating ${validModels.length} static paths from ${models.length} total models`);
+    
+    const paths = validModels.map((m) => ({ params: { slug: m.slug } }));
+    
+    // Log a few sample paths for debugging
+    if (paths.length > 0) {
+      console.log(`[slug].astro] Sample paths: ${paths.slice(0, 3).map(p => p.params.slug).join(', ')}...`);
+    }
+    
+    return paths;
+  } catch (e) {
+    console.error(`[slug].astro] Error in getStaticPaths:`, e);
+    return [];
+  }
+}
+
+// Define readModelsJson for use in the component body
+function readModelsJson(): { last_synced_at?: string; models: any[] } {
+  const modelsPath = path.resolve(process.cwd(), 'data/models.json');
+  if (!fs.existsSync(modelsPath)) {
+    console.warn(`[slug].astro] models.json not found at ${modelsPath}`);
+    return { models: [] };
+  }
+  try {
+    const raw = fs.readFileSync(modelsPath, 'utf-8');
+    const obj = JSON.parse(raw);
+    const models = Array.isArray(obj) ? obj : (obj.models || []);
+    return { last_synced_at: obj.last_synced_at, models };
+  } catch (e) {
+    console.error(`[slug].astro] Error reading models.json:`, e);
+    return { models: [] };
+  }
+}
+
+const { slug } = Astro.params;
+let model: ModelDetails | null = null;
+let lastSyncedAt: string | null = null;
+let frontmatter: any = {
+  title: 'Model not found',
+  description: 'The requested model page was not found.',
+  template: 'splash',
+  prev: false,
+  next: false,
+};
+
+try {
+  const data = readModelsJson();
+  lastSyncedAt = data.last_synced_at || null;
+  model = (data.models as ModelDetails[]).find((m) => m.slug === slug) || null;
+  
+  if (!model && slug) {
+    console.warn(`[slug].astro] Model not found for slug: ${slug}`);
+    // Try to find similar slugs for debugging
+    const similar = data.models.filter((m: any) => 
+      m.slug && (m.slug.includes(slug.split('-').slice(-2).join('-')) || slug.includes(m.slug.split('-').slice(-2).join('-')))
+    ).slice(0, 3);
+    if (similar.length > 0) {
+      console.warn(`[slug].astro] Similar slugs found: ${similar.map((m: any) => m.slug).join(', ')}`);
+    }
+  }
+} catch (e) {
+  console.error(`[slug].astro] Error loading model data:`, e);
+  model = null;
+}
+
+if (model) {
+  frontmatter = {
+    title: model.model_name || model.model_id,
+    description: model.description || `Details for ${model.model_id}`,
+    prev: false,
+    next: false,
+  };
+}
+---
+
+<StarlightPage frontmatter={frontmatter} headings={[]}>
+  {!model ? (
+    <div style="max-width: 900px; margin: 0 auto; padding: 3rem 2rem;">
+      <h1>Model not found</h1>
+      <p>
+        This page is generated from <code>data/models.json</code>. If you just synced, rebuild the site.
+      </p>
+      <p>
+        <a href="/slmhub/docs/models/generated/directory/">← Back to directory</a>
+      </p>
+    </div>
+  ) : (
+    <div class="model-page">
+      <section class="hero">
+        <h1 class="title">{model.model_name || model.model_id}</h1>
+        <p class="subtitle">{model.description || '—'}</p>
+        <div class="meta">
+          <a class="meta-link" href={model.model_url || `https://huggingface.co/${model.model_id}`} target="_blank" rel="noreferrer">
+            <Icon name="external-link" size="1em" /> Hugging Face
+          </a>
+          {lastSyncedAt && (
+            <span class="meta-muted">Last synced: {new Date(lastSyncedAt).toLocaleString()}</span>
+          )}
+        </div>
+      </section>
+
+      <section class="grid">
+        <div class="card">
+          <h2>Overview</h2>
+          <ul class="kv">
+            <li><strong>Model ID</strong><code>{model.model_id}</code></li>
+            <li><strong>Provider</strong><span>{model.provider || '—'}</span></li>
+            <li><strong>Base model</strong><span>{model.base_model || '—'}</span></li>
+            <li><strong>Architecture</strong><span>{model.architecture || '—'}</span></li>
+            <li><strong>Parameters</strong><span>{model.parameters || '—'}</span></li>
+            <li><strong>Pipeline tag</strong><span>{model.pipeline_tag || '—'}</span></li>
+            <li><strong>Library</strong><span>{model.library || '—'}</span></li>
+            <li><strong>License</strong><span>{model.license || '—'}</span></li>
+            <li><strong>Likes</strong><span>{model.likes ?? '—'}</span></li>
+            <li><strong>Downloads</strong><span>{model.downloads ?? '—'}</span></li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h2>Quickstart</h2>
+          <h3>Python (Transformers)</h3>
+          <pre class="code"><code>{`from transformers import AutoModelForCausalLM, AutoTokenizer
+
+model_id = "${model.model_id}"
+tokenizer = AutoTokenizer.from_pretrained(model_id)
+model = AutoModelForCausalLM.from_pretrained(model_id, device_map="auto", torch_dtype="auto")
+
+prompt = "Explain this model in 3 bullets."
+inputs = tokenizer(prompt, return_tensors="pt")
+outputs = model.generate(**inputs, max_new_tokens=128)
+print(tokenizer.decode(outputs[0], skip_special_tokens=True))
+`}</code></pre>
+          <h3>GGUF (llama.cpp)</h3>
+          <p class="muted">
+            If this model has GGUF variants below, download a quantized file and run with llama.cpp (or use Ollama if you have a compatible Modelfile).
+          </p>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Technical specifications</h2>
+        {model.technical_specifications ? (
+          <table class="spec-table">
+            <tbody>
+              {Object.entries(model.technical_specifications).map(([k, v]) => (
+                <tr>
+                  <td class="k">{k}</td>
+                  <td class="v"><code>{typeof v === 'string' ? v : JSON.stringify(v)}</code></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <p class="muted">No technical spec data available for this model.</p>
+        )}
+      </section>
+
+      <section class="card">
+        <h2>Tokenizer</h2>
+        {model.tokenizer_information ? (
+          <table class="spec-table">
+            <tbody>
+              {Object.entries(model.tokenizer_information).map(([k, v]) => (
+                <tr>
+                  <td class="k">{k}</td>
+                  <td class="v"><code>{typeof v === 'string' ? v : JSON.stringify(v)}</code></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <p class="muted">No tokenizer data available for this model.</p>
+        )}
+      </section>
+
+      <section class="card">
+        <h2>Hardware requirements</h2>
+        {model.hardware_requirements ? (
+          <pre class="code"><code>{JSON.stringify(model.hardware_requirements, null, 2)}</code></pre>
+        ) : (
+          <p class="muted">No hardware requirement data available for this model.</p>
+        )}
+      </section>
+
+      <section class="card">
+        <h2>Use cases</h2>
+        {model.use_cases ? (
+          <pre class="code"><code>{JSON.stringify(model.use_cases, null, 2)}</code></pre>
+        ) : (
+          <p class="muted">No use case data available for this model.</p>
+        )}
+      </section>
+
+      <section class="card">
+        <h2>Training information</h2>
+        {model.training_information ? (
+          <pre class="code"><code>{JSON.stringify(model.training_information, null, 2)}</code></pre>
+        ) : (
+          <p class="muted">No training info available for this model.</p>
+        )}
+      </section>
+
+      <section class="card">
+        <h2>GGUF quantization variants</h2>
+        {model.gguf_variants && model.gguf_variants.length > 0 ? (
+          <div class="gguf-grid">
+            {model.gguf_variants.map((v) => (
+              <div class="gguf-card">
+                <div class="gguf-title">
+                  <code>{v.quantization_level || 'GGUF'}</code>
+                  <span class="muted">{v.file_size_gb ? `${v.file_size_gb.toFixed(2)} GB` : '—'}</span>
+                </div>
+                <div class="gguf-meta">
+                  <div><strong>Repo</strong> <code>{v.variant_repo_id}</code></div>
+                  <div><strong>File</strong> <code>{v.file_name}</code></div>
+                  <div><strong>bpw</strong> <code>{v.bits_per_weight ?? '—'}</code></div>
+                  <div><strong>Quality</strong> <code>{v.estimated_quality ?? '—'}</code></div>
+                  <div><strong>Rec VRAM</strong> <code>{v.recommended_vram_gb ?? '—'}</code></div>
+                </div>
+                {v.variant_url && (
+                  <a class="meta-link" href={v.variant_url} target="_blank" rel="noreferrer">
+                    <Icon name="download" size="1em" /> Download
+                  </a>
+                )}
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p class="muted">No GGUF files detected for this model (or variants not discovered yet).</p>
+        )}
+      </section>
+    </div>
+  )}
+</StarlightPage>
+
+<style is:global>
+  .model-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 3rem 2rem 6rem;
+  }
+  .hero {
+    margin-bottom: 2rem;
+  }
+  .title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin: 0 0 0.5rem 0;
+  }
+  .subtitle {
+    color: var(--sl-color-gray-3);
+    margin: 0 0 0.75rem 0;
+    line-height: 1.6;
+  }
+  .meta {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .meta-link {
+    display: inline-flex;
+    gap: 0.4rem;
+    align-items: center;
+    color: var(--sl-color-text-accent);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .meta-link:hover {
+    text-decoration: underline;
+  }
+  .meta-muted {
+    color: var(--sl-color-gray-4);
+    font-size: 0.9rem;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+  @media (max-width: 980px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  .card {
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 1rem;
+    background: rgba(255, 255, 255, 0.03);
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+  .card h2 {
+    margin: 0 0 0.75rem 0;
+    font-size: 1.1rem;
+  }
+  .card h3 {
+    margin: 0.75rem 0 0.5rem 0;
+    font-size: 0.95rem;
+  }
+  .kv {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+  .kv li {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 0.75rem;
+    align-items: baseline;
+  }
+  .kv strong {
+    color: var(--sl-color-gray-3);
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .kv code {
+    font-size: 0.9rem;
+  }
+  .spec-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .spec-table td {
+    padding: 0.5rem 0.6rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    vertical-align: top;
+  }
+  .spec-table td.k {
+    width: 260px;
+    color: var(--sl-color-gray-3);
+    font-weight: 700;
+  }
+  .code {
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 0.75rem;
+    padding: 0.9rem;
+    overflow: auto;
+  }
+  .muted {
+    color: var(--sl-color-gray-4);
+  }
+  .gguf-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 0.75rem;
+  }
+  .gguf-card {
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 0.9rem;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 0.9rem;
+  }
+  .gguf-title {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.75rem;
+    align-items: baseline;
+    margin-bottom: 0.6rem;
+  }
+  .gguf-meta {
+    display: grid;
+    gap: 0.3rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.9rem;
+  }
+</style>
+
+

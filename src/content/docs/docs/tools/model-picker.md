@@ -25,7 +25,7 @@ description: "A simple decision framework to pick a model without chasing leader
 - 1 “smaller/faster” candidate
 - 1 “quality-first” candidate
 
-Use `models/generated/directory.md` for discovery.
+Use `/docs/models/generated/directory/` for discovery.
 
 ## Step 4: acceptance prompts
 
