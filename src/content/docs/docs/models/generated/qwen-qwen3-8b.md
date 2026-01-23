@@ -1,8 +1,9 @@
 ---
-title: Qwen3-8B
-description: "Discovery-focused notes and runnable examples for `Qwen/Qwen3-8B`."
+title: "Qwen3-8B"
+description: Discovery-focused notes and runnable examples for `Qwen/Qwen3-8B`.
 ---
 
+# Qwen3-8B
 
 Discovery-focused notes and runnable examples for `Qwen/Qwen3-8B`.
 
@@ -63,8 +64,8 @@ ollama run qwen3-8b
 | **Library** | transformers |
 | **License** | unknown |
 | **Last modified** | 2025-07-26T03:49:13+00:00 |
-| **Downloads** | 3.9M |
-| **Likes** | 861 |
+| **Downloads** | 4.2M |
+| **Likes** | 868 |
 
 ## Links
 

@@ -1,0 +1,305 @@
+<!-- 
+  ============================================
+  Example Documentation Template
+  ============================================
+  Copy this template and adapt for your pages.
+  This demonstrates all best practices and components.
+-->
+
+import { 
+  Card, 
+  CardGrid, 
+  Tabs, 
+  TabItem,
+  Badge,
+  Aside,
+  Icon,
+  LinkButton,
+  LinkCard,
+  FileTree,
+  Code
+} from '@astrojs/starlight/components';
+import Breadcrumb from '@components/Breadcrumb.astro';
+import CourseProgress from '@components/CourseProgress.astro';
+
+<!-- Breadcrumb Navigation (Optional) -->
+<Breadcrumb items={[
+  { label: "Docs", href: "/docs/" },
+  { label: "Deployment", href: "/docs/deploy/" },
+  { label: "Ollama", href: "/docs/deploy/ollama/" }
+]} />
+
+<!-- Course Progress (For Learning Modules) -->
+<CourseProgress 
+  course="Section 1: Foundations"
+  current={3}
+  total={8}
+  percentage={37}
+/>
+
+# Page Title
+
+<div class="badge-group">
+  <Badge text="Updated January 2026" variant="success" size="small" />
+  <Badge text="Beginner Friendly" variant="note" size="small" />
+  <Badge text="15 min read" variant="tip" size="small" />
+</div>
+
+A compelling introduction that explains what this page covers and why it matters.
+
+---
+
+## Key Concepts
+
+<CardGrid>
+  <Card title="Concept 1" icon="book">
+    Brief description of concept one.
+  </Card>
+  
+  <Card title="Concept 2" icon="lightbulb">
+    Brief description of concept two.
+  </Card>
+  
+  <Card title="Concept 3" icon="star">
+    Brief description of concept three.
+  </Card>
+</CardGrid>
+
+---
+
+## Prerequisites
+
+<Aside type="note">
+  Make sure you have the following installed before proceeding.
+</Aside>
+
+<ul class="icon-list">
+  <li><Icon name="check" /> Python 3.11 or higher</li>
+  <li><Icon name="check" /> 8GB RAM minimum (16GB recommended)</li>
+  <li><Icon name="check" /> NVIDIA GPU (optional but recommended)</li>
+  <li><Icon name="check" /> Git installed</li>
+</ul>
+
+---
+
+## Installation Guide
+
+<Aside type="tip" title="Virtual Environment Recommended">
+  Always use a Python virtual environment to avoid package conflicts with other projects.
+</Aside>
+
+<Tabs syncKey="pkg-manager">
+  <TabItem label="pip" icon="package">
+    ```bash
+    # Create virtual environment
+    python -m venv venv
+    source venv/bin/activate  # On Windows: venv\Scripts\activate
+    
+    # Install package
+    pip install slmhub-cli
+    ```
+  </TabItem>
+  
+  <TabItem label="conda" icon="package">
+    ```bash
+    # Create environment
+    conda create -n slmhub python=3.11
+    conda activate slmhub
+    
+    # Install package
+    conda install -c conda-forge slmhub-cli
+    ```
+  </TabItem>
+  
+  <TabItem label="Docker" icon="code">
+    ```bash
+    # Pull and run Docker image
+    docker pull slmhub:latest
+    docker run -it slmhub:latest
+    ```
+  </TabItem>
+</Tabs>
+
+---
+
+## Project Structure
+
+<Aside type="caution" title="File Organization">
+  Maintaining proper directory structure helps with model management and code organization.
+</Aside>
+
+<FileTree>
+- my-slm-project/
+  - **models/** - Downloaded models stored here
+    - mistral-7b.gguf
+    - phi-2.gguf
+  - src/
+    - **main.py** - Entry point (START HERE)
+    - inference.py - Model loading and inference logic
+    - utils.py - Helper functions
+  - requirements.txt - **Python dependencies**
+  - .env.example - Copy to .env for configuration
+  - README.md
+</FileTree>
+
+---
+
+## Important Configuration
+
+<Aside type="danger">
+  Never commit API keys or secrets to version control!
+</Aside>
+
+Create a `.env` file in your project root:
+
+```bash
+# .env (never commit this!)
+OPENAI_API_KEY=sk-...
+HF_TOKEN=hf_...
+MODEL_PATH=./models
+```
+
+Load it in your code:
+
+```python
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+api_key = os.getenv('OPENAI_API_KEY')
+```
+
+---
+
+## Quick Start Example
+
+```python
+from transformers import AutoTokenizer, AutoModelForCausalLM
+
+# Load model and tokenizer
+model_name = "mistralai/Mistral-7B"
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+model = AutoModelForCausalLM.from_pretrained(
+    model_name,
+    device_map="auto",
+    load_in_8bit=True
+)
+
+# Generate text
+inputs = tokenizer("Hello, how are you?", return_tensors="pt")
+outputs = model.generate(**inputs, max_length=100)
+print(tokenizer.decode(outputs[0]))
+```
+
+---
+
+## Performance Metrics
+
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-card-value">7B</div>
+    <div class="stat-card-label">Parameters</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-card-value">32K</div>
+    <div class="stat-card-label">Context Window</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-card-value">~4GB</div>
+    <div class="stat-card-label">Memory (8-bit)</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-card-value">50 tok/s</div>
+    <div class="stat-card-label">Speed (GPU)</div>
+  </div>
+</div>
+
+---
+
+## Common Issues
+
+<Aside type="caution" title="Out of Memory Error">
+  If you get CUDA out of memory errors, try:
+  1. Use 8-bit quantization
+  2. Reduce batch size
+  3. Use CPU inference instead
+</Aside>
+
+### Issue: Model too slow
+**Solution:** Enable GPU acceleration and quantization
+
+### Issue: High memory usage
+**Solution:** Load model in 8-bit or 4-bit mode
+
+### Issue: API rate limits
+**Solution:** Add delays between requests using `time.sleep()`
+
+---
+
+## Feature Highlights
+
+<div class="feature-highlight">
+  **This approach is optimized for:**
+  - Running on consumer GPUs
+  - Minimal infrastructure requirements
+  - Maximum model flexibility
+  - Easy fine-tuning and customization
+</div>
+
+---
+
+## Next Steps
+
+<CardGrid stagger>
+  <Card title="Advanced Fine-tuning" icon="sparkles">
+    Learn how to fine-tune models for your specific use case.
+  </Card>
+  
+  <Card title="Production Deployment" icon="rocket">
+    Deploy your model to production with proper scaling.
+  </Card>
+  
+  <Card title="Multi-GPU Setup" icon="server">
+    Scale to multiple GPUs for better performance.
+  </Card>
+</CardGrid>
+
+---
+
+## Related Resources
+
+<CardGrid>
+  <LinkCard
+    title="Hugging Face Documentation"
+    href="https://huggingface.co/docs"
+    description="Comprehensive guide for transformer models"
+  />
+  
+  <LinkCard
+    title="Model Directory"
+    href="/docs/models/"
+    description="Browse all available SLM models"
+  />
+  
+  <LinkCard
+    title="Deployment Guides"
+    href="/docs/deploy/"
+    description="Learn production deployment strategies"
+  />
+</CardGrid>
+
+---
+
+## Questions?
+
+<Aside type="note" title="Need Help?">
+  - Check our [FAQ page](/docs/faq/)
+  - Join our [GitHub Discussions](https://github.com/lmfast/slmhub/discussions)
+  - Read related guides in the sidebar
+</Aside>
+
+---
+
+**Last Updated:** January 22, 2026  
+**Author:** SLM Hub Community  
+**Difficulty:** Beginner to Intermediate

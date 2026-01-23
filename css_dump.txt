@@ -1,0 +1,1607 @@
+/* ============================================
+   SLM Hub - 2026 Modern Design System
+   ============================================ */
+
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+/* ============================================
+   Design Tokens & CSS Custom Properties
+   ============================================ */
+:root {
+  /* 2026 Color Palette */
+  --color-primary: #FF6B35;
+  --color-primary-light: #FFA07A;
+  --color-primary-dark: #E85A2A;
+
+  --color-secondary: #4A90E2;
+  --color-secondary-light: #85C0FF;
+  --color-secondary-dark: #3B73B5;
+
+  --color-success: #2ECC71;
+  --color-success-light: #58D68D;
+  --color-warning: #FFA726;
+  --color-warning-light: #FFB74D;
+  --color-error: #EF5350;
+  --color-error-light: #F44336;
+  --color-info: #29B6F6;
+  --color-info-light: #42A5F5;
+
+  /* Starlight overrides */
+  --sl-color-accent-low: #E85A2A;
+  --sl-color-accent: #FF6B35;
+  --sl-color-accent-high: #FFA07A;
+  --sl-color-white: #ffffff;
+  --sl-color-gray-1: #f8fafc;
+  --sl-color-gray-2: #f1f5f9;
+  --sl-color-gray-3: #e2e8f0;
+  --sl-color-gray-4: #cbd5e1;
+  --sl-color-gray-5: #94a3b8;
+  --sl-color-gray-6: #64748b;
+  --sl-color-black: #0f172a;
+
+  /* Glassmorphism */
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.5);
+  --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.05);
+  --blur-amount: 12px;
+
+  /* Code blocks */
+  --code-bg: #F7F9FC;
+  --code-border: #E1E8ED;
+  --code-toolbar-bg: rgba(0, 0, 0, 0.03);
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+
+  /* Transitions */
+  --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Spacing Scale */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-2xl: 3rem;
+
+  /* Border Radius */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+  --radius-full: 999px;
+
+  /* Gradients */
+  --gradient-primary: linear-gradient(135deg, #FF6B35, #FFA07A);
+  --gradient-success: linear-gradient(135deg, #2ECC71, #29B6F6);
+  --gradient-warning: linear-gradient(135deg, #FFA726, #FF6B35);
+  --gradient-error: linear-gradient(135deg, #EF5350, #F44336);
+
+  /* Footer specific (Premium dark-grounding in light mode) */
+  --color-footer-bg: #0f172a;
+  --color-footer-text: #f8fafc;
+  --color-footer-heading: #ffffff;
+  --color-footer-link: #cbd5e1;
+  --color-footer-link-hover: #FF6B35;
+}
+
+/* ============================================
+    Enhanced Animations
+    ============================================ */
+@keyframes hoverScale {
+  from { transform: scale(1); }
+  to { transform: scale(1.02); }
+}
+
+@keyframes cardEnter {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes newBadgePulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 107, 53, 0.4); }
+  50% { box-shadow: 0 0 0 10px rgba(255, 107, 53, 0); }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(255, 107, 53, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(255, 107, 53, 0.5);
+  }
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.sl-card,
+.card {
+  animation: cardEnter 0.6s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.sl-card:nth-child(1) { animation-delay: 0.1s; }
+.sl-card:nth-child(2) { animation-delay: 0.2s; }
+.sl-card:nth-child(3) { animation-delay: 0.3s; }
+.sl-card:nth-child(4) { animation-delay: 0.4s; }
+.sl-card:nth-child(5) { animation-delay: 0.5s; }
+.sl-card:nth-child(6) { animation-delay: 0.6s; }
+
+.sl-card:hover,
+.card:hover {
+  animation: hoverScale 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateY(-4px) scale(1.01);
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ============================================
+    Typography & Base Styles
+    ============================================ */
+.sl-markdown-content,
+.starlight {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.sl-markdown-content h1,
+.sl-markdown-content h2,
+.sl-markdown-content h3 {
+  font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+code,
+pre,
+.sl-markdown-content code {
+  font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+  font-feature-settings: "liga" 1, "calt" 1;
+}
+
+/* ============================================
+   Background & Layout
+   ============================================ */
+body {
+  /* Organic gradient background */
+  background:
+    radial-gradient(circle at top right, rgba(255, 107, 53, 0.05), transparent 40%),
+    radial-gradient(circle at bottom left, rgba(74, 144, 226, 0.05), transparent 40%),
+    radial-gradient(circle at center, rgba(139, 92, 246, 0.03), transparent 60%),
+    #ffffff;
+  background-attachment: fixed;
+}
+
+/* Smooth scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* ============================================
+    Glassmorphism Header
+    ============================================ */
+header.header,
+.sl-container header {
+  background-color: var(--glass-bg) !important;
+  backdrop-filter: blur(var(--blur-amount));
+  -webkit-backdrop-filter: blur(var(--blur-amount));
+  border-bottom: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  transition: all var(--transition-base);
+}
+
+/* Dark mode header */
+[data-theme="dark"] header.header,
+[data-theme="dark"] .sl-container header {
+  background-color: rgba(15, 23, 42, 0.95) !important;
+  border-bottom-color: rgba(255, 107, 53, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Navbar Logo Sizing */
+.site-title svg {
+  height: 28px !important;
+  /* Small, compact logo */
+  width: auto;
+  color: var(--sl-color-text-accent);
+  /* Theme aware color */
+}
+
+/* ============================================
+   Enhanced Code Blocks
+   ============================================ */
+.expressive-code {
+  position: relative;
+  border-radius: 0.75rem;
+  box-shadow: var(--shadow-md);
+  margin: 2rem 0;
+  border: 1px solid var(--code-border);
+  overflow: hidden;
+  transition: all var(--transition-base);
+  background: var(--code-bg);
+}
+
+.expressive-code:hover {
+  box-shadow: var(--shadow-xl);
+  transform: translateY(-2px);
+}
+
+/* Code toolbar */
+.expressive-code .frame {
+  background: var(--code-toolbar-bg);
+  border-bottom: 1px solid var(--code-border);
+  padding: 0.75rem 1rem;
+}
+
+/* Copy button enhancement */
+.expressive-code .copy button {
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  transition: all var(--transition-fast);
+  background: transparent;
+  border: 1px solid var(--code-border);
+}
+
+.expressive-code .copy button:hover {
+  background: rgba(0, 0, 0, 0.05);
+  border-color: var(--color-primary);
+  transform: scale(1.05);
+}
+
+.expressive-code .copy button[data-copied] {
+  background: var(--color-success);
+  color: white;
+  border-color: var(--color-success);
+}
+
+/* Smooth scrollbar for code blocks */
+.expressive-code pre::-webkit-scrollbar {
+  height: 10px;
+}
+
+.expressive-code pre::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 5px;
+}
+
+.expressive-code pre::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, rgba(255, 107, 53, 0.3) 0%, rgba(139, 92, 246, 0.3) 100%);
+  border-radius: 5px;
+  transition: all var(--transition-fast);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+.expressive-code pre::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, rgba(255, 107, 53, 0.5) 0%, rgba(139, 92, 246, 0.5) 100%);
+  background-clip: padding-box;
+}
+
+[data-theme="dark"] .expressive-code pre::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, rgba(255, 107, 53, 0.4) 0%, rgba(139, 92, 246, 0.4) 100%);
+  background-clip: padding-box;
+}
+
+[data-theme="dark"] .expressive-code pre::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, rgba(255, 107, 53, 0.6) 0%, rgba(139, 92, 246, 0.6) 100%);
+  background-clip: padding-box;
+}
+
+/* ============================================
+   Modern Card Styles
+   ============================================ */
+.sl-card,
+.card,
+.sl-link-card {
+  border: 1px solid var(--sl-color-gray-3);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  transition: all var(--transition-base);
+  position: relative;
+  overflow: hidden;
+}
+
+.sl-card::before,
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-primary-light));
+  opacity: 0;
+  transition: opacity var(--transition-base);
+}
+
+.sl-card:hover,
+.card:hover,
+.sl-link-card:hover {
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-xl);
+  transform: translateY(-4px) scale(1.01);
+}
+
+.sl-card:hover::before,
+.card:hover::before {
+  opacity: 1;
+}
+
+/* Dark mode cards */
+[data-theme="dark"] .sl-card,
+[data-theme="dark"] .card,
+[data-theme="dark"] .sl-link-card {
+  background: linear-gradient(135deg, rgba(20, 30, 50, 0.8), rgba(25, 35, 60, 0.8));
+  border-color: rgba(255, 107, 53, 0.15);
+}
+
+[data-theme="dark"] .sl-card:hover,
+[data-theme="dark"] .card:hover,
+[data-theme="dark"] .sl-link-card:hover {
+  border-color: rgba(255, 107, 53, 0.3);
+  box-shadow: 0 8px 32px rgba(255, 107, 53, 0.15);
+}
+
+/* Bento-box style grid for features */
+.sl-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+/* Card color accents */
+.sl-card:nth-child(1)::before {
+  background: linear-gradient(90deg, #14b8a6, #5eead4);
+}
+
+.sl-card:nth-child(2)::before {
+  background: linear-gradient(90deg, #FF6B35, #FFA07A);
+}
+
+.sl-card:nth-child(3)::before {
+  background: linear-gradient(90deg, #8b5cf6, #a78bfa);
+}
+
+.sl-card:nth-child(4)::before {
+  background: linear-gradient(90deg, #4A90E2, #85C0FF);
+}
+
+/* ============================================
+   Hero Section Enhancement
+   ============================================ */
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding: 4rem 0;
+}
+
+/* Organic blob backgrounds */
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -10%;
+  right: -10%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(255, 107, 53, 0.15), transparent 70%);
+  border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+  animation: morph 8s ease-in-out infinite;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: -10%;
+  left: -10%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(74, 144, 226, 0.12), transparent 70%);
+  border-radius: 54% 46% 38% 62% / 49% 70% 30% 51%;
+  animation: morph 10s ease-in-out infinite reverse;
+  z-index: 0;
+  pointer-events: none;
+}
+
+@keyframes morph {
+
+  0%,
+  100% {
+    border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+    transform: rotate(0deg);
+  }
+
+  50% {
+    border-radius: 54% 46% 38% 62% / 49% 70% 30% 51%;
+    transform: rotate(5deg);
+  }
+}
+
+/* Hero content */
+.hero>* {
+  position: relative;
+  z-index: 1;
+}
+
+/* Gradient text effect */
+.gradient-text {
+  background: linear-gradient(135deg, var(--color-primary) 0%, #8b5cf6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  display: inline-block;
+}
+
+/* ============================================
+   Button Styles
+   ============================================ */
+.sl-link-button,
+.action,
+a.button,
+button.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.875rem 1.75rem;
+  font-weight: 600;
+  font-size: 1rem;
+  border-radius: 0.75rem;
+  transition: all var(--transition-base);
+  text-decoration: none;
+  border: 1px solid transparent;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Primary button */
+.sl-link-button[data-variant="primary"],
+.action.primary,
+.button-primary {
+  background: linear-gradient(135deg, var(--color-primary) 0%, #FF8C5A 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3), 0 2px 4px rgba(255, 107, 53, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.sl-link-button[data-variant="primary"]::before,
+.action.primary::before,
+.button-primary::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.sl-link-button[data-variant="primary"]:hover::before,
+.action.primary:hover::before,
+.button-primary:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.sl-link-button[data-variant="primary"]:hover,
+.action.primary:hover,
+.button-primary:hover {
+  background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 24px rgba(255, 107, 53, 0.4), 0 4px 8px rgba(255, 107, 53, 0.3);
+}
+
+.sl-link-button[data-variant="primary"]:active,
+.action.primary:active,
+.button-primary:active {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 12px rgba(255, 107, 53, 0.3);
+}
+
+/* Secondary/minimal button */
+.sl-link-button[data-variant="minimal"],
+.sl-link-button[data-variant="secondary"],
+.action.secondary,
+.button-secondary {
+  background: transparent;
+  color: var(--color-primary);
+  border: 2px solid var(--color-primary);
+  position: relative;
+  overflow: hidden;
+}
+
+.sl-link-button[data-variant="minimal"]::after,
+.sl-link-button[data-variant="secondary"]::after,
+.action.secondary::after,
+.button-secondary::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, var(--color-primary) 0%, #FF8C5A 100%);
+  transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: -1;
+}
+
+.sl-link-button[data-variant="minimal"]:hover::after,
+.sl-link-button[data-variant="secondary"]:hover::after,
+.action.secondary:hover::after,
+.button-secondary:hover::after {
+  left: 0;
+}
+
+.sl-link-button[data-variant="minimal"]:hover,
+.sl-link-button[data-variant="secondary"]:hover,
+.action.secondary:hover,
+.button-secondary:hover {
+  color: white;
+  border-color: var(--color-primary);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 24px rgba(255, 107, 53, 0.3), 0 4px 8px rgba(255, 107, 53, 0.2);
+}
+
+.sl-link-button[data-variant="minimal"]:active,
+.sl-link-button[data-variant="secondary"]:active,
+.action.secondary:active,
+.button-secondary:active {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 12px rgba(255, 107, 53, 0.2);
+}
+
+/* Ripple effect */
+.button::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.button:active::after {
+  width: 300px;
+  height: 300px;
+  opacity: 0;
+}
+
+/* ============================================
+   Glassmorphism Utility Classes
+   ============================================ */
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--blur-amount));
+  -webkit-backdrop-filter: blur(var(--blur-amount));
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}
+
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--blur-amount));
+  -webkit-backdrop-filter: blur(var(--blur-amount));
+  border: 1px solid var(--glass-border);
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: var(--glass-shadow);
+}
+
+/* ============================================
+   Accessibility
+   ============================================ */
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: 0.25rem;
+}
+
+/* Skip to content link */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--color-primary);
+  color: white;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  border-radius: 0 0 0.5rem 0;
+  z-index: 100;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+/* ============================================
+   Responsive Design
+   ============================================ */
+@media (max-width: 768px) {
+  .starlight {
+    font-size: 16px;
+  }
+
+  .hero::before,
+  .hero::after {
+    width: 300px;
+    height: 300px;
+  }
+
+  .sl-card-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .expressive-code {
+    margin: 1rem 0;
+  }
+}
+
+@media (max-width: 640px) {
+
+  .sl-link-button,
+  .action,
+  .button {
+    padding: 0.75rem 1.25rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* ============================================
+   Dark Mode Enhancements
+   ============================================ */
+[data-theme="dark"] {
+  --color-primary: #FF8C5A;
+  --color-primary-light: #FFB088;
+  --color-primary-dark: #FF6B35;
+
+  --sl-color-accent-low: #CC4A1F;
+  --sl-color-accent: #FF8C5A;
+  --sl-color-accent-high: #FFB088;
+
+  --glass-bg: rgba(23, 23, 23, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+
+  --code-bg: rgba(30, 41, 59, 0.5);
+  --code-border: rgba(255, 255, 255, 0.1);
+  --code-toolbar-bg: rgba(0, 0, 0, 0.2);
+  /* Footer specific (Deep grounding in dark mode) */
+  --color-footer-bg: #020617;
+  --color-footer-text: #94a3b8;
+  --color-footer-heading: #ffffff;
+  --color-footer-link: #64748b;
+  --color-footer-link-hover: #FF8C5A;
+}
+
+[data-theme="dark"] body {
+  background:
+    radial-gradient(circle at top right, rgba(255, 107, 53, 0.12), transparent 40%),
+    radial-gradient(circle at bottom left, rgba(74, 144, 226, 0.12), transparent 40%),
+    radial-gradient(circle at center, rgba(139, 92, 246, 0.08), transparent 60%),
+    #0f172a;
+  background-attachment: fixed;
+}
+
+[data-theme="dark"] .sl-card,
+[data-theme="dark"] .card {
+  background: rgba(30, 41, 59, 0.5);
+  backdrop-filter: blur(12px);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .expressive-code {
+  background: rgba(15, 23, 42, 0.8);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .expressive-code .copy button {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+[data-theme="dark"] .expressive-code .copy button:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--color-primary);
+}
+
+/* ============================================
+   Print Styles
+   ============================================ */
+@media print {
+
+  .sidebar,
+  .header,
+  .footer,
+  .hero::before,
+  .hero::after {
+    display: none;
+  }
+
+  body {
+    background: white;
+  }
+}
+
+/* ============================================
+   Utility Classes
+   ============================================ */
+.text-gradient {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+.shadow-glow {
+  box-shadow: 0 0 20px rgba(255, 107, 53, 0.3);
+}
+
+.transition-all {
+  transition: all var(--transition-base);
+}
+
+/* ============================================
+   Homepage Feature Cards
+   ============================================ */
+.features-section {
+  margin: 3rem 0;
+}
+
+.feature-card {
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.feature-card:hover {
+  transform: translateY(-6px) rotate(0.5deg);
+}
+
+/* Color-coded accent bars for feature cards */
+.card-teal::before {
+  background: linear-gradient(90deg, #14b8a6, #5eead4) !important;
+}
+
+.card-orange::before {
+  background: linear-gradient(90deg, #FF6B35, #FFA07A) !important;
+}
+
+.card-purple::before {
+  background: linear-gradient(90deg, #8b5cf6, #a78bfa) !important;
+}
+
+.card-blue::before {
+  background: linear-gradient(90deg, #4A90E2, #85C0FF) !important;
+}
+
+/* ============================================
+   2026 UI/UX Improvements
+   ============================================ */
+
+/* Reduce right sidebar width for better content focus */
+.right-sidebar,
+aside.right-sidebar,
+.sl-container aside {
+  max-width: 12rem !important;
+  width: 12rem !important;
+}
+
+@media (min-width: 1280px) {
+
+  .right-sidebar,
+  aside.right-sidebar {
+    max-width: 14rem !important;
+    width: 14rem !important;
+  }
+}
+
+/* Hide sidebar and "On this page" for directory page */
+.directory-container ~ * .right-sidebar,
+.directory-container ~ * aside.right-sidebar,
+[data-page-type="splash"] .right-sidebar,
+[data-page-type="splash"] aside.right-sidebar {
+  display: none !important;
+}
+
+/* Ensure directory page uses full width */
+.directory-container {
+  width: 100% !important;
+  max-width: 100% !important;
+  padding-left: 2rem !important;
+  padding-right: 2rem !important;
+}
+
+/* Improve feature card text contrast */
+.feature-card,
+.feature-card p,
+.feature-card .sl-markdown-content {
+  color: var(--sl-color-gray-6) !important;
+}
+
+[data-theme="dark"] .feature-card,
+[data-theme="dark"] .feature-card p,
+[data-theme="dark"] .feature-card .sl-markdown-content {
+  color: var(--sl-color-gray-2) !important;
+}
+
+/* Reduce blue glow border effect */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: -1;
+  box-shadow: inset 0 0 60px rgba(74, 144, 226, 0.08);
+}
+
+[data-theme="dark"] body::before {
+  box-shadow: inset 0 0 60px rgba(74, 144, 226, 0.12);
+}
+
+/* ============================================
+   Colab Button Styles
+   ============================================ */
+.colab-button,
+a.colab-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.25rem;
+  background: #F9AB00;
+  color: #1a1a1a;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all var(--transition-base);
+  text-decoration: none;
+  margin: 1rem 0;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(249, 171, 0, 0.2);
+}
+
+.colab-button:hover,
+a.colab-button:hover {
+  background: #E09600;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(249, 171, 0, 0.35);
+  color: #1a1a1a;
+}
+
+.colab-button svg,
+.colab-button img {
+  width: 20px;
+  height: 20px;
+}
+
+/* Colab button in dark mode */
+[data-theme="dark"] .colab-button,
+[data-theme="dark"] a.colab-button {
+  background: #F9AB00;
+  color: #1a1a1a;
+}
+
+[data-theme="dark"] .colab-button:hover,
+[data-theme="dark"] a.colab-button:hover {
+  background: #FFB91A;
+  color: #1a1a1a;
+}
+
+/* ============================================
+   Content Improvements
+   ============================================ */
+
+/* Better spacing for content sections */
+.sl-markdown-content>h2 {
+  margin-top: 3rem;
+  margin-bottom: 1.5rem;
+}
+
+.sl-markdown-content>h3 {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+/* Improve code block spacing */
+.sl-markdown-content pre {
+  margin: 1.5rem 0;
+}
+
+/* Better list styling */
+.sl-markdown-content ul,
+.sl-markdown-content ol {
+  margin: 1rem 0;
+  padding-left: 1.5rem;
+}
+
+.sl-markdown-content li {
+  margin: 0.5rem 0;
+  line-height: 1.7;
+  transition: transform 0.2s ease;
+}
+
+.sl-markdown-content li:hover {
+  transform: translateX(2px);
+}
+
+.sl-markdown-content li::marker {
+  color: var(--color-primary);
+}
+
+/* Callout/Alert box improvements */
+.sl-markdown-content blockquote {
+  border-left: 4px solid var(--color-primary);
+  padding: 1rem 1.5rem;
+  margin: 1.5rem 0;
+  background: linear-gradient(135deg, rgba(255, 107, 53, 0.05) 0%, rgba(139, 92, 246, 0.03) 100%);
+  border-radius: 0.5rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.sl-markdown-content blockquote::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(135deg, var(--color-primary) 0%, #8b5cf6 100%);
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sl-markdown-content blockquote:hover {
+  background: linear-gradient(135deg, rgba(255, 107, 53, 0.08) 0%, rgba(139, 92, 246, 0.05) 100%);
+  transform: translateX(4px);
+  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.1);
+}
+
+.sl-markdown-content blockquote:hover::before {
+  width: 6px;
+}
+
+[data-theme="dark"] .sl-markdown-content blockquote {
+  background: linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(139, 92, 246, 0.06) 100%);
+}
+
+[data-theme="dark"] .sl-markdown-content blockquote:hover {
+  background: linear-gradient(135deg, rgba(255, 107, 53, 0.15) 0%, rgba(139, 92, 246, 0.1) 100%);
+  box-shadow: 0 4px 16px rgba(255, 107, 53, 0.15);
+}
+
+/* ============================================
+   Dynamic Sidebar Interaction
+   ============================================ */
+/* 
+   The --footer-visible-height variable is dynamically updated 
+   by a script in Footer.astro as the user scrolls.
+*/
+.sidebar-pane {
+  bottom: var(--footer-visible-height, 0px) !important;
+  transition: bottom 0.05s linear;
+  /* Subtle smooth transition for the push effect */
+}
+
+/* Hide the auto-generated Starlight title on the homepage */
+.sl-container>h1#_top {
+  display: none !important;
+}
+
+/* ============================================
+   Premium Table Styles
+   ============================================ */
+.sl-markdown-content table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 2rem 0;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  font-size: 0.9rem;
+}
+
+.sl-markdown-content table thead {
+  background: linear-gradient(135deg, rgba(255, 107, 53, 0.15) 0%, rgba(139, 92, 246, 0.1) 100%);
+}
+
+.sl-markdown-content table th {
+  padding: 1rem 1.25rem;
+  text-align: left;
+  font-weight: 700;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--sl-color-white);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  white-space: nowrap;
+}
+
+.sl-markdown-content table td {
+  padding: 0.875rem 1.25rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  color: var(--sl-color-gray-2);
+  vertical-align: middle;
+}
+
+.sl-markdown-content table tbody tr {
+  transition: all 0.2s ease;
+}
+
+.sl-markdown-content table tbody tr:hover {
+  background: rgba(255, 107, 53, 0.08);
+}
+
+.sl-markdown-content table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.sl-markdown-content table a {
+  color: var(--sl-color-text-accent);
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  border-bottom: 2px solid transparent;
+}
+
+.sl-markdown-content table a:hover {
+  color: var(--sl-color-accent-high);
+  border-bottom-color: var(--sl-color-accent);
+  transform: translateX(2px);
+}
+
+.sl-markdown-content table a:active {
+  transform: translateX(1px);
+}
+
+/* Light mode table adjustments - Enhanced contrast */
+:root .sl-markdown-content table {
+  background: #ffffff;
+  border: 1px solid var(--sl-color-gray-3);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+:root .sl-markdown-content table thead {
+  background: linear-gradient(135deg, rgba(255, 107, 53, 0.12) 0%, rgba(139, 92, 246, 0.08) 100%);
+  border-bottom: 2px solid var(--sl-color-gray-3);
+}
+
+:root .sl-markdown-content table th {
+  color: var(--sl-color-black);
+  border-bottom-color: var(--sl-color-gray-3);
+  font-weight: 700;
+}
+
+:root .sl-markdown-content table td {
+  color: #1e293b;
+  border-bottom-color: #e2e8f0;
+  background: #ffffff;
+}
+
+:root .sl-markdown-content table tbody tr {
+  background: #ffffff;
+}
+
+:root .sl-markdown-content table tbody tr:nth-child(even) {
+  background: #f8fafc;
+}
+
+:root .sl-markdown-content table tbody tr:hover {
+  background: rgba(255, 107, 53, 0.08);
+  box-shadow: inset 0 0 0 1px rgba(255, 107, 53, 0.2);
+}
+
+/* Responsive table wrapper */
+@media (max-width: 768px) {
+  .sl-markdown-content table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .sl-markdown-content table th,
+  .sl-markdown-content table td {
+    padding: 0.75rem 1rem;
+    min-width: 120px;
+  }
+}
+
+/* ============================================
+    Utility Classes & Helpers
+    ============================================ */
+
+/* Component Grid for features */
+.component-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--spacing-lg);
+  margin: var(--spacing-lg) 0;
+}
+
+/* Icon list styling */
+.icon-list {
+  list-style: none;
+  padding: 0;
+  margin: var(--spacing-lg) 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.icon-list li {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.icon-list :global(svg) {
+  flex-shrink: 0;
+  color: var(--color-primary);
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+/* Badge grouping */
+.badge-group {
+  display: flex;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+  margin: var(--spacing-md) 0;
+}
+
+/* Feature highlight box */
+.feature-highlight {
+  background: linear-gradient(135deg, 
+    rgba(255, 107, 53, 0.1) 0%, 
+    rgba(74, 144, 226, 0.1) 100%
+  );
+  border-left: 4px solid var(--color-primary);
+  padding: var(--spacing-lg);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  margin: var(--spacing-lg) 0;
+}
+
+[data-theme="dark"] .feature-highlight {
+  background: linear-gradient(135deg, 
+    rgba(255, 107, 53, 0.15) 0%, 
+    rgba(74, 144, 226, 0.15) 100%
+  );
+}
+
+/* Stats grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--spacing-lg);
+  margin: var(--spacing-lg) 0;
+}
+
+.stat-card {
+  padding: var(--spacing-lg);
+  border: 1px solid var(--sl-color-gray-3);
+  border-radius: var(--radius-md);
+  text-align: center;
+  transition: all var(--transition-base);
+  background: rgba(255, 107, 53, 0.02);
+}
+
+.stat-card:hover {
+  border-color: var(--color-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.1);
+}
+
+[data-theme="dark"] .stat-card {
+  background: rgba(255, 107, 53, 0.05);
+}
+
+.stat-card-value {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin: var(--spacing-md) 0;
+}
+
+.stat-card-label {
+  font-size: 0.875rem;
+  color: var(--sl-color-gray-4);
+}
+
+/* ============================================
+    Footer & Sidebar Overlap Fixes
+    ============================================ */
+
+/* Ensure footer sits above everything */
+.custom-footer {
+  position: relative;
+  z-index: 100 !important;
+  margin-top: 6rem;
+}
+
+/* Prevent sidebar from bleeding into footer */
+#starlight__sidebar,
+.sidebar,
+.sl-sidebar {
+  z-index: 50;
+}
+
+/* Hide sidebar content that would overlap footer */
+.sidebar-pane,
+#starlight__sidebar {
+  /* Clip at the bottom when footer is visible */
+  contain: paint;
+}
+
+/* Fix right sidebar "On this page" border */
+.right-sidebar-panel,
+starlight-toc,
+aside.right-sidebar {
+  z-index: 40;
+}
+
+/* Make sure right sidebar border doesn't extend past content */
+.right-sidebar,
+aside.right-sidebar {
+  border-left: none !important;
+}
+
+aside.right-sidebar::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: var(--footer-visible-height, 0);
+  width: 1px;
+  background: var(--sl-color-hairline);
+  transition: bottom 0.1s linear;
+}
+
+/* Ensure main content area ends before footer */
+.main-pane,
+.sl-container main {
+  position: relative;
+  z-index: 1;
+  padding-bottom: 2rem;
+}
+
+/* Footer container should have solid background to cover any overflow */
+.footer-container {
+  position: relative;
+  z-index: 101;
+}
+
+/* Ensure the default footer area also respects boundaries */
+.footer-bottom {
+  position: relative;
+  z-index: 99;
+  padding-bottom: 2rem;
+}
+
+/* ============================================
+    Content Spacing & Breathing Room
+    ============================================ */
+
+/* Add proper spacing to all major sections */
+.sl-markdown-content section {
+  margin-bottom: 3rem;
+}
+
+.sl-markdown-content h2 {
+  margin-top: 3rem;
+  margin-bottom: 1.5rem;
+}
+
+.sl-markdown-content h3 {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.sl-markdown-content > *:last-child {
+  margin-bottom: 2rem;
+}
+
+/* Ensure adequate whitespace between footer and content */
+.sl-markdown-content {
+  padding-bottom: 3rem;
+}
+
+/* ============================================
+    Enhanced Button Styling
+    ============================================ */
+
+/* Global button enhancements */
+.sl-markdown-content a[class*="button"],
+a.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 2px solid transparent;
+}
+
+/* ============================================
+    Section Header Improvements
+    ============================================ */
+
+.sl-markdown-content .section-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--sl-color-hairline);
+}
+
+.sl-markdown-content .section-header h2 {
+  margin-top: 0;
+}
+
+/* ============================================
+    Enhanced Typography
+    ============================================ */
+
+/* Better line-height for readability */
+.sl-markdown-content {
+  line-height: 1.75;
+}
+
+.sl-markdown-content li {
+  margin-bottom: 0.5rem;
+}
+
+.sl-markdown-content ul ul,
+.sl-markdown-content ol ol {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Better code block spacing */
+.sl-markdown-content pre {
+  margin: 1.5rem 0;
+  border-radius: 0.75rem;
+}
+
+/* ============================================
+    Responsive Footer Improvements
+    ============================================ */
+
+@media (max-width: 768px) {
+  .custom-footer {
+    margin-top: 4rem;
+    padding: 3rem 0;
+  }
+
+  .main-pane,
+  .sl-container main {
+    padding-bottom: 1rem;
+  }
+
+  .sl-markdown-content {
+    padding-bottom: 2rem;
+  }
+
+  .sl-markdown-content section {
+    margin-bottom: 2.5rem;
+  }
+}
+
+/* ============================================
+    DataTable Link Styling
+    ============================================ */
+
+.dt-model-link {
+  color: var(--sl-color-text-accent);
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  position: relative;
+  border-bottom: 2px solid transparent;
+}
+
+.dt-model-link:hover {
+  color: var(--sl-color-accent-high);
+  border-bottom-color: var(--sl-color-accent);
+  transform: translateX(2px);
+}
+
+[data-theme="dark"] .dt-model-link {
+  color: var(--sl-color-accent-high);
+}
+
+[data-theme="dark"] .dt-model-link:hover {
+  color: var(--sl-color-accent);
+  border-bottom-color: var(--sl-color-accent-high);
+}
+
+/* ============================================
+    DataTable Enhancements for Starlight
+    ============================================ */
+
+.sl-markdown-content .data-table-container {
+  margin: 2rem 0;
+  padding: 0;
+}
+
+.sl-markdown-content .dt-toolbar {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 107, 53, 0.08) 0%,
+    rgba(139, 92, 246, 0.06) 100%
+  );
+  border: 1px solid var(--sl-color-gray-3);
+}
+
+[data-theme="dark"] .sl-markdown-content .dt-toolbar {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 107, 53, 0.08) 0%,
+    rgba(139, 92, 246, 0.06) 100%
+  );
+  border-color: rgba(255, 107, 53, 0.1);
+}
+
+/* Table wrapper in markdown content */
+.sl-markdown-content .dt-table-wrapper {
+  border: 1px solid var(--sl-color-gray-3);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="dark"] .sl-markdown-content .dt-table-wrapper {
+  border-color: rgba(255, 107, 53, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Pagination styling in markdown */
+.sl-markdown-content .dt-pagination {
+  border: 1px solid var(--sl-color-gray-3);
+}
+
+[data-theme="dark"] .sl-markdown-content .dt-pagination {
+  border-color: rgba(255, 107, 53, 0.1);
+}
+
+/* Footer styling in markdown */
+.sl-markdown-content .dt-footer {
+  border: 1px solid var(--sl-color-gray-3);
+}
+
+[data-theme="dark"] .sl-markdown-content .dt-footer {
+  border-color: rgba(255, 107, 53, 0.1);
+}
+/* ============================================
+   TOC Customization
+   ============================================ */
+:root {
+  --sl-toc-width: 12rem; /* Reduced from default */
+}
+
+/* Optional: Hide TOC on smaller desktop screens if needed */
+/*
+@media (max-width: 1200px) {
+  starlight-toc { display: none; }
+}
+*/

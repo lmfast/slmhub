@@ -1,8 +1,9 @@
 ---
-title: ph3-FineTunned-matplotlib-seaborn-10k
-description: "Discovery-focused notes and runnable examples for `prashantss1404/ph3-FineTunned-matplotlib-seaborn-10k`."
+title: "ph3-FineTunned-matplotlib-seaborn-10k"
+description: Discovery-focused notes and runnable examples for `prashantss1404/ph3-FineTunned-matplotlib-seaborn-10k`.
 ---
 
+# ph3-FineTunned-matplotlib-seaborn-10k
 
 Discovery-focused notes and runnable examples for `prashantss1404/ph3-FineTunned-matplotlib-seaborn-10k`.
 
@@ -63,7 +64,7 @@ ollama run ph3-finetunned-matplotlib-seaborn-10k
 | **Library** | transformers |
 | **License** | unknown |
 | **Last modified** | 2025-08-03T06:16:18+00:00 |
-| **Downloads** | 1 |
+| **Downloads** | 0 |
 | **Likes** | 0 |
 
 ## Links

@@ -1,8 +1,9 @@
 ---
-title: distilbart-news-summarizer
-description: "Discovery-focused notes and runnable examples for `Sachin21112004/distilbart-news-summarizer`."
+title: "distilbart-news-summarizer"
+description: Discovery-focused notes and runnable examples for `Sachin21112004/distilbart-news-summarizer`.
 ---
 
+# distilbart-news-summarizer
 
 Discovery-focused notes and runnable examples for `Sachin21112004/distilbart-news-summarizer`.
 
@@ -62,7 +63,7 @@ ollama run distilbart-news-summarizer
 | **Pipeline tag** | summarization |
 | **Library** | transformers |
 | **License** | unknown |
-| **Last modified** | 2026-01-19T13:51:43+00:00 |
+| **Last modified** | 2026-01-22T11:26:58+00:00 |
 | **Downloads** | 1.1K |
 | **Likes** | 1 |
 

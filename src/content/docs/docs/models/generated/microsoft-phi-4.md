@@ -1,8 +1,9 @@
 ---
-title: phi-4
-description: "Discovery-focused notes and runnable examples for `microsoft/phi-4`."
+title: "phi-4"
+description: Discovery-focused notes and runnable examples for `microsoft/phi-4`.
 ---
 
+# phi-4
 
 Discovery-focused notes and runnable examples for `microsoft/phi-4`.
 
@@ -63,7 +64,7 @@ ollama run phi-4
 | **Library** | transformers |
 | **License** | unknown |
 | **Last modified** | 2025-11-24T16:57:37+00:00 |
-| **Downloads** | 535.6K |
+| **Downloads** | 545.0K |
 | **Likes** | 2.2K |
 
 ## Links

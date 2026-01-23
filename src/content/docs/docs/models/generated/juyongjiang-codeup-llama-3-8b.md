@@ -1,8 +1,9 @@
 ---
-title: CodeUp-Llama-3-8B
-description: "Discovery-focused notes and runnable examples for `juyongjiang/CodeUp-Llama-3-8B`."
+title: "CodeUp-Llama-3-8B"
+description: Discovery-focused notes and runnable examples for `juyongjiang/CodeUp-Llama-3-8B`.
 ---
 
+# CodeUp-Llama-3-8B
 
 Discovery-focused notes and runnable examples for `juyongjiang/CodeUp-Llama-3-8B`.
 
@@ -63,7 +64,7 @@ ollama run codeup-llama-3-8b
 | **Library** | — |
 | **License** | unknown |
 | **Last modified** | 2024-12-26T12:20:34+00:00 |
-| **Downloads** | 3 |
+| **Downloads** | 2 |
 | **Likes** | 5 |
 
 ## Links

@@ -1,8 +1,9 @@
 ---
-title: CodeUp-Llama-2-13b-chat-hf
-description: "Discovery-focused notes and runnable examples for `juyongjiang/CodeUp-Llama-2-13b-chat-hf`."
+title: "CodeUp-Llama-2-13b-chat-hf"
+description: Discovery-focused notes and runnable examples for `juyongjiang/CodeUp-Llama-2-13b-chat-hf`.
 ---
 
+# CodeUp-Llama-2-13b-chat-hf
 
 Discovery-focused notes and runnable examples for `juyongjiang/CodeUp-Llama-2-13b-chat-hf`.
 
@@ -63,7 +64,7 @@ ollama run codeup-llama-2-13b-chat-hf
 | **Library** | transformers |
 | **License** | unknown |
 | **Last modified** | 2023-10-06T06:59:02+00:00 |
-| **Downloads** | 12 |
+| **Downloads** | 7 |
 | **Likes** | 33 |
 
 ## Links

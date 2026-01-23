@@ -1,8 +1,9 @@
 ---
-title: SmolLM2-1.7B-Instruct
-description: "Discovery-focused notes and runnable examples for `HuggingFaceTB/SmolLM2-1.7B-Instruct`."
+title: "SmolLM2-1.7B-Instruct"
+description: Discovery-focused notes and runnable examples for `HuggingFaceTB/SmolLM2-1.7B-Instruct`.
 ---
 
+# SmolLM2-1.7B-Instruct
 
 Discovery-focused notes and runnable examples for `HuggingFaceTB/SmolLM2-1.7B-Instruct`.
 
@@ -63,8 +64,8 @@ ollama run smollm2-1.7b-instruct
 | **Library** | transformers |
 | **License** | unknown |
 | **Last modified** | 2025-04-21T20:51:14+00:00 |
-| **Downloads** | 38.7K |
-| **Likes** | 702 |
+| **Downloads** | 46.6K |
+| **Likes** | 704 |
 
 ## Links
 

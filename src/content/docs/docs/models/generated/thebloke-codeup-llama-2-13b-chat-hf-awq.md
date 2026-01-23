@@ -1,8 +1,9 @@
 ---
-title: CodeUp-Llama-2-13B-Chat-HF-AWQ
-description: "Discovery-focused notes and runnable examples for `TheBloke/CodeUp-Llama-2-13B-Chat-HF-AWQ`."
+title: "CodeUp-Llama-2-13B-Chat-HF-AWQ"
+description: Discovery-focused notes and runnable examples for `TheBloke/CodeUp-Llama-2-13B-Chat-HF-AWQ`.
 ---
 
+# CodeUp-Llama-2-13B-Chat-HF-AWQ
 
 Discovery-focused notes and runnable examples for `TheBloke/CodeUp-Llama-2-13B-Chat-HF-AWQ`.
 
@@ -63,7 +64,7 @@ ollama run codeup-llama-2-13b-chat-hf-awq
 | **Library** | transformers |
 | **License** | unknown |
 | **Last modified** | 2023-11-09T18:20:28+00:00 |
-| **Downloads** | 3 |
+| **Downloads** | 1 |
 | **Likes** | 2 |
 
 ## Links

@@ -1,8 +1,9 @@
 ---
-title: gemma-2-2b-it
-description: "Discovery-focused notes and runnable examples for `google/gemma-2-2b-it`."
+title: "gemma-2-2b-it"
+description: Discovery-focused notes and runnable examples for `google/gemma-2-2b-it`.
 ---
 
+# gemma-2-2b-it
 
 Discovery-focused notes and runnable examples for `google/gemma-2-2b-it`.
 
@@ -63,7 +64,7 @@ ollama run gemma-2-2b-it
 | **Library** | transformers |
 | **License** | unknown |
 | **Last modified** | 2024-08-27T19:41:44+00:00 |
-| **Downloads** | 179.1K |
+| **Downloads** | 193.1K |
 | **Likes** | 1.3K |
 
 ## Links

@@ -1,0 +1,192 @@
+---
+import { Icon } from '@astrojs/starlight/components';
+
+interface Props {
+  current: number;
+  total: number;
+  courseTitle?: string;
+}
+
+const { current, total, courseTitle } = Astro.props;
+const percentage = Math.round((current / total) * 100);
+---
+
+<section class="progress-container">
+  <div class="progress-header">
+    <div>
+      {courseTitle && <h3>{courseTitle}</h3>}
+      <p class="progress-text">Lesson {current} of {total}</p>
+    </div>
+    <span class="progress-badge">{percentage}%</span>
+  </div>
+  
+  <div class="progress-bar-wrapper">
+    <div class="progress-bar">
+      <div 
+        class="progress-fill" 
+        style={`width: ${percentage}%`}
+        role="progressbar"
+        aria-valuenow={percentage}
+        aria-valuemin={0}
+        aria-valuemax={100}
+      ></div>
+    </div>
+  </div>
+  
+  <div class="progress-dots">
+    {Array.from({ length: total }).map((_, i) => (
+      <div 
+        class={`dot ${i < current ? 'completed' : i === current - 1 ? 'current' : ''}`}
+        title={`Lesson ${i + 1}`}
+        aria-label={`Lesson ${i + 1}${i < current ? ' - Completed' : i === current - 1 ? ' - Current' : ''}`}
+      >
+        {i < current && <Icon name="check" size="0.75rem" />}
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+  .progress-container {
+    background: linear-gradient(135deg, 
+      rgba(255, 107, 53, 0.08) 0%, 
+      rgba(74, 144, 226, 0.08) 100%
+    );
+    border: 1px solid rgba(255, 107, 53, 0.15);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    margin: var(--spacing-2xl) 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+  }
+
+  [data-theme="dark"] .progress-container {
+    background: linear-gradient(135deg, 
+      rgba(255, 107, 53, 0.1) 0%, 
+      rgba(74, 144, 226, 0.1) 100%
+    );
+    border-color: rgba(255, 107, 53, 0.2);
+  }
+
+  .progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--spacing-lg);
+  }
+
+  .progress-header h3 {
+    margin: 0 0 var(--spacing-xs) 0;
+    font-size: 1.25rem;
+    letter-spacing: -0.01em;
+  }
+
+  .progress-text {
+    margin: 0;
+    font-size: 0.875rem;
+    color: var(--sl-color-gray-4);
+  }
+
+  .progress-badge {
+    display: inline-block;
+    background: var(--gradient-primary);
+    color: white;
+    padding: var(--spacing-sm) var(--spacing-lg);
+    border-radius: var(--radius-full);
+    font-weight: 700;
+    font-size: 0.875rem;
+    white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(255, 107, 53, 0.3);
+  }
+
+  .progress-bar-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+
+  .progress-bar {
+    width: 100%;
+    height: 8px;
+    background: rgba(0, 0, 0, 0.08);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  [data-theme="dark"] .progress-bar {
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--gradient-primary);
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 0 12px rgba(255, 107, 53, 0.3);
+  }
+
+  .progress-dots {
+    display: flex;
+    gap: var(--spacing-sm);
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    padding-top: var(--spacing-md);
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+  }
+
+  [data-theme="dark"] .progress-dots {
+    border-top-color: rgba(255, 255, 255, 0.05);
+  }
+
+  .dot {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.05);
+    border: 2px solid var(--sl-color-gray-3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-base);
+    flex-shrink: 0;
+  }
+
+  [data-theme="dark"] .dot {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--sl-color-gray-4);
+  }
+
+  .dot:hover {
+    transform: scale(1.1);
+  }
+
+  .dot.completed {
+    background: var(--color-success);
+    border-color: var(--color-success);
+    color: white;
+  }
+
+  .dot.current {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: white;
+    box-shadow: 0 0 0 4px rgba(255, 107, 53, 0.2);
+  }
+
+  @media (max-width: 768px) {
+    .progress-container {
+      padding: var(--spacing-md);
+    }
+
+    .progress-header {
+      flex-direction: column;
+    }
+
+    .progress-badge {
+      align-self: flex-start;
+    }
+  }
+</style>

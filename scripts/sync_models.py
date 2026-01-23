@@ -7,7 +7,7 @@ Goals:
 
 Outputs:
 - data/models.json
-- models/generated/directory.md
+- models/generated/directory.mdx
 - models/generated/<slug>.md
 
 Run:
@@ -31,8 +31,12 @@ from jinja2 import Template
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DATA_DIR = REPO_ROOT / "data"
-GENERATED_DIR = REPO_ROOT / "models" / "generated"
+GENERATED_DIR = REPO_ROOT / "src" / "content" / "docs" / "docs" / "models" / "generated"
 
+# Ensure precise path matching
+if not GENERATED_DIR.exists():
+    # Fallback if structure is different
+    GENERATED_DIR = REPO_ROOT / "models" / "generated"
 
 FEATURED_MODELS = [
     # Keep this list small and opinionated; it’s used for stable “featured” pages.
@@ -55,7 +59,7 @@ DISCOVERY_FILTERS = [
 
 
 MODEL_PAGE_TEMPLATE = """---
-title: {{ display_name }}
+title: "{{ display_name }}"
 description: {{ description }}
 ---
 
@@ -131,25 +135,73 @@ title: Model Directory
 description: "Auto-updated model directory from Hugging Face Hub (discovery-focused)."
 ---
 
+import DataTable from '../../../../../components/DataTable.astro';
+
 This directory is **auto-updated**. It's meant for **discovery** and fast decisions, not competitive rankings.
 
-## Featured
+## Featured Models
 
 {% for m in featured -%}
-- [{{ m.display_name }}](./{{ m.slug }}.md) — {{ m.author }}
+- **[{{ m.display_name }}](./{{ m.slug }})** — {{ m.author }}
 {% endfor %}
 
-## Recently updated / discovered
+## Complete Model Directory
 
-| Model | Author | Task | License | Last modified |
-|---|---|---|---|---|
-{%- for m in discovered %}
-| [{{ m.display_name }}](./{{ m.slug }}.md) | {{ m.author }} | {{ m.pipeline_tag }} | {{ m.license }} | {{ m.last_modified_short }} |
-{%- endfor %}
+Explore all available models. Use the **search**, **filters**, and **sort** features to find what you need.
+
+<DataTable
+  columns={[
+    {
+      key: 'model',
+      label: 'Model',
+      sortable: true,
+      searchable: true,
+      render: (value, row) => `<a href="./${row.slug}/" class="dt-model-link">${value}</a>`
+    },
+    {
+      key: 'author',
+      label: 'Author',
+      sortable: true,
+      searchable: true
+    },
+    {
+      key: 'task',
+      label: 'Task',
+      sortable: true,
+      searchable: true
+    },
+    {
+      key: 'license',
+      label: 'License',
+      sortable: true,
+      searchable: true
+    },
+    {
+      key: 'lastModified',
+      label: 'Last Modified',
+      sortable: true,
+      searchable: false
+    }
+  ]}
+  data={ {{ table_data }} }
+  itemsPerPage={10}
+  searchable={true}
+  filterable={true}
+  striped={true}
+  hoverable={true}
+  bordered={true}
+/>
 
 ---
 
-*Last sync: {{ synced_at }}*
+**Last sync**: {{ synced_at }}
+
+## Tips for Finding Models
+
+- **Search**: Use the search bar to find models by name, author, or task
+- **Filter**: Use column filters to narrow down by specific criteria
+- **Sort**: Click column headers to sort by that column
+- **Pagination**: Navigate through results with pagination controls
 """
 
 
@@ -180,6 +232,21 @@ def fmt_int(n: Optional[int]) -> str:
     return str(n)
 
 
+def fmt_size(size_bytes: Optional[int]) -> str:
+    """Format model size in human-readable format."""
+    if size_bytes is None or size_bytes == 0:
+        return "—"
+    if size_bytes >= 1_000_000_000_000:  # TB
+        return f"{size_bytes / 1_000_000_000_000:.2f}TB"
+    if size_bytes >= 1_000_000_000:  # GB
+        return f"{size_bytes / 1_000_000_000:.2f}GB"
+    if size_bytes >= 1_000_000:  # MB
+        return f"{size_bytes / 1_000_000:.2f}MB"
+    if size_bytes >= 1_000:  # KB
+        return f"{size_bytes / 1_000:.2f}KB"
+    return f"{size_bytes}B"
+
+
 @dataclass(frozen=True)
 class ModelDoc:
     model_id: str
@@ -196,6 +263,7 @@ class ModelDoc:
     hf_url: str
     tags: List[str]
     featured: bool
+    model_size: str
 
 
 def extract_license(card_data: Optional[Dict[str, Any]]) -> str:
@@ -227,6 +295,32 @@ def model_to_doc(model_info: Any, featured: bool) -> ModelDoc:
 
     tags = getattr(model_info, "tags", None)
     tags_list = [t for t in (tags or []) if isinstance(t, str)]
+    
+    # Extract model size from safetensors_index or files
+    model_size_bytes = None
+    try:
+        if hasattr(model_info, "safetensors_index") and model_info.safetensors_index:
+            if isinstance(model_info.safetensors_index, dict):
+                model_size_bytes = sum(
+                    int(meta.get("size", 0)) 
+                    for meta in model_info.safetensors_index.get("metadata", {}).values()
+                    if isinstance(meta, dict) and "size" in meta
+                )
+        # Fallback: try to get from siblings/files if available
+        if not model_size_bytes and hasattr(model_info, "siblings"):
+            for sibling in model_info.siblings or []:
+                if hasattr(sibling, "size") and sibling.size:
+                    try:
+                        size_val = int(sibling.size) if isinstance(sibling.size, (int, str)) else 0
+                        if model_size_bytes is None:
+                            model_size_bytes = 0
+                        model_size_bytes += size_val
+                    except (ValueError, TypeError):
+                        pass
+    except Exception:
+        pass  # Best effort - continue without size
+    
+    model_size_str = fmt_size(model_size_bytes)
 
     return ModelDoc(
         model_id=model_id,
@@ -243,6 +337,7 @@ def model_to_doc(model_info: Any, featured: bool) -> ModelDoc:
         hf_url=f"https://huggingface.co/{model_id}",
         tags=tags_list,
         featured=featured,
+        model_size=model_size_str,
     )
 
 
@@ -295,8 +390,26 @@ def render_model_page(m: ModelDoc) -> str:
 
 
 def render_directory(featured: List[ModelDoc], discovered: List[ModelDoc]) -> str:
+    # Prepare data for DataTable
+    all_models = featured + discovered
+    table_data = []
+    for m in all_models:
+        table_data.append({
+            "model": m.display_name,
+            "author": m.author,
+            "task": m.pipeline_tag,
+            "license": m.license,
+            "lastModified": m.last_modified_short,
+            "slug": m.slug,
+        })
+    
     t = Template(DIRECTORY_TEMPLATE)
-    return t.render(featured=featured, discovered=discovered, synced_at=utc_now_iso())
+    return t.render(
+        featured=featured, 
+        discovered=discovered, 
+        synced_at=utc_now_iso(),
+        table_data=json.dumps(table_data)
+    )
 
 
 def unique_by_model_id(models: Iterable[ModelDoc]) -> List[ModelDoc]:
@@ -334,7 +447,6 @@ def main() -> None:
         if not task or limit <= 0:
             continue
         for m in api.list_models(filter=task, sort="lastModified", direction=-1, limit=limit):
-            # list_models returns lightweight objects; fetch full info for stable fields
             try:
                 info = api.model_info(m.modelId)
             except Exception as exc:  # noqa: BLE001 - discovery is best-effort
@@ -345,6 +457,7 @@ def main() -> None:
     all_docs = unique_by_model_id(featured_docs + discovered_docs)
 
     # Write machine-readable data
+    last_synced_at = utc_now_iso()
     data_payload: List[Dict[str, Any]] = [
         {
             "model_id": d.model_id,
@@ -360,11 +473,19 @@ def main() -> None:
             "hf_url": d.hf_url,
             "tags": d.tags,
             "featured": d.featured,
+            "model_size": d.model_size,
         }
         for d in all_docs
     ]
-    (DATA_DIR / "models.json").write_text(json.dumps(data_payload, indent=2), encoding="utf-8")
-    (DATA_DIR / "models.yaml").write_text(yaml.safe_dump(data_payload, sort_keys=False), encoding="utf-8")
+    
+    # Add metadata about the sync
+    output_data = {
+        "last_synced_at": last_synced_at,
+        "models": data_payload,
+    }
+    
+    (DATA_DIR / "models.json").write_text(json.dumps(output_data, indent=2), encoding="utf-8")
+    (DATA_DIR / "models.yaml").write_text(yaml.safe_dump(output_data, sort_keys=False), encoding="utf-8")
 
     # Generate pages
     for d in all_docs:
@@ -377,14 +498,12 @@ def main() -> None:
         key=lambda x: (x.last_modified_short, x.display_name.lower()),
         reverse=True,
     )[:200]
-    (GENERATED_DIR / "directory.md").write_text(render_directory(featured_sorted, discovered_sorted), encoding="utf-8")
+    (GENERATED_DIR / "directory.mdx").write_text(render_directory(featured_sorted, discovered_sorted), encoding="utf-8")
 
     print(f"✅ Synced {len(all_docs)} models")
     print(f"✅ Wrote: {DATA_DIR / 'models.json'}")
-    print(f"✅ Wrote: {GENERATED_DIR / 'directory.md'}")
+    print(f"✅ Wrote: {GENERATED_DIR / 'directory.mdx'}")
 
 
 if __name__ == "__main__":
     main()
-
-

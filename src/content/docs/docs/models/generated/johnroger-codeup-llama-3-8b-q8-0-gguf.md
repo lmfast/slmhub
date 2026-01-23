@@ -1,8 +1,9 @@
 ---
-title: CodeUp-Llama-3-8B-Q8_0-GGUF
-description: "Discovery-focused notes and runnable examples for `JohnRoger/CodeUp-Llama-3-8B-Q8_0-GGUF`."
+title: "CodeUp-Llama-3-8B-Q8_0-GGUF"
+description: Discovery-focused notes and runnable examples for `JohnRoger/CodeUp-Llama-3-8B-Q8_0-GGUF`.
 ---
 
+# CodeUp-Llama-3-8B-Q8_0-GGUF
 
 Discovery-focused notes and runnable examples for `JohnRoger/CodeUp-Llama-3-8B-Q8_0-GGUF`.
 
@@ -63,7 +64,7 @@ ollama run codeup-llama-3-8b-q8_0-gguf
 | **Library** | — |
 | **License** | unknown |
 | **Last modified** | 2025-04-06T01:21:14+00:00 |
-| **Downloads** | 13 |
+| **Downloads** | 14 |
 | **Likes** | 0 |
 
 ## Links

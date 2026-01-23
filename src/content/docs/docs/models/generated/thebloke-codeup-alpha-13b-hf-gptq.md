@@ -1,8 +1,9 @@
 ---
-title: CodeUp-Alpha-13B-HF-GPTQ
-description: "Discovery-focused notes and runnable examples for `TheBloke/CodeUp-Alpha-13B-HF-GPTQ`."
+title: "CodeUp-Alpha-13B-HF-GPTQ"
+description: Discovery-focused notes and runnable examples for `TheBloke/CodeUp-Alpha-13B-HF-GPTQ`.
 ---
 
+# CodeUp-Alpha-13B-HF-GPTQ
 
 Discovery-focused notes and runnable examples for `TheBloke/CodeUp-Alpha-13B-HF-GPTQ`.
 
@@ -63,7 +64,7 @@ ollama run codeup-alpha-13b-hf-gptq
 | **Library** | transformers |
 | **License** | unknown |
 | **Last modified** | 2023-09-27T12:45:47+00:00 |
-| **Downloads** | 23 |
+| **Downloads** | 5 |
 | **Likes** | 4 |
 
 ## Links

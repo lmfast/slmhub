@@ -1,8 +1,9 @@
 ---
-title: CodeUp-Alpha-13B-HF-AWQ
-description: "Discovery-focused notes and runnable examples for `TheBloke/CodeUp-Alpha-13B-HF-AWQ`."
+title: "CodeUp-Alpha-13B-HF-AWQ"
+description: Discovery-focused notes and runnable examples for `TheBloke/CodeUp-Alpha-13B-HF-AWQ`.
 ---
 
+# CodeUp-Alpha-13B-HF-AWQ
 
 Discovery-focused notes and runnable examples for `TheBloke/CodeUp-Alpha-13B-HF-AWQ`.
 
@@ -63,7 +64,7 @@ ollama run codeup-alpha-13b-hf-awq
 | **Library** | transformers |
 | **License** | unknown |
 | **Last modified** | 2023-11-09T18:20:29+00:00 |
-| **Downloads** | 6 |
+| **Downloads** | 3 |
 | **Likes** | 1 |
 
 ## Links

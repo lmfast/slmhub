@@ -19,8 +19,13 @@
   --color-secondary-dark: #3B73B5;
 
   --color-success: #2ECC71;
+  --color-success-light: #58D68D;
   --color-warning: #FFA726;
+  --color-warning-light: #FFB74D;
   --color-error: #EF5350;
+  --color-error-light: #F44336;
+  --color-info: #29B6F6;
+  --color-info-light: #42A5F5;
 
   /* Starlight overrides */
   --sl-color-accent-low: #E85A2A;
@@ -56,6 +61,28 @@
   --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-base: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Spacing Scale */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-2xl: 3rem;
+
+  /* Border Radius */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+  --radius-full: 999px;
+
+  /* Gradients */
+  --gradient-primary: linear-gradient(135deg, #FF6B35, #FFA07A);
+  --gradient-success: linear-gradient(135deg, #2ECC71, #29B6F6);
+  --gradient-warning: linear-gradient(135deg, #FFA726, #FF6B35);
+  --gradient-error: linear-gradient(135deg, #EF5350, #F44336);
+
   /* Footer specific (Premium dark-grounding in light mode) */
   --color-footer-bg: #0f172a;
   --color-footer-text: #f8fafc;
@@ -65,8 +92,173 @@
 }
 
 /* ============================================
-   Typography & Base Styles
-   ============================================ */
+    Enhanced Animations
+    ============================================ */
+@keyframes hoverScale {
+  from {
+    transform: scale(1);
+  }
+
+  to {
+    transform: scale(1.02);
+  }
+}
+
+@keyframes cardEnter {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes newBadgePulse {
+
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 107, 53, 0.4);
+  }
+
+  50% {
+    box-shadow: 0 0 0 10px rgba(255, 107, 53, 0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+@keyframes glow {
+
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(255, 107, 53, 0.3);
+  }
+
+  50% {
+    box-shadow: 0 0 30px rgba(255, 107, 53, 0.5);
+  }
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.sl-card,
+.card {
+  animation: cardEnter 0.6s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.sl-card:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.sl-card:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.sl-card:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.sl-card:nth-child(4) {
+  animation-delay: 0.4s;
+}
+
+.sl-card:nth-child(5) {
+  animation-delay: 0.5s;
+}
+
+.sl-card:nth-child(6) {
+  animation-delay: 0.6s;
+}
+
+.sl-card:hover,
+.card:hover {
+  animation: hoverScale 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateY(-4px) scale(1.01);
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ============================================
+    Typography & Base Styles
+    ============================================ */
 .sl-markdown-content,
 .starlight {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
@@ -116,8 +308,8 @@ html {
 }
 
 /* ============================================
-   Glassmorphism Header
-   ============================================ */
+    Glassmorphism Header
+    ============================================ */
 header.header,
 .sl-container header {
   background-color: var(--glass-bg) !important;
@@ -125,8 +317,15 @@ header.header,
   -webkit-backdrop-filter: blur(var(--blur-amount));
   border-bottom: 1px solid var(--glass-border);
   box-shadow: var(--glass-shadow);
-  box-shadow: var(--glass-shadow);
   transition: all var(--transition-base);
+}
+
+/* Dark mode header */
+[data-theme="dark"] header.header,
+[data-theme="dark"] .sl-container header {
+  background-color: rgba(15, 23, 42, 0.95) !important;
+  border-bottom-color: rgba(255, 107, 53, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 /* Navbar Logo Sizing */
@@ -187,22 +386,35 @@ header.header,
 
 /* Smooth scrollbar for code blocks */
 .expressive-code pre::-webkit-scrollbar {
-  height: 8px;
+  height: 10px;
 }
 
 .expressive-code pre::-webkit-scrollbar-track {
   background: rgba(0, 0, 0, 0.05);
-  border-radius: 4px;
+  border-radius: 5px;
 }
 
 .expressive-code pre::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: 4px;
-  transition: background var(--transition-fast);
+  background: linear-gradient(135deg, rgba(255, 107, 53, 0.3) 0%, rgba(139, 92, 246, 0.3) 100%);
+  border-radius: 5px;
+  transition: all var(--transition-fast);
+  border: 2px solid transparent;
+  background-clip: padding-box;
 }
 
 .expressive-code pre::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.3);
+  background: linear-gradient(135deg, rgba(255, 107, 53, 0.5) 0%, rgba(139, 92, 246, 0.5) 100%);
+  background-clip: padding-box;
+}
+
+[data-theme="dark"] .expressive-code pre::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, rgba(255, 107, 53, 0.4) 0%, rgba(139, 92, 246, 0.4) 100%);
+  background-clip: padding-box;
+}
+
+[data-theme="dark"] .expressive-code pre::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, rgba(255, 107, 53, 0.6) 0%, rgba(139, 92, 246, 0.6) 100%);
+  background-clip: padding-box;
 }
 
 /* ============================================
@@ -243,6 +455,21 @@ header.header,
 .sl-card:hover::before,
 .card:hover::before {
   opacity: 1;
+}
+
+/* Dark mode cards */
+[data-theme="dark"] .sl-card,
+[data-theme="dark"] .card,
+[data-theme="dark"] .sl-link-card {
+  background: linear-gradient(135deg, rgba(20, 30, 50, 0.8), rgba(25, 35, 60, 0.8));
+  border-color: rgba(255, 107, 53, 0.15);
+}
+
+[data-theme="dark"] .sl-card:hover,
+[data-theme="dark"] .card:hover,
+[data-theme="dark"] .sl-link-card:hover {
+  border-color: rgba(255, 107, 53, 0.3);
+  box-shadow: 0 8px 32px rgba(255, 107, 53, 0.15);
 }
 
 /* Bento-box style grid for features */
@@ -364,17 +591,48 @@ button.button {
 .sl-link-button[data-variant="primary"],
 .action.primary,
 .button-primary {
-  background: var(--color-primary);
+  background: linear-gradient(135deg, var(--color-primary) 0%, #FF8C5A 100%);
   color: white;
-  box-shadow: 0 4px 6px -1px rgba(255, 107, 53, 0.3);
+  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3), 0 2px 4px rgba(255, 107, 53, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.sl-link-button[data-variant="primary"]::before,
+.action.primary::before,
+.button-primary::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.sl-link-button[data-variant="primary"]:hover::before,
+.action.primary:hover::before,
+.button-primary:hover::before {
+  width: 300px;
+  height: 300px;
 }
 
 .sl-link-button[data-variant="primary"]:hover,
 .action.primary:hover,
 .button-primary:hover {
-  background: var(--color-primary-dark);
-  transform: translateY(-2px);
-  box-shadow: 0 10px 15px -3px rgba(255, 107, 53, 0.4);
+  background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 24px rgba(255, 107, 53, 0.4), 0 4px 8px rgba(255, 107, 53, 0.3);
+}
+
+.sl-link-button[data-variant="primary"]:active,
+.action.primary:active,
+.button-primary:active {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 12px rgba(255, 107, 53, 0.3);
 }
 
 /* Secondary/minimal button */
@@ -385,16 +643,48 @@ button.button {
   background: transparent;
   color: var(--color-primary);
   border: 2px solid var(--color-primary);
+  position: relative;
+  overflow: hidden;
+}
+
+.sl-link-button[data-variant="minimal"]::after,
+.sl-link-button[data-variant="secondary"]::after,
+.action.secondary::after,
+.button-secondary::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, var(--color-primary) 0%, #FF8C5A 100%);
+  transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: -1;
+}
+
+.sl-link-button[data-variant="minimal"]:hover::after,
+.sl-link-button[data-variant="secondary"]:hover::after,
+.action.secondary:hover::after,
+.button-secondary:hover::after {
+  left: 0;
 }
 
 .sl-link-button[data-variant="minimal"]:hover,
 .sl-link-button[data-variant="secondary"]:hover,
 .action.secondary:hover,
 .button-secondary:hover {
-  background: var(--color-primary);
   color: white;
-  transform: translateY(-2px);
-  box-shadow: 0 10px 15px -3px rgba(255, 107, 53, 0.3);
+  border-color: var(--color-primary);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 24px rgba(255, 107, 53, 0.3), 0 4px 8px rgba(255, 107, 53, 0.2);
+}
+
+.sl-link-button[data-variant="minimal"]:active,
+.sl-link-button[data-variant="secondary"]:active,
+.action.secondary:active,
+.button-secondary:active {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 12px rgba(255, 107, 53, 0.2);
 }
 
 /* Ripple effect */
@@ -647,17 +937,33 @@ button.button {
 .right-sidebar,
 aside.right-sidebar,
 .sl-container aside {
-  max-width: 16rem !important;
-  width: 16rem !important;
+  max-width: 12rem !important;
+  width: 12rem !important;
 }
 
 @media (min-width: 1280px) {
 
   .right-sidebar,
   aside.right-sidebar {
-    max-width: 18rem !important;
-    width: 18rem !important;
+    max-width: 14rem !important;
+    width: 14rem !important;
   }
+}
+
+/* Hide sidebar and "On this page" for directory page */
+.directory-container~* .right-sidebar,
+.directory-container~* aside.right-sidebar,
+[data-page-type="splash"] .right-sidebar,
+[data-page-type="splash"] aside.right-sidebar {
+  display: none !important;
+}
+
+/* Ensure directory page uses full width */
+.directory-container {
+  width: 100% !important;
+  max-width: 100% !important;
+  padding-left: 2rem !important;
+  padding-right: 2rem !important;
 }
 
 /* Improve feature card text contrast */
@@ -769,6 +1075,15 @@ a.colab-button:hover {
 .sl-markdown-content li {
   margin: 0.5rem 0;
   line-height: 1.7;
+  transition: transform 0.2s ease;
+}
+
+.sl-markdown-content li:hover {
+  transform: translateX(2px);
+}
+
+.sl-markdown-content li::marker {
+  color: var(--color-primary);
 }
 
 /* Callout/Alert box improvements */
@@ -776,12 +1091,41 @@ a.colab-button:hover {
   border-left: 4px solid var(--color-primary);
   padding: 1rem 1.5rem;
   margin: 1.5rem 0;
-  background: rgba(255, 107, 53, 0.05);
+  background: linear-gradient(135deg, rgba(255, 107, 53, 0.05) 0%, rgba(139, 92, 246, 0.03) 100%);
   border-radius: 0.5rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.sl-markdown-content blockquote::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(135deg, var(--color-primary) 0%, #8b5cf6 100%);
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sl-markdown-content blockquote:hover {
+  background: linear-gradient(135deg, rgba(255, 107, 53, 0.08) 0%, rgba(139, 92, 246, 0.05) 100%);
+  transform: translateX(4px);
+  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.1);
+}
+
+.sl-markdown-content blockquote:hover::before {
+  width: 6px;
 }
 
 [data-theme="dark"] .sl-markdown-content blockquote {
-  background: rgba(255, 107, 53, 0.1);
+  background: linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(139, 92, 246, 0.06) 100%);
+}
+
+[data-theme="dark"] .sl-markdown-content blockquote:hover {
+  background: linear-gradient(135deg, rgba(255, 107, 53, 0.15) 0%, rgba(139, 92, 246, 0.1) 100%);
+  box-shadow: 0 4px 16px rgba(255, 107, 53, 0.15);
 }
 
 /* ============================================
@@ -857,36 +1201,56 @@ a.colab-button:hover {
   color: var(--sl-color-text-accent);
   text-decoration: none;
   font-weight: 500;
-  transition: color 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  border-bottom: 2px solid transparent;
 }
 
 .sl-markdown-content table a:hover {
   color: var(--sl-color-accent-high);
-  text-decoration: underline;
+  border-bottom-color: var(--sl-color-accent);
+  transform: translateX(2px);
 }
 
-/* Light mode table adjustments */
+.sl-markdown-content table a:active {
+  transform: translateX(1px);
+}
+
+/* Light mode table adjustments - Enhanced contrast */
 :root .sl-markdown-content table {
-  background: rgba(255, 255, 255, 0.9);
-  border-color: var(--sl-color-gray-3);
+  background: #ffffff;
+  border: 1px solid var(--sl-color-gray-3);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 :root .sl-markdown-content table thead {
-  background: linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(139, 92, 246, 0.05) 100%);
+  background: linear-gradient(135deg, rgba(255, 107, 53, 0.12) 0%, rgba(139, 92, 246, 0.08) 100%);
+  border-bottom: 2px solid var(--sl-color-gray-3);
 }
 
 :root .sl-markdown-content table th {
   color: var(--sl-color-black);
   border-bottom-color: var(--sl-color-gray-3);
+  font-weight: 700;
 }
 
 :root .sl-markdown-content table td {
-  color: var(--sl-color-gray-6);
-  border-bottom-color: var(--sl-color-gray-2);
+  color: #1e293b;
+  border-bottom-color: #e2e8f0;
+  background: #ffffff;
+}
+
+:root .sl-markdown-content table tbody tr {
+  background: #ffffff;
+}
+
+:root .sl-markdown-content table tbody tr:nth-child(even) {
+  background: #f8fafc;
 }
 
 :root .sl-markdown-content table tbody tr:hover {
-  background: rgba(255, 107, 53, 0.05);
+  background: rgba(255, 107, 53, 0.08);
+  box-shadow: inset 0 0 0 1px rgba(255, 107, 53, 0.2);
 }
 
 /* Responsive table wrapper */
@@ -905,13 +1269,113 @@ a.colab-button:hover {
 }
 
 /* ============================================
-   Footer & Sidebar Overlap Fixes
-   ============================================ */
+    Utility Classes & Helpers
+    ============================================ */
+
+/* Component Grid for features */
+.component-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--spacing-lg);
+  margin: var(--spacing-lg) 0;
+}
+
+/* Icon list styling */
+.icon-list {
+  list-style: none;
+  padding: 0;
+  margin: var(--spacing-lg) 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.icon-list li {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.icon-list :global(svg) {
+  flex-shrink: 0;
+  color: var(--color-primary);
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+/* Badge grouping */
+.badge-group {
+  display: flex;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+  margin: var(--spacing-md) 0;
+}
+
+/* Feature highlight box */
+.feature-highlight {
+  background: linear-gradient(135deg,
+      rgba(255, 107, 53, 0.1) 0%,
+      rgba(74, 144, 226, 0.1) 100%);
+  border-left: 4px solid var(--color-primary);
+  padding: var(--spacing-lg);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  margin: var(--spacing-lg) 0;
+}
+
+[data-theme="dark"] .feature-highlight {
+  background: linear-gradient(135deg,
+      rgba(255, 107, 53, 0.15) 0%,
+      rgba(74, 144, 226, 0.15) 100%);
+}
+
+/* Stats grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--spacing-lg);
+  margin: var(--spacing-lg) 0;
+}
+
+.stat-card {
+  padding: var(--spacing-lg);
+  border: 1px solid var(--sl-color-gray-3);
+  border-radius: var(--radius-md);
+  text-align: center;
+  transition: all var(--transition-base);
+  background: rgba(255, 107, 53, 0.02);
+}
+
+.stat-card:hover {
+  border-color: var(--color-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.1);
+}
+
+[data-theme="dark"] .stat-card {
+  background: rgba(255, 107, 53, 0.05);
+}
+
+.stat-card-value {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin: var(--spacing-md) 0;
+}
+
+.stat-card-label {
+  font-size: 0.875rem;
+  color: var(--sl-color-gray-4);
+}
+
+/* ============================================
+    Footer & Sidebar Overlap Fixes
+    ============================================ */
 
 /* Ensure footer sits above everything */
 .custom-footer {
   position: relative;
   z-index: 100 !important;
+  margin-top: 6rem;
 }
 
 /* Prevent sidebar from bleeding into footer */
@@ -957,6 +1421,7 @@ aside.right-sidebar::before {
 .sl-container main {
   position: relative;
   z-index: 1;
+  padding-bottom: 2rem;
 }
 
 /* Footer container should have solid background to cover any overflow */
@@ -969,4 +1434,498 @@ aside.right-sidebar::before {
 .footer-bottom {
   position: relative;
   z-index: 99;
+  padding-bottom: 2rem;
+}
+
+/* ============================================
+    Content Spacing & Breathing Room
+    ============================================ */
+
+/* Add proper spacing to all major sections */
+.sl-markdown-content section {
+  margin-bottom: 3rem;
+}
+
+.sl-markdown-content h2 {
+  margin-top: 3rem;
+  margin-bottom: 1.5rem;
+}
+
+.sl-markdown-content h3 {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.sl-markdown-content>*:last-child {
+  margin-bottom: 2rem;
+}
+
+/* Ensure adequate whitespace between footer and content */
+.sl-markdown-content {
+  padding-bottom: 3rem;
+}
+
+/* ============================================
+    Enhanced Button Styling
+    ============================================ */
+
+/* Global button enhancements */
+.sl-markdown-content a[class*="button"],
+a.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 2px solid transparent;
+}
+
+/* ============================================
+    Section Header Improvements
+    ============================================ */
+
+.sl-markdown-content .section-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--sl-color-hairline);
+}
+
+.sl-markdown-content .section-header h2 {
+  margin-top: 0;
+}
+
+/* ============================================
+    Enhanced Typography
+    ============================================ */
+
+/* Better line-height for readability */
+.sl-markdown-content {
+  line-height: 1.75;
+}
+
+.sl-markdown-content li {
+  margin-bottom: 0.5rem;
+}
+
+.sl-markdown-content ul ul,
+.sl-markdown-content ol ol {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Better code block spacing */
+.sl-markdown-content pre {
+  margin: 1.5rem 0;
+  border-radius: 0.75rem;
+}
+
+/* ============================================
+    Responsive Footer Improvements
+    ============================================ */
+
+@media (max-width: 768px) {
+  .custom-footer {
+    margin-top: 4rem;
+    padding: 3rem 0;
+  }
+
+  .main-pane,
+  .sl-container main {
+    padding-bottom: 1rem;
+  }
+
+  .sl-markdown-content {
+    padding-bottom: 2rem;
+  }
+
+  .sl-markdown-content section {
+    margin-bottom: 2.5rem;
+  }
+}
+
+/* ============================================
+    DataTable Link Styling
+    ============================================ */
+
+.dt-model-link {
+  color: var(--sl-color-text-accent);
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  position: relative;
+  border-bottom: 2px solid transparent;
+}
+
+.dt-model-link:hover {
+  color: var(--sl-color-accent-high);
+  border-bottom-color: var(--sl-color-accent);
+  transform: translateX(2px);
+}
+
+[data-theme="dark"] .dt-model-link {
+  color: var(--sl-color-accent-high);
+}
+
+[data-theme="dark"] .dt-model-link:hover {
+  color: var(--sl-color-accent);
+  border-bottom-color: var(--sl-color-accent-high);
+}
+
+/* ============================================
+    DataTable Enhancements for Starlight
+    ============================================ */
+
+.sl-markdown-content .data-table-container {
+  margin: 2rem 0;
+  padding: 0;
+}
+
+.sl-markdown-content .dt-toolbar {
+  background: linear-gradient(135deg,
+      rgba(255, 107, 53, 0.08) 0%,
+      rgba(139, 92, 246, 0.06) 100%);
+  border: 1px solid var(--sl-color-gray-3);
+}
+
+[data-theme="dark"] .sl-markdown-content .dt-toolbar {
+  background: linear-gradient(135deg,
+      rgba(255, 107, 53, 0.08) 0%,
+      rgba(139, 92, 246, 0.06) 100%);
+  border-color: rgba(255, 107, 53, 0.1);
+}
+
+/* Table wrapper in markdown content */
+.sl-markdown-content .dt-table-wrapper {
+  border: 1px solid var(--sl-color-gray-3);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="dark"] .sl-markdown-content .dt-table-wrapper {
+  border-color: rgba(255, 107, 53, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Pagination styling in markdown */
+.sl-markdown-content .dt-pagination {
+  border: 1px solid var(--sl-color-gray-3);
+}
+
+[data-theme="dark"] .sl-markdown-content .dt-pagination {
+  border-color: rgba(255, 107, 53, 0.1);
+}
+
+/* Footer styling in markdown */
+.sl-markdown-content .dt-footer {
+  border: 1px solid var(--sl-color-gray-3);
+}
+
+[data-theme="dark"] .sl-markdown-content .dt-footer {
+  border-color: rgba(255, 107, 53, 0.1);
+}
+
+/* ============================================
+   TOC Customization
+   ============================================ */
+:root {
+  --sl-toc-width: 12rem;
+  /* Reduced from default */
+}
+
+/* Optional: Hide TOC on smaller desktop screens if needed */
+/*
+@media (max-width: 1200px) {
+  starlight-toc { display: none; }
+}
+*/
+
+/* ============================================
+   Full Width Content Override
+   ============================================ */
+.sl-container {
+  max-width: 100% !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  padding-left: 2rem !important;
+  /* Add some breathing room */
+  padding-right: 2rem !important;
+}
+
+.sl-markdown-content {
+  max-width: 100% !important;
+  padding-right: 1rem !important;
+}
+
+/* Ensure nested elements also respect full width */
+.sl-markdown-content>* {
+  max-width: 100% !important;
+}
+
+/* Make tables and code blocks use full available space */
+.sl-markdown-content table,
+.sl-markdown-content .expressive-code {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+/* Adjust heading sizes for wider layout */
+.sl-markdown-content h1 {
+  max-width: 100% !important;
+}
+
+/* ============================================
+   Table Enhancements
+   ============================================ */
+/* Target Starlight tables heavily to ensure overrides */
+.sl-markdown-content table {
+  width: 100% !important;
+  border-collapse: collapse !important;
+  margin: 1.5rem 0 !important;
+  font-size: 0.9rem !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+  border-radius: 0.5rem !important;
+  overflow: hidden !important;
+}
+
+/* Headers */
+.sl-markdown-content table th {
+  background-color: var(--sl-color-gray-6, #f3f4f6) !important;
+  color: var(--sl-color-text-accent, #111827) !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  padding: 0.75rem 1rem !important;
+  text-align: left !important;
+  border-bottom: 2px solid var(--sl-color-gray-4, #e5e7eb) !important;
+  white-space: nowrap !important;
+}
+
+/* Cells */
+.sl-markdown-content table td {
+  padding: 0.6rem 1rem !important;
+  border-bottom: 1px solid var(--sl-color-gray-5, #e5e7eb) !important;
+  vertical-align: middle !important;
+  height: auto !important;
+}
+
+/* Alternating rows for readability */
+.sl-markdown-content table tr:nth-child(even) {
+  background-color: var(--sl-color-gray-7, #f9fafb) !important;
+}
+
+/* Hover effects */
+.sl-markdown-content table tr:hover {
+  background-color: var(--sl-color-gray-6, #f3f4f6) !important;
+  transition: background-color 0.15s ease !important;
+}
+
+/* Dark mode adjustments */
+[data-theme="dark"] .sl-markdown-content table th {
+  background-color: #1e293b !important;
+  color: #e2e8f0 !important;
+  border-bottom-color: #334155 !important;
+}
+
+[data-theme="dark"] .sl-markdown-content table tr:nth-child(even) {
+  background-color: rgba(255, 255, 255, 0.02) !important;
+}
+
+[data-theme="dark"] .sl-markdown-content table tr:hover {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+[data-theme="dark"] .sl-markdown-content table td {
+  border-bottom-color: #334155 !important;
+  color: #cbd5e1 !important;
+}
+
+/* ============================================
+   ULTIMATE TABLE RECTIFICATION (SIDE-BY-SIDE FIXED)
+   ============================================ */
+
+/* 1. Remove hideous outer border, shadow, and background blur */
+.models-table-wrapper,
+.sl-markdown-content .dt-table-wrapper,
+.sl-markdown-content table {
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  border-radius: 0 !important;
+  overflow: visible !important;
+  backdrop-filter: none !important;
+  margin-top: 1rem !important;
+  border-collapse: collapse !important;
+}
+
+/* Force full width responsiveness */
+.sl-markdown-content table {
+  width: 100% !important;
+  max-width: 100% !important;
+  table-layout: auto !important;
+  display: table !important;
+}
+
+.sl-markdown-content table tr:last-child {
+  border-bottom: none !important;
+  /* Removes hideous outer bottom border */
+}
+
+/* 2. Compact row height & clean alignment - PRE-DETERMINED HEADER STYLE */
+.models-table th,
+.sl-markdown-content table th {
+  padding: 0.6rem 1rem !important;
+  background: #f1f5f9 !important;
+  /* Slightly darker than page for distinction */
+  color: #475569 !important;
+  /* Slate-600 */
+  font-size: 0.75rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.05em !important;
+  text-transform: uppercase !important;
+  border-top: 1px solid #e2e8f0 !important;
+  border-bottom: 2px solid #cbd5e1 !important;
+  text-align: left !important;
+}
+
+.models-table td,
+.sl-markdown-content table td {
+  padding: 0.45rem 1rem !important;
+  /* Compact padding */
+  font-size: 0.875rem !important;
+  border-bottom: 1px solid #f1f5f9 !important;
+  height: auto !important;
+  vertical-align: middle !important;
+  background: transparent !important;
+  display: table-cell !important;
+  /* CRITICAL FIX */
+}
+
+/* 3. Small vertical height - SIDE-BY-SIDE FIX */
+.sl-markdown-content table td a,
+.model-author,
+.sl-markdown-content table td a+br+span,
+.sl-markdown-content table td span.by-manufacturer {
+  display: inline !important;
+  /* SIDE BY SIDE */
+  margin-left: 0.5rem !important;
+  font-size: 0.75rem !important;
+  color: #94a3b8 !important;
+  white-space: nowrap !important;
+}
+
+.sl-markdown-content table td a {
+  margin-left: 0 !important;
+  font-size: 0.875rem !important;
+  color: var(--sl-color-text-accent) !important;
+}
+
+/* Hide the <br> that forces new line in some tables */
+.sl-markdown-content table td br {
+  display: none !important;
+}
+
+/* 4. Uniform Row Color (KILL ZEBRA STRIPING) */
+.models-table tbody tr,
+.models-table tbody tr:nth-child(even),
+.models-table tbody tr:nth-child(2n),
+.sl-markdown-content table tr,
+.sl-markdown-content table tr:nth-child(even),
+.sl-markdown-content table tbody tr:nth-child(2n) {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+.models-table tbody tr:hover,
+.sl-markdown-content table tr:hover {
+  background: rgba(0, 0, 0, 0.02) !important;
+  /* Subtle hover only */
+  transform: none !important;
+  box-shadow: none !important;
+  transition: none !important;
+}
+
+/* 5. Dark Mode Adjustments */
+[data-theme="dark"] .models-table th,
+[data-theme="dark"] .sl-markdown-content table th {
+  background: #0f172a !important;
+  /* Distinct dark header */
+  color: #fbbf24 !important;
+  /* Amber text */
+  border-top-color: #1e293b !important;
+  border-bottom-color: #334155 !important;
+}
+
+[data-theme="dark"] .models-table td,
+[data-theme="dark"] .sl-markdown-content table td {
+  border-bottom-color: #1e293b !important;
+  color: #cbd5e1 !important;
+  background: transparent !important;
+}
+
+[data-theme="dark"] .models-table tbody tr,
+[data-theme="dark"] .models-table tbody tr:nth-child(even),
+[data-theme="dark"] .sl-markdown-content table tr,
+[data-theme="dark"] .sl-markdown-content table tr:nth-child(even) {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+[data-theme="dark"] .models-table tbody tr:hover,
+[data-theme="dark"] .sl-markdown-content table tr:hover {
+  background: rgba(255, 255, 255, 0.03) !important;
+}
+
+.task-tag {
+  padding: 0.15rem 0.4rem !important;
+  font-size: 0.65rem !important;
+  border-radius: 3px !important;
+  background: #f1f5f9 !important;
+  color: #475569 !important;
+  border: 1px solid #e2e8f0 !important;
+}
+
+[data-theme="dark"] .task-tag {
+  background: #334155 !important;
+  color: #cbd5e1 !important;
+  border-color: #475569 !important;
+}
+
+/* SIDEBAR OVERLAP FIXES */
+#starlight__sidebar,
+.sidebar,
+.sl-sidebar {
+  z-index: 50 !important;
+}
+
+.custom-footer {
+  z-index: 100 !important;
+}
+
+/* 6. Remove icons from tables (Likes, Downloads, Headers) */
+.model-stat-cell svg,
+th .th-content svg,
+.models-table th svg,
+.sl-markdown-content table th svg {
+  display: none !important;
+}
+
+/* Reset flex to ensure text remains centered if it was column-aligned with icon */
+.model-stat-cell,
+th .th-content {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0 !important;
+}
+
+.sl-sidebar {
+  z-index: 50 !important;
+}
+
+.custom-footer {
+  z-index: 100 !important;
 }

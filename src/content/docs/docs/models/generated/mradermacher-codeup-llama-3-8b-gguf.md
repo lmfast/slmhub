@@ -1,8 +1,9 @@
 ---
-title: CodeUp-Llama-3-8B-GGUF
-description: "Discovery-focused notes and runnable examples for `mradermacher/CodeUp-Llama-3-8B-GGUF`."
+title: "CodeUp-Llama-3-8B-GGUF"
+description: Discovery-focused notes and runnable examples for `mradermacher/CodeUp-Llama-3-8B-GGUF`.
 ---
 
+# CodeUp-Llama-3-8B-GGUF
 
 Discovery-focused notes and runnable examples for `mradermacher/CodeUp-Llama-3-8B-GGUF`.
 

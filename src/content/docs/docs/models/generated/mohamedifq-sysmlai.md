@@ -1,8 +1,9 @@
 ---
-title: sysmlAI
-description: "Discovery-focused notes and runnable examples for `MohamedIFQ/sysmlAI`."
+title: "sysmlAI"
+description: Discovery-focused notes and runnable examples for `MohamedIFQ/sysmlAI`.
 ---
 
+# sysmlAI
 
 Discovery-focused notes and runnable examples for `MohamedIFQ/sysmlAI`.
 
@@ -63,7 +64,7 @@ ollama run sysmlai
 | **Library** | transformers |
 | **License** | unknown |
 | **Last modified** | 2024-06-24T10:43:23+00:00 |
-| **Downloads** | 5 |
+| **Downloads** | 4 |
 | **Likes** | 3 |
 
 ## Links

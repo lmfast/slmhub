@@ -32,7 +32,7 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "chore(docs): auto-sync model pages"
-          file_pattern: "data/models.* models/generated/*.md"
+          file_pattern: "data/models.* src/content/docs/docs/models/generated/*.md src/content/docs/docs/models/generated/*.mdx"
 
 
 

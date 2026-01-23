@@ -1,8 +1,9 @@
 ---
-title: zero-nl2cmds-v1
-description: "Discovery-focused notes and runnable examples for `Sanjayyy06/zero-nl2cmds-v1`."
+title: "zero-nl2cmds-v1"
+description: Discovery-focused notes and runnable examples for `Sanjayyy06/zero-nl2cmds-v1`.
 ---
 
+# zero-nl2cmds-v1
 
 Discovery-focused notes and runnable examples for `Sanjayyy06/zero-nl2cmds-v1`.
 

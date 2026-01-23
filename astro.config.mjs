@@ -19,14 +19,10 @@ export default defineConfig({
         alt: 'SLM Hub',
         replacesTitle: false,
       },
-      social: [
-        {
-          label: 'GitHub',
-          href: 'https://github.com/lmfast/slmhub',
-          icon: 'github',
-        },
-      ],
-      // Disable default index page to allow custom homepage
+      social: {
+        github: 'https://github.com/lmfast/slmhub',
+      },
+      // q Disable default index page to allow custom homepage
       disable404Route: false,
       sidebar: [
         {
@@ -34,84 +30,72 @@ export default defineConfig({
           link: '/',
         },
         {
-          label: 'Course',
+          label: 'Learning',
           items: [
             { label: 'Start Here', link: '/docs/start-here/' },
             {
-              label: 'Section 1: Foundations',
-              autogenerate: { directory: 'docs/learn/foundations' },
-            },
-            {
-              label: 'Section 2: Models',
+              label: 'Models',
               autogenerate: { directory: 'docs/learn/models' },
             },
             {
-              label: 'Section 3: Hands-On',
-              autogenerate: { directory: 'docs/learn/hands-on' },
-            },
-            {
-              label: 'Section 4: Advanced Topics',
+              label: 'Advanced Topics',
               autogenerate: { directory: 'docs/learn/advanced-topics' },
             },
             {
-              label: 'Section 5: Mathematics',
-              autogenerate: { directory: 'docs/learn/mathematics' },
-            },
-            {
-              label: 'Section 6: Models Hub',
-              autogenerate: { directory: 'docs/learn/models-hub' },
-            },
-            {
-              label: 'Section 7: Community',
-              autogenerate: { directory: 'docs/learn/community' },
-            },
-            {
-              label: 'Section 9: Advanced Architectures',
+              label: 'Advanced Architectures',
               autogenerate: { directory: 'docs/learn/advanced-architectures' },
             },
             {
-              label: 'Section 10: Deployment',
-              autogenerate: { directory: 'docs/learn/deployment' },
-            },
-            {
-              label: 'Section 11: Cutting-Edge',
+              label: 'Cutting-Edge',
               autogenerate: { directory: 'docs/learn/cutting-edge' },
             },
             {
-              label: 'Section 12: Projects',
+              label: 'Mathematics',
+              autogenerate: { directory: 'docs/learn/mathematics' },
+              collapsed: true,
+            },
+          ],
+        },
+        {
+          label: 'Foundations',
+          link: '/docs/learn/foundations/',
+        },
+        {
+          label: 'Hands-On',
+          items: [
+            {
+              label: 'Tutorials',
+              autogenerate: { directory: 'docs/learn/hands-on' },
+            },
+            {
+              label: 'Projects',
               autogenerate: { directory: 'docs/learn/projects' },
             },
-            {
-              label: 'Section 13: About',
-              autogenerate: { directory: 'docs/learn/about' },
-            },
-            {
-              label: 'Deploy',
-              autogenerate: { directory: 'docs/deploy' },
-            },
-            {
-              label: 'Model Directory',
-              autogenerate: { directory: 'docs/models', collapsed: true },
-            },
-            {
-              label: 'Tools',
-              autogenerate: { directory: 'docs/tools' },
-            },
+          ],
+        },
+        {
+          label: 'Deployment',
+          autogenerate: { directory: 'docs/deploy' },
+        },
+        {
+          label: 'Tools & Resources',
+          items: [
+            { label: 'Interactive Tools', autogenerate: { directory: 'docs/tools' } },
+            { label: 'Model Directory', link: '/docs/models/generated/directory/' },
+            { label: 'Model Pages', autogenerate: { directory: 'docs/models', collapsed: true } },
           ],
         },
         {
           label: 'Community',
-          items: [
-            { label: 'Overview', autogenerate: { directory: 'docs/community' } },
-          ],
-        },
-        {
-          label: 'About',
-          link: '/docs/about/',
+          link: '/docs/community/',
         },
         {
           label: 'Contributing',
           link: '/docs/community/contributing/',
+        },
+        {
+          label: 'About',
+          link: '/docs/about/',
         },
       ],
       customCss: [
@@ -200,10 +184,7 @@ export default defineConfig({
       editLink: {
         baseUrl: 'https://github.com/lmfast/slmhub/edit/main/',
       },
-      tableOfContents: {
-        minHeadingLevel: 2,
-        maxHeadingLevel: 4,
-      },
+      tableOfContents: false,
     }),
     tailwind({
       applyBaseStyles: false,

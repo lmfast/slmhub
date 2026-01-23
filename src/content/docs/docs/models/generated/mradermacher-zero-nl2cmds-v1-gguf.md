@@ -1,8 +1,9 @@
 ---
-title: zero-nl2cmds-v1-GGUF
-description: "Discovery-focused notes and runnable examples for `mradermacher/zero-nl2cmds-v1-GGUF`."
+title: "zero-nl2cmds-v1-GGUF"
+description: Discovery-focused notes and runnable examples for `mradermacher/zero-nl2cmds-v1-GGUF`.
 ---
 
+# zero-nl2cmds-v1-GGUF
 
 Discovery-focused notes and runnable examples for `mradermacher/zero-nl2cmds-v1-GGUF`.
 
@@ -63,7 +64,7 @@ ollama run zero-nl2cmds-v1-gguf
 | **Library** | transformers |
 | **License** | unknown |
 | **Last modified** | 2025-10-05T16:56:29+00:00 |
-| **Downloads** | 126 |
+| **Downloads** | 45 |
 | **Likes** | 0 |
 
 ## Links

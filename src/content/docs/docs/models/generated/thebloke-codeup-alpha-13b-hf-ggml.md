@@ -1,8 +1,9 @@
 ---
-title: CodeUp-Alpha-13B-HF-GGML
-description: "Discovery-focused notes and runnable examples for `TheBloke/CodeUp-Alpha-13B-HF-GGML`."
+title: "CodeUp-Alpha-13B-HF-GGML"
+description: Discovery-focused notes and runnable examples for `TheBloke/CodeUp-Alpha-13B-HF-GGML`.
 ---
 
+# CodeUp-Alpha-13B-HF-GGML
 
 Discovery-focused notes and runnable examples for `TheBloke/CodeUp-Alpha-13B-HF-GGML`.
 
@@ -63,7 +64,7 @@ ollama run codeup-alpha-13b-hf-ggml
 | **Library** | transformers |
 | **License** | unknown |
 | **Last modified** | 2023-09-27T13:01:25+00:00 |
-| **Downloads** | 2 |
+| **Downloads** | 0 |
 | **Likes** | 7 |
 
 ## Links

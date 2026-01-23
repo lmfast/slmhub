@@ -1,6 +1,7 @@
 ---
 import type { Props } from '@astrojs/starlight/props';
 import DefaultFooter from '@astrojs/starlight/components/Footer.astro';
+import { Icon } from '@astrojs/starlight/components';
 
 const { hasSidebar } = Astro.props;
 const year = new Date().getFullYear();
@@ -11,12 +12,15 @@ const year = new Date().getFullYear();
    <DefaultFooter {...Astro.props} />
 </div>
 
+{ !hasSidebar &&
 <div class:list={['custom-footer', { 'has-sidebar': hasSidebar }]}>
   <div class="footer-container">
     <div class="footer-newsletter">
       <div class="newsletter-content">
         <div class="newsletter-text">
-          <span class="newsletter-icon">🚀</span>
+          <div class="newsletter-icon">
+            <Icon name="rocket" size="1.5rem" />
+          </div>
           <div class="newsletter-text-inner">
             <h3>Stay Updated</h3>
             <p>Get the latest SLM benchmarks and tutorials.</p>
@@ -73,7 +77,7 @@ const year = new Date().getFullYear();
       </div>
     </div>
   </div>
-</div>
+}
 
 <style>
   /* Footer wrapper - full bleed with high z-index */
@@ -89,6 +93,14 @@ const year = new Date().getFullYear();
     width: 100vw;
     margin-left: calc(-50vw + 50%);
     box-sizing: border-box;
+  }
+
+  /* Fix for sidebar pages - disable breakout to prevent horizontal scroll */
+  .custom-footer.has-sidebar {
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    border-radius: 1rem 1rem 0 0;
   }
 
   /* Ensure footer covers any sidebar overflow */

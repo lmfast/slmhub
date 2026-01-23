@@ -1,0 +1,65 @@
+---
+import { Icon } from '@astrojs/starlight/components';
+
+interface Props {
+  items: { label: string; href: string }[];
+}
+
+const { items } = Astro.props;
+---
+
+<nav class="breadcrumb" aria-label="Breadcrumb navigation">
+  {items.map((item, idx) => (
+    <>
+      <a href={item.href} class="breadcrumb-link">{item.label}</a>
+      {idx < items.length - 1 && (
+        <Icon name="chevron-right" size="1em" class="breadcrumb-separator" />
+      )}
+    </>
+  ))}
+</nav>
+
+<style>
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.875rem;
+    margin-bottom: 2rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    flex-wrap: wrap;
+  }
+
+  [data-theme="dark"] .breadcrumb {
+    border-bottom-color: rgba(255, 255, 255, 0.05);
+  }
+
+  .breadcrumb-link {
+    color: var(--sl-color-text-accent);
+    text-decoration: none;
+    transition: all var(--transition-base);
+    font-weight: 500;
+  }
+
+  .breadcrumb-link:hover {
+    color: var(--sl-color-accent-high);
+    text-decoration: underline;
+  }
+
+  .breadcrumb-separator {
+    color: var(--sl-color-gray-5);
+    opacity: 0.6;
+  }
+
+  [data-theme="dark"] .breadcrumb-separator {
+    color: var(--sl-color-gray-4);
+  }
+
+  @media (max-width: 768px) {
+    .breadcrumb {
+      gap: 0.5rem;
+      font-size: 0.8rem;
+    }
+  }
+</style>

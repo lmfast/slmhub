@@ -1,8 +1,9 @@
 ---
-title: CodeUp-Llama-2-13B-Chat-HF-GGUF
-description: "Discovery-focused notes and runnable examples for `TheBloke/CodeUp-Llama-2-13B-Chat-HF-GGUF`."
+title: "CodeUp-Llama-2-13B-Chat-HF-GGUF"
+description: Discovery-focused notes and runnable examples for `TheBloke/CodeUp-Llama-2-13B-Chat-HF-GGUF`.
 ---
 
+# CodeUp-Llama-2-13B-Chat-HF-GGUF
 
 Discovery-focused notes and runnable examples for `TheBloke/CodeUp-Llama-2-13B-Chat-HF-GGUF`.
 
@@ -63,7 +64,7 @@ ollama run codeup-llama-2-13b-chat-hf-gguf
 | **Library** | transformers |
 | **License** | unknown |
 | **Last modified** | 2023-09-27T12:47:43+00:00 |
-| **Downloads** | 254 |
+| **Downloads** | 247 |
 | **Likes** | 9 |
 
 ## Links

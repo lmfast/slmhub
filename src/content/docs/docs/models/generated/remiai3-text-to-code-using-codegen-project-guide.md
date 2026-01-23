@@ -1,8 +1,9 @@
 ---
-title: text-to-code-using-codegen-project_guide
-description: "Discovery-focused notes and runnable examples for `remiai3/text-to-code-using-codegen-project_guide`."
+title: "text-to-code-using-codegen-project_guide"
+description: Discovery-focused notes and runnable examples for `remiai3/text-to-code-using-codegen-project_guide`.
 ---
 
+# text-to-code-using-codegen-project_guide
 
 Discovery-focused notes and runnable examples for `remiai3/text-to-code-using-codegen-project_guide`.
 
